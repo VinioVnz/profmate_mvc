@@ -5,18 +5,18 @@ class HomeButton extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData? icon;
   const HomeButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
+        child: SizedBox(
           width: 150,
           height: 90,
           child: ElevatedButton(

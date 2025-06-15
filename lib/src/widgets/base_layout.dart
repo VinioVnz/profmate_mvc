@@ -13,7 +13,10 @@ class BaseLayout extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(title: title),
       drawer: CustomAppDrawer(),
-      body: body,
+      body: GestureDetector(
+        onTapUp: (_) => FocusScope.of(context).unfocus(),
+        child: body,
+        ),
     );
   }
 }
