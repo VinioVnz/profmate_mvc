@@ -31,13 +31,13 @@ final List<MenuModel> appMenuItems = [
   ),
 
   MenuModel(
-    title: 'Suporte', 
-    icon: Icons.info, 
-    route: '/suporte', 
-    page: SuporteView()
+    title: 'Suporte',
+    icon: Icons.help,
+    route: '/suporte',
+    page: SuporteView(),
   ),
 
-   MenuModel(
+  MenuModel(
     title: 'Finaceiro',
     icon: Icons.money_off_csred_outlined,
     route: '/financeiro',
