@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/app/app_menu.dart';
-import 'package:profmate/src/views/base_layout.dart';
+import 'package:profmate/src/widgets/base_layout.dart';
 
 Map<String, WidgetBuilder> generateRoutes(){
   final Map<String, WidgetBuilder> routes = {};
