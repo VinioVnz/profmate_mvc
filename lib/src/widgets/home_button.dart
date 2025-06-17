@@ -35,7 +35,7 @@ class HomeButton extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   label,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 8),
                 ),
               ],
             ),
