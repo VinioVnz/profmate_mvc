@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/app/app_menu.dart';
 import 'package:profmate/src/services/auth_service.dart';
+import 'package:profmate/src/views/configuracoes_view.dart';
 import 'package:profmate/src/views/login_view.dart';
 
 class CustomAppDrawer extends StatelessWidget {

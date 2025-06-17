@@ -8,17 +8,36 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(16),
-      child: Row(
+      child: Column(
           //fazer os botoes
           children: [
-            //botao alunos
-            HomeButton(label: 'Alunos', onPressed: (){}, icon: Icons.abc,), //widget personalizado, primeiro sendo o label do botao e dps a função
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                 //botao alunos
+            HomeButton(label: 'Alunos', onPressed: (){
+              //Navigator.pushReplacementNamed(context, '');
+            }, icon: Icons.person,), //widget personalizado, primeiro sendo o label do botao e dps a função
             //botao atividades
-            HomeButton(label: 'Atividades', onPressed: (){}),
+            HomeButton(label: 'Atividades', onPressed: (){
+              //Navigator.pushReplacementNamed(context, '');
+            }, icon: Icons.edit,),
+              ],
+            ),
+           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              
             //botao financeiro
-            HomeButton(label: "Financeiro", onPressed: (){}),
+            HomeButton(label: "Financeiro", onPressed: (){
+              //Navigator.pushReplacementNamed(context, '');
+            }, icon: Icons.attach_money_rounded,),
             //botao mural
-            HomeButton(label: "Mural", onPressed: (){})
+            HomeButton(label: "Mural", onPressed: (){
+              Navigator.pushReplacementNamed(context, '/mural');
+            }, icon: Icons.message,)
+            ],
+           )
             
           ],
         

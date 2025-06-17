@@ -13,32 +13,47 @@ class HomeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          width: 150,
-          height: 90,
-          child: ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5)
-              )
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(width: 1.0, color: Color(0xffE6E6E6)),
+        ),
+        width: 130,
+        height: 127,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.all(4),
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start, // alinha à esquerda
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (icon != null) Icon(icon, size: 28),
-                const SizedBox(height: 8),
-                Text(
-                  label,
-                  style: const TextStyle(fontSize: 8),
+          ),
+          child: Stack(
+            children: [
+              if (icon != null)
+                Positioned(
+                  child: Center(child: 
+                    Icon(icon, size: 48,color: Colors.black,))
                 ),
-              ],
-            ),
+
+                Positioned(
+                  bottom: 8,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Text(label, 
+                          style: const TextStyle(
+                            fontSize: 14, 
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
+                            )
+                          ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),
