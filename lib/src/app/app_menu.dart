@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/mural_controller.dart';
 import 'package:profmate/src/models/menu_model.dart';
+import 'package:profmate/src/views/atividade_view.dart';
 import 'package:profmate/src/views/configuracoes_view.dart';
 import 'package:profmate/src/views/financeiro_view.dart';
 import 'package:profmate/src/views/mural_view.dart';
@@ -31,16 +32,22 @@ final List<MenuModel> appMenuItems = [
   ),
 
   MenuModel(
-    title: 'Suporte', 
-    icon: Icons.info, 
-    route: '/suporte', 
-    page: SuporteView()
+    title: 'Suporte',
+    icon: Icons.info,
+    route: '/suporte',
+    page: SuporteView(),
   ),
 
-   MenuModel(
+  MenuModel(
     title: 'Finaceiro',
     icon: Icons.money_off_csred_outlined,
     route: '/financeiro',
     page: FinanceiroView(),
+  ),
+  MenuModel(
+    title: 'Atividades',
+    icon: Icons.menu_book_rounded,
+    route: '/atividades',
+    page: AtividadesView(),
   ),
 ];

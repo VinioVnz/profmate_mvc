@@ -5,6 +5,8 @@ import 'package:profmate/src/models/atividade_model.dart';
 class AtividadesView extends StatelessWidget {
   final AtividadeController controller = AtividadeController();
 
+  AtividadesView({super.key});
+
   @override
   Widget build(BuildContext context) {
     List<AtividadeModel> atividades = controller.listarAtividades();
@@ -16,7 +18,7 @@ class AtividadesView extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.filter_list),
             onPressed: () {
-              // Implementar filtro futuramente
+              // Implementar filtro
             },
           ),
         ],
