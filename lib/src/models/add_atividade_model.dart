@@ -1,4 +1,4 @@
-class AtividadeModel {
+class NovaAtividade {
   String titulo;
   String descricao;
   String turmaOuAlunos;
@@ -6,7 +6,7 @@ class AtividadeModel {
   bool valeNota;
   String? arquivo;
 
-  AtividadeModel({
+  NovaAtividade({
     required this.titulo,
     required this.descricao,
     required this.turmaOuAlunos,

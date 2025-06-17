@@ -13,7 +13,6 @@ class AtividadesView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Atividades'),
         actions: [
           IconButton(
             icon: Icon(Icons.filter_list),
@@ -83,9 +82,7 @@ class AtividadesView extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Ação para adicionar nova atividade
-        },
+        onPressed: () {},
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
