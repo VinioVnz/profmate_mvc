@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:profmate/src/controller/bulletin_board_controller.dart';
-import 'package:profmate/src/models/bulletin_board_model.dart';
+import 'package:profmate/src/controller/mural_controller.dart';
+import 'package:profmate/src/models/mural_model.dart';
 
-class BulletinBoardView extends StatefulWidget {
-  const BulletinBoardView({super.key, required this.controller});
+class MuralView extends StatefulWidget {
+  const MuralView({super.key, required this.controller});
 
-  final BulletinBoardController controller;
+  final MuralController controller;
 
   @override
-  State<BulletinBoardView> createState() => _BulletinBoardViewState();
+  State<MuralView> createState() => _MuralViewState();
 }
 
-class _BulletinBoardViewState extends State<BulletinBoardView> {
-  BulletinBoardController get controller => widget.controller;
+class _MuralViewState extends State<MuralView> {
+  MuralController get controller => widget.controller;
 
-  final TextEditingController noteController = TextEditingController();
+  final TextEditingController recadoController = TextEditingController();
 
-  void alertConfirmarDelete(BulletinBoardModel recado) {
+  void alertConfirmarDelete(MuralModel recado) {
     showDialog(
       context: context,
       builder: (context) {
@@ -44,9 +44,9 @@ class _BulletinBoardViewState extends State<BulletinBoardView> {
   }
 
   void adicionaRecado() {
-    final texto = noteController.text.trim();
+    final texto = recadoController.text.trim();
     controller.adicionaRecado(texto);
-    noteController.clear();
+    recadoController.clear();
     FocusScope.of(context).unfocus();
   }
 
@@ -73,7 +73,7 @@ class _BulletinBoardViewState extends State<BulletinBoardView> {
                   itemBuilder: (context, index) {
                     final recado = recados[index];
                     return Card(
-                      color: const Color.fromARGB(255, 01, 11, 40),
+                      color: const Color.fromARGB(255, 53, 91, 140),
                       elevation: 3,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -148,7 +148,7 @@ class _BulletinBoardViewState extends State<BulletinBoardView> {
               children: [
                 Expanded(
                   child: TextField(
-                    controller: noteController,
+                    controller: recadoController,
                     decoration: InputDecoration(
                       hintText: "Escreva seu recado",
                       border: InputBorder.none,
