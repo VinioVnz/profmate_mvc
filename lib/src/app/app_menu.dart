@@ -1,25 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/controller/bulletin_board_controller.dart';
+import 'package:profmate/src/controller/mural_controller.dart';
 import 'package:profmate/src/models/menu_model.dart';
-import 'package:profmate/src/views/bulletin_board_view.dart';
+import 'package:profmate/src/views/configuracoes_view.dart';
+import 'package:profmate/src/views/mural_view.dart';
 import 'package:profmate/src/views/home_view.dart';
+import 'package:profmate/src/views/suporte_view.dart';
 
 final List<MenuModel> appMenuItems = [
   MenuModel(
     title: 'Menu',
     icon: Icons.home,
     route: '/home',
-    page: const HomeView()
+    page: const HomeView(),
   ),
 
-  //adicionando o Mural (Bulletin Board) a lista do Menu
+  //adicionando o Mural à lista do Menu
   MenuModel(
-    title: 'Mural', 
-    icon: Icons.message, 
-    route: '/mural', 
-    page: BulletinBoardView(
-      controller: BulletinBoardController(),
-    )
+    title: 'Mural',
+    icon: Icons.message,
+    route: '/mural',
+    page: MuralView(controller: MuralController()),
   ),
-  
+
+  MenuModel(
+    title: 'Configurações',
+    icon: Icons.settings,
+    route: '/configuracoes',
+    page: ConfiguracoesView(),
+  ),
+
+  MenuModel(
+    title: 'Suporte', 
+    icon: Icons.info, 
+    route: '/suporte', 
+    page: SuporteView()),
 ];
