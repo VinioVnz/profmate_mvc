@@ -85,7 +85,7 @@ class _SuporteViewState extends State<SuporteView> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(8),
               border: Border.all(width: 1.0, color: Color(0xffE6E6E6)),
             ),
             child: Column(
