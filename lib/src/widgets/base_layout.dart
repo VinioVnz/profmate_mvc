@@ -15,8 +15,11 @@ class BaseLayout extends StatelessWidget {
       drawer: CustomAppDrawer(),
       body: GestureDetector(
         onTapUp: (_) => FocusScope.of(context).unfocus(),
-        child: body,
+        child: Container(
+          color: const Color.fromARGB(255, 255, 255, 255),
+          child: body,
         ),
+      ),
     );
   }
 }

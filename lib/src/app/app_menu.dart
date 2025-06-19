@@ -15,6 +15,13 @@ final List<MenuModel> appMenuItems = [
     page: const HomeView(),
   ),
 
+   MenuModel(
+    title: 'Financeiro',
+    icon: Icons.attach_money_rounded,
+    route: '/financeiro',
+    page: FinanceiroView(),
+  ),
+
   //adicionando o Mural à lista do Menu
   MenuModel(
     title: 'Mural',
@@ -31,16 +38,9 @@ final List<MenuModel> appMenuItems = [
   ),
 
   MenuModel(
-    title: 'Suporte', 
-    icon: Icons.info, 
-    route: '/suporte', 
-    page: SuporteView()
-  ),
-
-   MenuModel(
-    title: 'Finaceiro',
-    icon: Icons.money_off_csred_outlined,
-    route: '/financeiro',
-    page: FinanceiroView(),
+    title: 'Suporte',
+    icon: Icons.help,
+    route: '/suporte',
+    page: SuporteView(),
   ),
 ];
