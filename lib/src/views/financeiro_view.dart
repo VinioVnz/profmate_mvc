@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/financeiro_controlle.dart';
-import '../controllers/financeiro_controller.dart';
+import 'package:profmate/src/views/relatorio_view.dart';
 import '../widgets/aluno_tile.dart';
 
 class FinanceiroView extends StatelessWidget {
@@ -18,20 +18,28 @@ class FinanceiroView extends StatelessWidget {
           children: [
             // Botão "Relatório"
             Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: const Text(
-                    "Relatório",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
+  children: [
+    GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const RelatorioView()),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: const Text(
+          "Relatório",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    ),
+  ],
+),
             const SizedBox(height: 12),
 
             // Cards de status
