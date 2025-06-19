@@ -27,7 +27,13 @@ class _MuralViewState extends State<MuralView> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("Cancelar"),
+              child: Text(
+                "Cancelar",
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 53, 91, 140),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -35,7 +41,13 @@ class _MuralViewState extends State<MuralView> {
                 Navigator.pop(context);
                 FocusScope.of(context).unfocus();
               },
-              child: Text("OK"),
+              child: Text(
+                "OK",
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 53, 91, 140),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         );

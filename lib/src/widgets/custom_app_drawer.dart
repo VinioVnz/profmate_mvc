@@ -40,12 +40,12 @@ class CustomAppDrawer extends StatelessWidget {
             onTap: () {
               AuthService.logout();
               Navigator.pushAndRemoveUntil(
-              context, 
-              MaterialPageRoute(builder: (_) => const LoginView()), 
-              (route) => false,
+                context,
+                MaterialPageRoute(builder: (_) => const LoginView()),
+                (route) => false,
               );
             },
-          )
+          ),
         ],
       ),
     );
