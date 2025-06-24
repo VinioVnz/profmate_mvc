@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/widgets/home_button.dart';
+import 'package:profmate/src/controller/configuracoes_controller.dart';
+import 'dart:io';
 
 class ConfiguracoesView extends StatefulWidget {
-  const ConfiguracoesView({super.key});
+  final ConfiguracoesController configuracoesController;
+  const ConfiguracoesView({required this.configuracoesController, super.key});
 
   @override
   State<ConfiguracoesView> createState() => _ConfiguracoesViewState();
@@ -10,61 +12,157 @@ class ConfiguracoesView extends StatefulWidget {
 
 class _ConfiguracoesViewState extends State<ConfiguracoesView> {
   @override
+  void initState() {
+    super.initState();
+    widget.configuracoesController.addListener(_atualizarView);
+  }
+
+  @override
+  void dispose() {
+    widget.configuracoesController.removeListener(_atualizarView);
+    super.dispose();
+  }
+
+  void _atualizarView() {
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final foto = widget.configuracoesController.imagemDePerfil;
     return Padding(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              HomeButton(
-                label: 'Meu perfil',
-                onPressed: () {},
-                icon: Icons.person,
+      padding: const EdgeInsets.all(16),
+      child: Center(
+        child: Column(
+          children: [
+            CircleAvatar(
+              radius: 60,
+              backgroundImage: foto != null ? FileImage(foto) : null,
+              child: foto == null ? Icon(Icons.person, size: 60) : null,
+            ),
+            TextButton(
+              onPressed: () {
+                widget.configuracoesController.selecionarImagem();
+              },
+              child: Text("Alterar foto"),
+            ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(width: 1.0, color: Color(0xffE6E6E6)),
               ),
-              HomeButton(
-                label: 'Alterar senha',
-                onPressed: () {},
-                icon: Icons.password,
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              HomeButton(
-                label: "Notificações",
-                onPressed: () {},
-                icon: Icons.notifications,
-              ),
-              HomeButton(
-                label: "Personalizar",
-                onPressed: () {},
-                icon: Icons.palette,
-              ),
-            ],
-          ),
-          SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  // Lógica para cancelar assinatura aqui
-                  // Adicionar um alerta sobre o cancelamento para tentar convercer de não cancelar
-                },
-                child: Text(
-                  "Cancelar assinatura",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(width: 1.0, color: Color(0xffE6E6E6)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Meus dados", style: TextStyle(fontSize: 16)),
+                        Icon(
+                          Icons.chevron_right,
+                          size: 24,
+                          color: Color.fromARGB(220, 151, 150, 150),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                  SizedBox(height: 8),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(width: 1.0, color: Color(0xffE6E6E6)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Alterar senha", style: TextStyle(fontSize: 16)),
+                        Icon(
+                          Icons.chevron_right,
+                          size: 24,
+                          color: Color.fromARGB(220, 151, 150, 150),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(width: 1.0, color: Color(0xffE6E6E6)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Ativar notificações",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Switch(value: false, onChanged: (_) {}),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(width: 1.0, color: Color(0xffE6E6E6)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Modo escuro", style: TextStyle(fontSize: 16)),
+                        Switch(value: false, onChanged: (_) {}),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(width: 1.0, color: Color(0xffE6E6E6)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Cancelar assinatura",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Icon(
+                          Icons.chevron_right,
+                          size: 24,
+                          color: Color.fromARGB(220, 151, 150, 150),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

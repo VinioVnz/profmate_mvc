@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profmate/src/controller/configuracoes_controller.dart';
 import 'package:profmate/src/controller/mural_controller.dart';
 import 'package:profmate/src/controller/tarefas_controller.dart';
 import 'package:profmate/src/models/menu_model.dart';
@@ -19,13 +20,6 @@ final List<MenuModel> appMenuItems = [
   ),
 
   MenuModel(
-    title: 'Tarefas',
-    icon: Icons.check_box,
-    route: '/tarefas',
-    page: TarefasView(controller: TarefasController(),),
-  ),
-
-   MenuModel(
     title: 'Financeiro',
     icon: Icons.attach_money_rounded,
     route: '/financeiro',
@@ -50,7 +44,7 @@ final List<MenuModel> appMenuItems = [
     title: 'Configurações',
     icon: Icons.settings,
     route: '/configuracoes',
-    page: ConfiguracoesView(),
+    page: ConfiguracoesView(configuracoesController: ConfiguracoesController()),
   ),
 
   MenuModel(
