@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:profmate/src/views/financeiro_view.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'package:profmate/src/widgets/base_layout.dart';
 
 class RelatorioView extends StatelessWidget {
   const RelatorioView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Relatório Financeiro', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
-        elevation: 2,
-      ),
+    return BaseLayout (
+      title: 'Relatório Financeiro',
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -79,28 +77,85 @@ class RelatorioView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(onPressed: () {}, child: const Text("Filtrar")),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                      ),
+                      builder: (context) {
+                        return Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text("Filtrar por período", style: TextStyle(fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 16),
+                              ListTile(
+                                leading: const Icon(Icons.calendar_today),
+                                title: const Text("Últimos 7 dias"),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  // Aplique o filtro aqui
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.calendar_view_month),
+                                title: const Text("Este mês"),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  // Aplique o filtro aqui
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.calendar_today_outlined),
+                                title: const Text("Personalizado"),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  // Pode abrir um DatePicker
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: const Text("Filtrar"),
+                ),
                 const SizedBox(width: 12),
-                ElevatedButton(onPressed: () {}, child: const Text("Exportar")),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () async {
+                    final pdf = pw.Document();
+                    pdf.addPage(
+                      pw.Page(
+                        build: (pw.Context context) => pw.Center(
+                          child: pw.Text(
+                            "Relatório Trimestral\n\nTotal Recebido: R\$ 1234.56\nPendentes: 5 alunos",
+                            textAlign: pw.TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    );
+                    await Printing.layoutPdf(
+                      onLayout: (PdfPageFormat format) async => pdf.save(),
+                    );
+                  },
+                  child: const Text("Exportar"),
+                ),
               ],
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
-        onTap: (index) {
-          if (index == 1) {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const FinanceiroView()));
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.menu), label: ""),
-        ],
       ),
     );
   }
