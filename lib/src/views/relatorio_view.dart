@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:profmate/src/views/financeiro_view.dart';
 import 'package:profmate/src/controller/relatorio_controller.dart';
+import 'package:profmate/src/widgets/base_layout.dart';
 
 class RelatorioView extends StatelessWidget {
   const RelatorioView({super.key});
@@ -10,13 +11,8 @@ class RelatorioView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = RelatorioController();
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Relatório Financeiro', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
-        elevation: 2,
-      ),
+    return BaseLayout(
+      title: 'Relatório Financeiro',
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -96,21 +92,6 @@ class RelatorioView extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
-        onTap: (index) {
-          if (index == 1) {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const FinanceiroView()));
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.menu), label: ""),
-        ],
       ),
     );
   }

@@ -91,7 +91,7 @@ class FinanceiroView extends StatelessWidget {
     return Expanded(
       child: Container(
          height: 120, // altura aumentada
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(25),
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(8),
@@ -100,7 +100,7 @@ class FinanceiroView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(title, style: const TextStyle(color: Colors.white)),
-            const SizedBox(height: 5),
+            const SizedBox(height: 10),
             Text(
               value,
               style: const TextStyle(
