@@ -19,6 +19,13 @@ final List<MenuModel> appMenuItems = [
     page: const HomeView(),
   ),
 
+   MenuModel(
+    title: 'Tarefas',
+    icon: Icons.check_box,
+    route: '/tarefas',
+    page: TarefasView(controller: TarefasController(),),
+  ),
+
   MenuModel(
     title: 'Financeiro',
     icon: Icons.attach_money_rounded,
