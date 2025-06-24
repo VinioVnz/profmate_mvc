@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/configuracoes_controller.dart';
-import 'package:profmate/src/widgets/home_button.dart';
 import 'dart:io';
 
 class ConfiguracoesView extends StatefulWidget {
