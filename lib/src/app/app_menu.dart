@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/mural_controller.dart';
+import 'package:profmate/src/controller/tarefas_controller.dart';
 import 'package:profmate/src/models/menu_model.dart';
 import 'package:profmate/src/views/agenda_view.dart';
 import 'package:profmate/src/views/configuracoes_view.dart';
@@ -7,6 +8,7 @@ import 'package:profmate/src/views/financeiro_view.dart';
 import 'package:profmate/src/views/mural_view.dart';
 import 'package:profmate/src/views/home_view.dart';
 import 'package:profmate/src/views/suporte_view.dart';
+import 'package:profmate/src/views/tarefas_view.dart';
 
 final List<MenuModel> appMenuItems = [
   MenuModel(
@@ -16,6 +18,13 @@ final List<MenuModel> appMenuItems = [
     page: const HomeView(),
   ),
 
+  MenuModel(
+    title: 'Tarefas',
+    icon: Icons.check_box,
+    route: '/tarefas',
+    page: TarefasView(controller: TarefasController(),),
+  ),
+
    MenuModel(
     title: 'Financeiro',
     icon: Icons.attach_money_rounded,
@@ -23,7 +32,6 @@ final List<MenuModel> appMenuItems = [
     page: FinanceiroView(),
   ),
 
-  //adicionando o Mural à lista do Menu
   MenuModel(
     title: 'Mural',
     icon: Icons.message,
