@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/financeiro_controlle.dart';
-import '../controllers/financeiro_controller.dart';
+import '../controller/financeiro_controller.dart';
 import '../widgets/aluno_tile.dart';
 
 class FinanceiroView extends StatelessWidget {
