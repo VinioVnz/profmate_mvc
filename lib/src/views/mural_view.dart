@@ -22,6 +22,7 @@ class _MuralViewState extends State<MuralView> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: Text("Apagar recado"),
           content: Text("Deseja realmente apagar este recado?"),
           actions: [
@@ -118,7 +119,7 @@ class _MuralViewState extends State<MuralView> {
                                 IconButton(
                                   visualDensity: VisualDensity.compact,
                                   onPressed: () => alertConfirmarDelete(recado),
-                                  icon: Icon(Icons.close, color: Colors.white),
+                                  icon: Icon(Icons.delete, color: Colors.white),
                                 ),
                               ],
                             ),

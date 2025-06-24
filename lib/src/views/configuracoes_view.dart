@@ -44,7 +44,10 @@ class _ConfiguracoesViewState extends State<ConfiguracoesView> {
               onPressed: () {
                 widget.configuracoesController.selecionarImagem();
               },
-              child: Text("Alterar foto"),
+              child: Text(
+                "Alterar foto",
+                style: TextStyle(color: Colors.black),
+              ),
             ),
             Container(
               width: double.infinity,

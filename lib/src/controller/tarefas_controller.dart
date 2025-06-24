@@ -7,17 +7,24 @@ class TarefasController {
 
   void adicionaTarefa(String texto) {
     if (texto.isEmpty) return;
-    final novaTarefa = TarefasModel(texto, DateTime.now());
+    final novaTarefa = TarefasModel(texto);
     tarefas.value = List<TarefasModel>.from(tarefas.value)
       ..add(novaTarefa);
   }
 
-  void concluirTarefa(int index){
-    final tarefasConcluidas = List<TarefasModel>.from(tarefas.value);
-    tarefasConcluidas[index].concluida = ! tarefasConcluidas[index].concluida;
-    tarefas.value = tarefasConcluidas;
-
+ void concluirTarefa(TarefasModel tarefa) {
+  final listaAtualizada = List<TarefasModel>.from(tarefas.value);
+  final index = listaAtualizada.indexOf(tarefa);
+  if (index != -1) {
+    listaAtualizada[index].concluida = !listaAtualizada[index].concluida;
+    tarefas.value = listaAtualizada;
   }
+}
 
+void excluirTarefa(TarefasModel tarefa){
+  final listaAtualizada = List<TarefasModel>.from(tarefas.value);
+  listaAtualizada.remove(tarefa);
+  tarefas.value = listaAtualizada;
+}
   
 }
