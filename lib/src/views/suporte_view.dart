@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profmate/src/controller/suporte_controller.dart';
 import 'package:profmate/src/widgets/card_faq.dart';
 
 class SuporteView extends StatefulWidget {
@@ -9,6 +10,8 @@ class SuporteView extends StatefulWidget {
 }
 
 class _SuporteViewState extends State<SuporteView> {
+  final SuporteController _controller = SuporteController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -117,7 +120,7 @@ class _SuporteViewState extends State<SuporteView> {
                       ),
                     ),
                     onPressed: () {
-                      // colocar aqui o método de enviar email
+                      _controller.enviarEmailDeSuporte();
                     },
                   ),
                 ),
