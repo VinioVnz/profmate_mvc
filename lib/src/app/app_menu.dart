@@ -4,6 +4,7 @@ import 'package:profmate/src/controller/mural_controller.dart';
 import 'package:profmate/src/controller/tarefas_controller.dart';
 import 'package:profmate/src/models/menu_model.dart';
 import 'package:profmate/src/views/agenda_view.dart';
+import 'package:profmate/src/views/alunos_view.dart';
 import 'package:profmate/src/views/configuracoes_view.dart';
 import 'package:profmate/src/views/financeiro_view.dart';
 import 'package:profmate/src/views/mural_view.dart';
@@ -17,6 +18,13 @@ final List<MenuModel> appMenuItems = [
     icon: Icons.home,
     route: '/home',
     page: const HomeView(),
+  ),
+
+  MenuModel(
+    title: 'Alunos',
+    icon: Icons.person,
+    route: '/alunos',
+    page: AlunosView(),
   ),
 
    MenuModel(
