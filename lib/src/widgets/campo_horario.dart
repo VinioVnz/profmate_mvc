@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CampoHorario extends StatefulWidget {
+  final TextEditingController controller;
+
+  const CampoHorario({super.key, required this.controller});
+
   @override
   _CampoHorarioState createState() => _CampoHorarioState();
 }
 
 class _CampoHorarioState extends State<CampoHorario> {
-  final TextEditingController _horaController = TextEditingController();
-
   Future<void> _selecionarHora(BuildContext context) async {
     TimeOfDay? horaEscolhida = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
-builder: (context, child) {
-  return MediaQuery(
-    data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-    child: child!,
-  );
-}
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },
     );
 
     if (horaEscolhida != null) {
@@ -33,7 +35,7 @@ builder: (context, child) {
 
       String horaFormatada = DateFormat('HH:mm').format(horarioCompleto);
       setState(() {
-        _horaController.text = horaFormatada;
+        widget.controller.text = horaFormatada;
       });
     }
   }
@@ -41,7 +43,7 @@ builder: (context, child) {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: _horaController,
+      controller: widget.controller,
       readOnly: true,
       decoration: InputDecoration(
         labelText: 'Horário',
