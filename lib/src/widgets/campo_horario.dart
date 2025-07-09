@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -9,35 +10,43 @@ class CampoHorario extends StatefulWidget {
   @override
   _CampoHorarioState createState() => _CampoHorarioState();
 }
-
+//codigo por: Vinícius Bornhofen
 class _CampoHorarioState extends State<CampoHorario> {
-  Future<void> _selecionarHora(BuildContext context) async {
-    TimeOfDay? horaEscolhida = await showTimePicker(
+  void _selecionarHora(BuildContext context) {
+    DateTime horaAtual = DateTime.now();
+
+    showModalBottomSheet(
       context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
+      builder: (_) {
+        return SizedBox(
+          height: 250,
+          child: CupertinoTimerPicker(
+            mode: CupertinoTimerPickerMode.hm,
+            initialTimerDuration: Duration(
+              hours: horaAtual.hour,
+              minutes: horaAtual.minute,
+            ),
+            onTimerDurationChanged: (Duration novaHora) {
+              final agora = DateTime.now();
+              final horarioCompleto = DateTime(
+                agora.year,
+                agora.month,
+                agora.day,
+                novaHora.inHours,
+                novaHora.inMinutes % 60,
+              );
+
+              final horaFormatada =
+                  DateFormat('HH:mm').format(horarioCompleto);
+
+              setState(() {
+                widget.controller.text = horaFormatada;
+              });
+            },
+          ),
         );
       },
     );
-
-    if (horaEscolhida != null) {
-      final agora = DateTime.now();
-      final horarioCompleto = DateTime(
-        agora.year,
-        agora.month,
-        agora.day,
-        horaEscolhida.hour,
-        horaEscolhida.minute,
-      );
-
-      String horaFormatada = DateFormat('HH:mm').format(horarioCompleto);
-      setState(() {
-        widget.controller.text = horaFormatada;
-      });
-    }
   }
 
   @override
