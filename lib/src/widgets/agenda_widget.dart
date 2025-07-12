@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-//Codigo por: Vinícius Bornhofen e Vitor Henkels
-//Última alteração: 07/07/2025
+// Código por: Vinícius Bornhofen e Vitor Henkels
+// Última alteração: 09/07/2025
+class AulaEvent {
+  final String nome;
+  final String horario;
+
+  AulaEvent(this.nome, this.horario);
+}
+
 class AgendaWidget extends StatelessWidget {
-  final DateTime diaSelecionado;
+  final DateTime? diaSelecionado;
   final Map<DateTime, List<Map<String, String>>>? aulasPorDia;
   final void Function(DateTime dia)? onDiaSelecionado;
-  final mostrarAulas;
+  final bool mostrarAulas;
+
   const AgendaWidget({
     super.key,
-    required this.diaSelecionado,
+    this.diaSelecionado,
     this.aulasPorDia,
     this.onDiaSelecionado,
     this.mostrarAulas = true,
@@ -19,13 +27,10 @@ class AgendaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dia = diaSelecionado ?? DateTime.now();
+
     final aulasDoDia =
-        aulasPorDia?[DateTime(
-          diaSelecionado.year,
-          diaSelecionado.month,
-          diaSelecionado.day,
-        )] ??
-        [];
+        aulasPorDia?[DateTime(dia.year, dia.month, dia.day)] ?? [];
 
     return SingleChildScrollView(
       child: Column(
@@ -35,13 +40,43 @@ class AgendaWidget extends StatelessWidget {
             child: TableCalendar(
               locale: "pt_BR",
               rowHeight: 40,
-              headerStyle: const HeaderStyle(
+              headerStyle: HeaderStyle(
                 formatButtonVisible: false,
                 titleCentered: true,
               ),
-              availableGestures: AvailableGestures.all,
+              calendarStyle: CalendarStyle(
+                markersMaxCount: 1,
+                markerSize: 20,
+                markerMargin: EdgeInsets.only(top: 2),
+              ),
+              calendarBuilders: CalendarBuilders(
+                markerBuilder: (context, date, events) {
+                  if (events.isEmpty) return SizedBox.shrink();
+
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      left: 26,
+                    ), // ajusta para onde quiser
+                    child: Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 255, 0, 0),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        '${events.length}', // mostra quantas aulas tem
+                        style: TextStyle(color: Colors.white, fontSize: 10),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              eventLoader: (day) {
+                final dataNormalizada = DateTime(day.year, day.month, day.day);
+                return aulasPorDia?[dataNormalizada] ?? [];
+              },
               selectedDayPredicate: (day) => isSameDay(day, diaSelecionado),
-              focusedDay: diaSelecionado,
+              focusedDay: diaSelecionado ?? DateTime.now(),
               firstDay: DateTime.utc(2010, 10, 16),
               lastDay: DateTime(2045, 06, 30),
               onDaySelected: (dia, _) {
@@ -62,14 +97,14 @@ class AgendaWidget extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  "Aulas de ${DateFormat('dd/MM/yyyy').format(diaSelecionado)}:",
+                  "Aulas de ${DateFormat('dd/MM/yyyy').format(dia)}:",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ),
             const SizedBox(height: 8),
             SizedBox(
-              height: 300, // altura limite para lista de aulas
+              height: 300,
               child: ListView.builder(
                 itemCount: aulasDoDia.length,
                 itemBuilder: (context, index) {

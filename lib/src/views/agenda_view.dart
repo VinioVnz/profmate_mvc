@@ -53,7 +53,7 @@ class _AgendaViewState extends State<AgendaView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CampoCalendario(controller: dataController),
+              CampoCalendario(controller: dataController, initialDate: _diaSelecionado,),
               const SizedBox(height: 16),
               CampoHorario(controller: horarioController),
               const SizedBox(height: 16),
