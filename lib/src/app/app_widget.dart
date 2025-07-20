@@ -4,6 +4,9 @@ import 'package:profmate/src/services/auth_service.dart';
 import 'package:profmate/src/views/login_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:profmate/theme/app_colors.dart';
+
+
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
 
@@ -20,7 +23,25 @@ class AppWidget extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(textTheme: GoogleFonts.montserratTextTheme()),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Color(0xFF1E3A5E),
+          ),
+            useMaterial3: false,
+            textTheme: GoogleFonts.montserratTextTheme(),
+  
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xFF1E3A5E),
+            foregroundColor: Colors.white,
+          ),
+
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF1E3A5E),
+            foregroundColor: Colors.white,
+          ),
+        ),
+      ),
       title: 'ProfMate',
       initialRoute: AuthService.isLoggedIn ? '/home' : '/login',
       routes: {

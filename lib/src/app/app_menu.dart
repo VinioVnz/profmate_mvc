@@ -8,6 +8,7 @@ import 'package:profmate/src/views/configuracoes_view.dart';
 import 'package:profmate/src/views/financeiro_view.dart';
 import 'package:profmate/src/views/mural_view.dart';
 import 'package:profmate/src/views/home_view.dart';
+import 'package:profmate/src/views/progress_view.dart';
 import 'package:profmate/src/views/suporte_view.dart';
 import 'package:profmate/src/views/tarefas_view.dart';
 
@@ -59,5 +60,12 @@ final List<MenuModel> appMenuItems = [
     icon: Icons.help,
     route: '/suporte',
     page: SuporteView(),
+  ),
+
+   MenuModel(
+    title: 'Progresso',
+    icon: Icons.school,
+    route: '/suporte',
+    page: ProgressView(),
   ),
 ];
