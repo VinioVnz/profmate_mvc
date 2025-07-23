@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:profmate/src/controller/cadastrar_aluno_controller.dart';
-import 'package:profmate/src/views/cadastrar_aluno_view.dart';
+import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
+import 'package:profmate/src/views/cadastro_aluno_view.dart';
 
 class AlunosView extends StatefulWidget {
-  final CadastrarAlunoController cadastrarAlunoController;
-  const AlunosView({required this.cadastrarAlunoController, super.key});
+  final CadastroAlunoController cadastroAlunoController;
+  const AlunosView({required this.cadastroAlunoController, super.key});
 
   @override
   State<AlunosView> createState() => _AlunosViewState();
@@ -28,8 +28,8 @@ class _AlunosViewState extends State<AlunosView> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CadastrarAlunoView(
-                    cadastrarAlunoController: widget.cadastrarAlunoController,
+                  builder: (context) => CadastroAlunoView(
+                    cadastroAlunoController: widget.cadastroAlunoController,
                   ),
                 ),
               );

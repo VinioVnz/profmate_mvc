@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/controller/cadastrar_aluno_controller.dart';
+import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/controller/configuracoes_controller.dart';
 import 'package:profmate/src/controller/mural_controller.dart';
 import 'package:profmate/src/controller/tarefas_controller.dart';
@@ -25,7 +25,7 @@ final List<MenuModel> appMenuItems = [
     title: 'Alunos',
     icon: Icons.person,
     route: '/alunos',
-    page: AlunosView(cadastrarAlunoController: CadastrarAlunoController(),),
+    page: AlunosView(cadastroAlunoController: CadastroAlunoController(),),
   ),
 
    MenuModel(

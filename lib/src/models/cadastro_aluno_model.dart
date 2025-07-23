@@ -8,6 +8,9 @@ class CadastroAlunoModel {
   final double valorAula;
   final DateTime vencimento;
   final String formaPagamento;
+  final String frequenciaPagamento;
+  final String? nomeResponsavel;
+  final String? cpfResponsavel;
 
   CadastroAlunoModel({
     required this.nome,
@@ -18,6 +21,10 @@ class CadastroAlunoModel {
     required this.dataNascimento,
     required this.valorAula,
     required this.vencimento,
-    required this.formaPagamento
+    required this.formaPagamento,
+    required this.frequenciaPagamento,
+    this.nomeResponsavel,
+    this.cpfResponsavel,
+
   });
 }

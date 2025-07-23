@@ -5,6 +5,8 @@ class CampoFormulario extends StatelessWidget {
   final String label;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
+  final bool readOnly;
+  final VoidCallback? onTap;
 
   const CampoFormulario({
     super.key,
@@ -12,6 +14,8 @@ class CampoFormulario extends StatelessWidget {
   required this.label,
   this.validator,
   this.keyboardType,
+  this.readOnly = false,
+  this.onTap,
 });
 
   @override
@@ -26,6 +30,8 @@ class CampoFormulario extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
+        onTap: onTap,
+        readOnly: readOnly,
         decoration: InputDecoration(labelText: label, border: InputBorder.none),
         validator: validator,
         keyboardType: keyboardType,
