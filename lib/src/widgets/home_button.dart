@@ -20,8 +20,8 @@ class HomeButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(width: 1.0, color: Color(0xffE6E6E6)),
         ),
-        width: 130,
-        height: 127,
+        width: 120,
+        height: 112,
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
