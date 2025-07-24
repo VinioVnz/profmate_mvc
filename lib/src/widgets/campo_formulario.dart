@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CampoFormulario extends StatelessWidget {
   final TextEditingController controller;
+  final String? titulo;
   final String label;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
@@ -10,32 +11,56 @@ class CampoFormulario extends StatelessWidget {
 
   const CampoFormulario({
     super.key,
-  required this.controller,
-  required this.label,
-  this.validator,
-  this.keyboardType,
-  this.readOnly = false,
-  this.onTap,
-});
+    required this.controller,
+    required this.label,
+    this.titulo,
+    this.validator,
+    this.keyboardType,
+    this.readOnly = false,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      margin: EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Color(0xffE6E6E6)),
-        color: Colors.white,
-      ),
-      child: TextFormField(
-        controller: controller,
-        onTap: onTap,
-        readOnly: readOnly,
-        decoration: InputDecoration(labelText: label, border: InputBorder.none),
-        validator: validator,
-        keyboardType: keyboardType,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (titulo != null) ...[
+          Padding(
+             padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Text(
+              titulo!,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+        ],
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          margin: EdgeInsets.only(bottom: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(36),
+            border: Border.all(color: Colors.black),
+            color: Colors.white,
+          ),
+          child: TextFormField(
+            controller: controller,
+            onTap: onTap,
+            readOnly: readOnly,
+            decoration: InputDecoration(
+              labelText: label,
+              labelStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            ),
+            validator: validator,
+            keyboardType: keyboardType,
+          ),
+        ),
+      ],
     );
   }
 }
