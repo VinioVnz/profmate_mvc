@@ -20,18 +20,20 @@ class _AgendaViewState extends State<AgendaView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            AgendaWidget(
-              diaSelecionado: _diaSelecionado,
-              aulasPorDia: _aulasPorDia,
-              onDiaSelecionado: (dia) {
-                setState(() {
-                  _diaSelecionado = dia;
-                });
-              },
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              AgendaWidget(
+                diaSelecionado: _diaSelecionado,
+                aulasPorDia: _aulasPorDia,
+                onDiaSelecionado: (dia) {
+                  setState(() {
+                    _diaSelecionado = dia;
+                  });
+                },
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
