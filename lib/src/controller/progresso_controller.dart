@@ -1,6 +1,6 @@
 import '../models/aula_model.dart';
 
-class ProgressController {
+class ProgressoController {
   List<AulaModel> aulas = [
     AulaModel(titulo: 'Aula 1 - Introdução a Dart', concluida: true),
     AulaModel(titulo: 'Aula 2 - Estruturas Condicionais'),

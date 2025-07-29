@@ -11,12 +11,9 @@ class AddEmentaView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = EmentaController();
 
-    final titulo = TextEditingController();
+    final modulo = TextEditingController();
+    final topico = TextEditingController();
     final descricao = TextEditingController();
-    final email = TextEditingController();
-    final telefone = TextEditingController();
-    final cpf = TextEditingController();
-    final valor = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -29,14 +26,15 @@ class AddEmentaView extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
-            const Text('Flutter - Professor Gilmar', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Módulo - Basico', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 16),
-            CustomTextField(controller: titulo, label: 'Tópico'),
-            CustomTextField(controller: descricao, label: 'Descrição'),
-            CustomTextField(controller: email, label: 'Email'),
-            CustomTextField(controller: telefone, label: 'Telefone'),
-            CustomTextField(controller: cpf, label: 'CPF'),
-            CustomTextField(controller: valor, label: 'Valor mensalidade/ hora aula'),
+            const Text('Insira o Módulo', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            CustomTextField(controller: modulo, label: 'Módulo'),
+            const Text('Insira o Topico', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            CustomTextField(controller: topico, label: 'Topico'),
+            const Text('Adicione uma descrição (Opcional)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            CustomTextField(controller: descricao, label: 'Descrição', maxLines: 9,),
+            
             const SizedBox(height: 16),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -49,12 +47,9 @@ class AddEmentaView extends StatelessWidget {
               ),
               onPressed: () {
                 final ementa = EmentaModel(
-                  titulo: titulo.text,
+                  modulo: modulo.text,
+                  topico: topico.text,
                   descricao: descricao.text,
-                  email: email.text,
-                  telefone: telefone.text,
-                  cpf: cpf.text,
-                  valor: valor.text,
                 );
                 controller.salvarEmenta(ementa);
                 Navigator.pop(context);
