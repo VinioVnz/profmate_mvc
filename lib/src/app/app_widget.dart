@@ -22,7 +22,8 @@ class AppWidget extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(textTheme: GoogleFonts.montserratTextTheme()),
       title: 'ProfMate',
-      initialRoute: AuthService.isLoggedIn ? '/home' : '/login',
+      initialRoute: '/login',
+      //AuthService.isLoggedIn  ? '/home' : '/login'
       routes: {
         '/login' : (context) => LoginView(),
         ...generateRoutes()

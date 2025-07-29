@@ -88,7 +88,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                       CampoFormulario(
                         controller: c.nomeController,
                         titulo: "Nome do aluno:",
-                        label: "Maria Silva",
+                        hintText: "Maria Silva",
                         readOnly: !modoEdicao,
                       ),
 
@@ -99,7 +99,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                               : '',
                         ),
                         titulo: "Data de nascimento:",
-                        label: "DD/MM/AA",
+                        hintText: "DD/MM/AA",
                         readOnly: true,
                         onTap: () async {
                           FocusScope.of(context).requestFocus(FocusNode());
@@ -121,28 +121,28 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                       CampoFormulario(
                         controller: c.cpfController,
                         titulo: "CPF:",
-                        label: "000.000.000-00",
+                        hintText: "000.000.000-00",
                         readOnly: !modoEdicao,
                       ),
 
                       CampoFormulario(
                         controller: c.enderecoController,
                         titulo: "Endereço:",
-                        label: "Rua das Flores, 130",
+                        hintText: "Rua das Flores, 130",
                         readOnly: !modoEdicao,
                       ),
 
                       CampoFormulario(
                         controller: c.telefoneController,
                         titulo: "Telefone:",
-                        label: "(99) 99999-9999",
+                        hintText: "(99) 99999-9999",
                         readOnly: !modoEdicao,
                       ),
 
                       CampoFormulario(
                         controller: c.emailController,
                         titulo: "E-mail:",
-                        label: "seuemail@email.com",
+                        hintText: "seuemail@email.com",
                         readOnly: !modoEdicao,
                       ),
                     ],
@@ -172,14 +172,14 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                       CampoFormulario(
                         controller: c.nomeResponsavelController,
                         titulo: "Nome do responsável:",
-                        label: "Maria Silva",
+                        hintText: "Maria Silva",
                         readOnly: !modoEdicao,
                       ),
 
                       CampoFormulario(
                         controller: c.cpfResponsavelController,
                         titulo: "CPF do responsável:",
-                        label: "000.000.000-00",
+                        hintText: "000.000.000-00",
                         readOnly: !modoEdicao,
                       ),
                     ],
@@ -204,7 +204,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                       CampoFormulario(
                         controller: c.valorAulaController,
                         titulo: "Valor da mensalidade:",
-                        label: "000,00",
+                        hintText: "000,00",
                         readOnly: !modoEdicao,
                       ),
 
@@ -215,7 +215,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                               : '',
                         ),
                         titulo: "Data do primeiro vencimento:",
-                        label: "DD/MM/AA",
+                        hintText: "DD/MM/AA",
                         readOnly: true,
                         onTap: () async {
                           FocusScope.of(context).requestFocus(FocusNode());

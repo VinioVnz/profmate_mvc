@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CampoFormulario extends StatelessWidget {
   final TextEditingController controller;
   final String? titulo;
-  final String label;
+  final String hintText;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final bool readOnly;
@@ -12,7 +12,7 @@ class CampoFormulario extends StatelessWidget {
   const CampoFormulario({
     super.key,
     required this.controller,
-    required this.label,
+    required this.hintText,
     this.titulo,
     this.validator,
     this.keyboardType,
@@ -51,7 +51,7 @@ class CampoFormulario extends StatelessWidget {
             onTap: onTap,
             readOnly: readOnly,
             decoration: InputDecoration(
-              labelText: label,
+              hintText: hintText,
               labelStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),

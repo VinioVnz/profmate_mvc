@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:profmate/src/models/aluno_api_model.dart';
 import 'package:profmate/src/models/cadastro_aluno_model.dart';
+import 'package:profmate/src/services/aluno_service.dart';
 
 class CadastroAlunoController {
   //variáveis e máscaras de formatação:
@@ -68,7 +70,7 @@ class CadastroAlunoController {
   }
 
   //métodos e CRUD (posteriormente)
-  final List<CadastroAlunoModel> listaAlunos = [];
+  /* final List<CadastroAlunoModel> listaAlunos = [];
 
   void salvarAluno(BuildContext context) {
     if (!validarFormulario(context)) return;
@@ -80,10 +82,10 @@ class CadastroAlunoController {
 
     Navigator.pop(context, aluno);
     clear();
-  }
+  } */
 
   //método para criar um aluno a partir dos dados
-  CadastroAlunoModel criarObjetoAluno() {
+  /* CadastroAlunoModel criarObjetoAluno() {
     return CadastroAlunoModel(
       nome: nomeController.text.trim(),
       cpf: cpfController.text.replaceAll(RegExp(r'\D'), ''),
@@ -101,9 +103,9 @@ class CadastroAlunoController {
         '',
       ),
     );
-  }
+  } */
 
-  void adicionarAluno(CadastroAlunoModel aluno) {
+/*   void adicionarAluno(CadastroAlunoModel aluno) {
     listaAlunos.add(aluno);
   }
 
@@ -113,7 +115,13 @@ class CadastroAlunoController {
 
   void deletarAluno(int index) {
     listaAlunos.removeAt(index);
-  }
+  } */
+
+ final AlunoService _service = AlunoService();
+ Future<List<AlunoApiModel>> buscarAluno(BuildContext context) => _service.getAll(context);
+ Future<void> criarAluno(AlunoApiModel aluno) => _service.create(aluno);
+ Future<void> atualizarAluno(AlunoApiModel aluno) => _service.update(aluno);
+ Future<void> deletarAluno(int id) => _service.delete(id);
 
   //método para carregar os dados do aluno ao selecionar
   void carregarAluno(CadastroAlunoModel aluno) {

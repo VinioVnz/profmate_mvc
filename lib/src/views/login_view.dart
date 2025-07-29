@@ -31,7 +31,7 @@ class _LoginviewState extends State<LoginView> {
       _passwordController.text,
     );
 
-    if (sucess) {
+   /*  if (sucess) {
       AuthService.login();
       Navigator.pushReplacementNamed(context, '/home');
     } else {
@@ -39,7 +39,7 @@ class _LoginviewState extends State<LoginView> {
         _message = 'Usuário ou senha incorretos';
         _carregando = false;
       });
-    }
+    } */
   }
 
   @override
