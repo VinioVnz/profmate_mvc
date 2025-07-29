@@ -63,7 +63,7 @@ class _HomeViewState extends State<HomeView> {
                 HomeButton(
                   label: 'Alunos',
                   onPressed: () {
-                    //Navigator.pushReplacementNamed(context, '/alunos');
+                  Navigator.pushReplacementNamed(context, '/alunos');
                   },
                   icon: Icons.person,
                 ), //widget personalizado, primeiro sendo o label do botao e dps a função
