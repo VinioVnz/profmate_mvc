@@ -1,10 +1,12 @@
 class EmentaModel {
-  String titulo;
-  String descricao;
+  final String modulo;
+  final String topico;
+  final String descricao;
   bool concluida;
 
   EmentaModel({
-    required this.titulo,
+    required this.modulo,
+    required this.topico,
     required this.descricao,
     this.concluida = false,
   });

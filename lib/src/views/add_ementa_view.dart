@@ -9,7 +9,8 @@ class AddEmentaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = EmentaController();
+    final controller = EmentaController(); // ← isso está certo, MAS...
+
 
     final modulo = TextEditingController();
     final topico = TextEditingController();
@@ -26,16 +27,33 @@ class AddEmentaView extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
-            const Text('Módulo - Basico', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 16),
-            const Text('Insira o Módulo', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            CustomTextField(controller: modulo, label: 'Módulo'),
-            const Text('Insira o Topico', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            CustomTextField(controller: topico, label: 'Topico'),
-            const Text('Adicione uma descrição (Opcional)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            CustomTextField(controller: descricao, label: 'Descrição', maxLines: 9,),
-            
+
+            const Text(
+              'Módulo',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            CustomTextField(controller: modulo, label: 'Digite o módulo'),
+
             const SizedBox(height: 16),
+            const Text(
+              'Tópico',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            CustomTextField(controller: topico, label: 'Digite o tópico'),
+
+            const SizedBox(height: 16),
+            const Text(
+              'Descrição',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            CustomTextField(
+              controller: descricao,
+              label: 'Digite a descrição',
+              maxLines: 10, // ← altura grande
+            ),
+
+            const SizedBox(height: 24),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,

@@ -1,5 +1,4 @@
-// ementa_controller.dart
-import '../models/emente_model.dart';
+import '../models/ementa_model.dart';
 
 class EmentaController {
   static final EmentaController _instance = EmentaController._internal();
@@ -12,5 +11,6 @@ class EmentaController {
 
   void salvarEmenta(EmentaModel ementa) {
     _ementas.add(ementa);
+    print('Ementa salva: ${ementa.topico}');
   }
 }
