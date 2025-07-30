@@ -4,7 +4,6 @@ import 'package:profmate/src/services/auth_service.dart';
 import 'package:profmate/src/views/login_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:profmate/theme/app_colors.dart';
 
 
 class AppWidget extends StatelessWidget {

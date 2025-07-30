@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/models/emente_model.dart';
+import 'package:profmate/src/models/ementa_model.dart';
 import 'package:profmate/theme/app_colors.dart';
 import '../controller/ementa_controller.dart';
 import '../widgets/custom_text_field.dart';
@@ -9,7 +9,7 @@ class AddEmentaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = EmentaController(); // ← isso está certo, MAS...
+    final controller = EmentaController(); 
 
 
     final modulo = TextEditingController();

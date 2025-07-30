@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/theme/app_colors.dart';
 import '../controller/progress_controller.dart';
+import '../widgets/ementa_tile.dart';
 
 class ProgressView extends StatefulWidget {
   const ProgressView({super.key});
@@ -24,7 +25,7 @@ class _ProgressViewState extends State<ProgressView> {
         child: Column(
           children: [
             const Text(
-              'Flutter - Professor Gilmar',
+              'módulo - Basico',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
@@ -37,41 +38,13 @@ class _ProgressViewState extends State<ProgressView> {
                       itemCount: controller.ementas.length,
                       itemBuilder: (context, index) {
                         final ementa = controller.ementas[index];
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 6),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '${ementa.modulo} - ${ementa.topico}',
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      if (ementa.descricao.isNotEmpty)
-                                        Text(ementa.descricao),
-                                    ],
-                                  ),
-                                ),
-                                Checkbox(
-                                  value: ementa.concluida,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      ementa.concluida = value ?? false;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
+                        return EmentaTile(
+                          ementa: ementa,
+                          onChanged: (value) {
+                            setState(() {
+                              ementa.concluida = value ?? false;
+                            });
+                          },
                         );
                       },
                     ),
@@ -90,15 +63,14 @@ class _ProgressViewState extends State<ProgressView> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
                 foregroundColor: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
               onPressed: () async {
                 await Navigator.pushNamed(context, '/addEmenta');
-                setState(() {}); // ← recarrega ao voltar
+                setState(() {}); // atualiza ao voltar
               },
               icon: const Icon(Icons.add),
               label: const Text(
