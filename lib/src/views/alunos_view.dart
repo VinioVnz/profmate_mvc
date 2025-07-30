@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/models/cadastro_aluno_model.dart';
@@ -27,7 +27,7 @@ class _AlunosViewState extends State<AlunosView> {
 
   @override
   Widget build(BuildContext context) {
-    final alunos = cadastroAlunoController.listaAlunos;
+    //final alunos = cadastroAlunoController.listaAlunos;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -101,4 +101,4 @@ class _AlunosViewState extends State<AlunosView> {
       ),
     );
   }
-}
+} */

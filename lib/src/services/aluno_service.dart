@@ -71,4 +71,17 @@ class AlunoService {
       }
     );
   }
+
+  Future<void> getOne(int id) async{
+    final _token = await _getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/alunos/$id'),
+      headers: {
+        'Autorirathion': 'Bearer $_token'
+      }
+      );
+      if(response.statusCode == 404){
+        throw Exception("Aluno não encontrado.");
+      }
+}
 }

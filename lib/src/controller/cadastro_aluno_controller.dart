@@ -118,10 +118,11 @@ class CadastroAlunoController {
   } */
 
  final AlunoService _service = AlunoService();
- Future<List<AlunoApiModel>> buscarAluno(BuildContext context) => _service.getAll(context);
+ Future<List<AlunoApiModel>> listarAluno(BuildContext context) => _service.getAll(context);
  Future<void> criarAluno(AlunoApiModel aluno) => _service.create(aluno);
  Future<void> atualizarAluno(AlunoApiModel aluno) => _service.update(aluno);
  Future<void> deletarAluno(int id) => _service.delete(id);
+ Future<void> buscarAluno(int id) => _service.getOne(id);
 
   //método para carregar os dados do aluno ao selecionar
   void carregarAluno(CadastroAlunoModel aluno) {

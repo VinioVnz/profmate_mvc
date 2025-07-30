@@ -71,7 +71,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                                   if (modoEdicao) {
                                     if (chaveDoFormulario.currentState!
                                         .validate()) {
-                                      c.salvarAluno(context);
+                                      //c.salvarAluno(context);
                                       modoEdicao = false;
                                     }
                                   } else {
@@ -362,7 +362,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        c.salvarAluno(context);
+                       // c.salvarAluno(context);
                       },
                       style: ElevatedButton.styleFrom(
                         elevation: 4,
