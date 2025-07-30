@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
+import 'package:profmate/src/models/aluno_api_model.dart';
 import 'package:profmate/src/models/cadastro_aluno_model.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
@@ -22,21 +23,36 @@ class CadastroAlunoView extends StatefulWidget {
 class _CadastroAlunoViewState extends State<CadastroAlunoView> {
   final chaveDoFormulario = GlobalKey<FormState>();
   late bool modoEdicao;
+  final c = CadastroAlunoController();
 
   @override
   void initState() {
     super.initState();
     if (widget.aluno != null) {
-      widget.cadastroAlunoController.carregarAluno(widget.aluno!);
+     //widget.cadastroAlunoController.carregarAluno(widget.aluno!);
       modoEdicao = false;
     } else {
       modoEdicao = true;
     }
   }
 
+  void _salvarAluno()async{
+    final aluno = AlunoApiModel(
+      nome: c.nomeController.text, 
+      cpf: c.cpfController.text, 
+      email: c.emailController.text, 
+      endereco: c.enderecoController.text, 
+      telefone: c.telefoneController.text, 
+      dataNascimento: c.dataNascimento.text,
+      nomeResponsavel: c.nomeResponsavelController.text,
+      cpfResponsavel: c.cpfResponsavelController.text,
+      );
+      await c.criarAluno(aluno);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final c = widget.cadastroAlunoController;
+    
 
     return BaseLayout(
       title: 'Cadastrar Aluno',
@@ -93,7 +109,11 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                       ),
 
                       CampoFormulario(
-                        controller: TextEditingController(
+                        controller: c.dataNascimento,
+                        titulo: "Data:",
+                        hintText: "00/00/0000",
+                        readOnly: !modoEdicao,
+                         /* TextEditingController(
                           text: c.dataNascimento != null
                               ? "${c.dataNascimento!.day.toString().padLeft(2, '0')}/${c.dataNascimento!.month.toString().padLeft(2, '0')}/${c.dataNascimento!.year}"
                               : '',
@@ -115,7 +135,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                               c.dataNascimento = dataSelecionada;
                             });
                           }
-                        },
+                        }, */
                       ),
 
                       CampoFormulario(
@@ -362,7 +382,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                       // c.salvarAluno(context);
+                       _salvarAluno();
                       },
                       style: ElevatedButton.styleFrom(
                         elevation: 4,

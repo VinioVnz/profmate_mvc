@@ -42,7 +42,7 @@ class AlunoService {
     await http.post(
       Uri.parse('$baseUrl/alunos'),
       headers: {
-        'Authorization' : 'Bearer $_token',
+        'Authorization' : 'Baerer $_token',
         'Content-Type' : 'application/json'
       },
       body: jsonEncode(aluno.toJson())

@@ -14,8 +14,8 @@ class CadastroAlunoController {
   final valorAulaController = TextEditingController();
   final nomeResponsavelController = TextEditingController();
   final cpfResponsavelController = TextEditingController();
-
-  DateTime? dataNascimento;
+  final dataNascimento = TextEditingController();
+  //String? dataNascimento;
   DateTime? vencimento;
   String? frequenciaPagamento;
   String? formaPagamento;
@@ -62,8 +62,8 @@ class CadastroAlunoController {
     valorAulaController.clear();
     nomeResponsavelController.clear();
     cpfResponsavelController.clear();
-
-    dataNascimento = null;
+    dataNascimento.clear();
+    //dataNascimento = null;
     vencimento = null;
     frequenciaPagamento = null;
     formaPagamento = null;
@@ -125,7 +125,7 @@ class CadastroAlunoController {
  Future<void> buscarAluno(int id) => _service.getOne(id);
 
   //método para carregar os dados do aluno ao selecionar
-  void carregarAluno(CadastroAlunoModel aluno) {
+  /* void carregarAluno(CadastroAlunoModel aluno) {
     nomeController.text = aluno.nome;
     cpfController.text = formatarCpf.maskText(aluno.cpf);
     emailController.text = aluno.email;
@@ -142,7 +142,7 @@ class CadastroAlunoController {
     vencimento = aluno.vencimento;
     frequenciaPagamento = aluno.frequenciaPagamento;
     formaPagamento = aluno.formaPagamento;
-  }
+  } */
 
   //validações do formulário
   bool validarFormulario(BuildContext context) {
@@ -195,7 +195,7 @@ class CadastroAlunoController {
     }
 
     final hoje = DateTime.now();
-    final idade =
+    /* final idade =
         hoje.year -
         dataNascimento!.year -
         ((hoje.month < dataNascimento!.month ||
@@ -212,7 +212,7 @@ class CadastroAlunoController {
       if (cpfResponsavelController.text.trim().length != 14) {
         return mostrarErro("Informe um CPF válido do responsável.");
       }
-    }
+    } */
 
     return true;
   }

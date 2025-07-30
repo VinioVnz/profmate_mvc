@@ -5,7 +5,7 @@ class AlunoApiModel {
   final String email;
   final String endereco;
   final String telefone;
-  final DateTime dataNascimento;
+  final String dataNascimento;
   final String? nomeResponsavel;
   final String? cpfResponsavel;
 
