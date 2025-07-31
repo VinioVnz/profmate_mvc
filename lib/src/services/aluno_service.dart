@@ -52,13 +52,14 @@ class AlunoService {
   Future<void> update(AlunoApiModel aluno) async{
     final _token = await _getToken();
 
-    await http.put(
-      Uri.parse('$baseUrl/alunos/${aluno.id}'),
-      headers: {
-        'Authorization': 'Bearer $_token',
-        'Content-type' : 'application/json'
-      },
-    );
+   await http.put(
+  Uri.parse('$baseUrl/alunos/${aluno.id}'),
+  headers: {
+    'Authorization': 'Bearer $_token',
+    'Content-Type': 'application/json',
+  },
+  body: jsonEncode(aluno.toJson()),
+);
   }
 
   Future<void> delete(int id) async{
@@ -77,7 +78,7 @@ class AlunoService {
     final response = await http.get(
       Uri.parse('$baseUrl/alunos/$id'),
       headers: {
-        'Autorirathion': 'Bearer $_token'
+        'Authorization': 'Bearer $_token'
       }
       );
       if(response.statusCode == 404){
