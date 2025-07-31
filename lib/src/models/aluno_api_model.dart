@@ -5,18 +5,19 @@ class AlunoApiModel {
   final String email;
   final String endereco;
   final String telefone;
-  //final String dataNascimento;
+  final String dataNascimento;
   final String? nomeResponsavel;
   final String? cpfResponsavel;
 
-  AlunoApiModel({
+  AlunoApiModel(
+    {
     this.id,
     required this.nome,
     required this.cpf,
     required this.email,
     required this.endereco,
     required this.telefone,
-   //required this.dataNascimento,
+    required this.dataNascimento,
     this.nomeResponsavel,
     this.cpfResponsavel,
   });
@@ -29,7 +30,7 @@ class AlunoApiModel {
       email: json['email'], 
       endereco: json['endereco'], 
       telefone: json['telefone'], 
-      //dataNascimento: json['dataNascimento'],
+      dataNascimento: json['dataNascimento'],
       nomeResponsavel: json['nomeResponsavel'],
       cpfResponsavel: json['cpfResponsavel']
       );
@@ -43,7 +44,7 @@ class AlunoApiModel {
       'email': email,
       'endereco': endereco,
       'telefone': telefone,
-      //'dataNascimento': dataNascimento,
+      'dataNascimento': dataNascimento,
       'nomeResponsavel': nomeResponsavel,
       'cpfResponsavel': cpfResponsavel,
     };

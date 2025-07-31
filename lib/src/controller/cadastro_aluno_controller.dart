@@ -11,6 +11,7 @@ class CadastroAlunoController {
   final telefoneController = TextEditingController();
   final nomeResponsavelController = TextEditingController();
   final cpfResponsavelController = TextEditingController();
+  final dataNascimentoController = TextEditingController();
 
   /* Editar a parte de pagamentos e datas mais tarde
   DateTime? dataNascimento;
