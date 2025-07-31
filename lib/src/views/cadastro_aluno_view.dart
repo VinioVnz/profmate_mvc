@@ -61,7 +61,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                   controller: widget.controller.cpfController,
                   titulo: "CPF:",
                   hintText: "Ex: 000.000.000-00"),
-
+                  
                   //Acresentar campo da data de nascimento aqui
 
                   CampoFormulario(

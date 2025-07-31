@@ -5,7 +5,6 @@ class CampoFormulario extends StatelessWidget {
   final String titulo;
   final String hintText;
   final String? Function(String?)? validator;
-  final TextInputType? keyboardType;
   final bool readOnly;
   final VoidCallback? onTap;
 
@@ -15,7 +14,6 @@ class CampoFormulario extends StatelessWidget {
     required this.hintText,
     required this.titulo,
     this.validator,
-    this.keyboardType,
     this.readOnly = false,
     this.onTap,
   });
@@ -55,8 +53,7 @@ class CampoFormulario extends StatelessWidget {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             ),
-            validator: validator,
-            keyboardType: keyboardType,
+            validator: validator
           ),
         ),
       ],
