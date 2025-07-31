@@ -25,9 +25,9 @@ final List<MenuModel> appMenuItems = [
   MenuModel(
     title: 'Alunos',
     icon: Icons.person,
-    route: '/cadastroAluno',
+    route: '/alunos',
     //page: AlunosView(cadastroAlunoController: CadastroAlunoController(),),
-    page: CadastroAlunoView()
+    page: AlunosView()
   ),
 
    MenuModel(

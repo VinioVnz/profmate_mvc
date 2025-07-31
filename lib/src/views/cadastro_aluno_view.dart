@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/models/aluno_api_model.dart';
@@ -31,8 +32,14 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
       dataNascimento: controller.dataNascimentoController.text,
       );
 
-      
-      await controller.criarAluno(aluno);
+      try{
+        await controller.criarAluno(aluno);
+        Navigator.pop(context, true);
+      }catch(e){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Erro ao salvar o aluno, Erro: $e"))
+        );
+      }
   }
 
   @override
