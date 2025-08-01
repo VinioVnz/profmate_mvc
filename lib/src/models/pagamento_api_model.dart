@@ -4,6 +4,7 @@ class PagamentoApiModel {
   final String vencimento;
   final String formaPagamento;
   final String frequenciaPagamento;
+  final int idAluno;
   
   PagamentoApiModel(
     {
@@ -12,15 +13,17 @@ class PagamentoApiModel {
     required this.vencimento,
     required this.formaPagamento,
     required this.frequenciaPagamento,
+    required this.idAluno, 
     });
 
   factory PagamentoApiModel.fromJson(Map<String, dynamic> json){
     return PagamentoApiModel(
       id: json['id'],
-      valorAula: json['valorAula'], 
+      valorAula: (json['valorAula'] as num).toDouble(),
       vencimento: json['vencimento'], 
       formaPagamento: json['formaPagamento'], 
       frequenciaPagamento: json['frequenciaPagamento'], 
+      idAluno: json['aluno_id'] ?? 0
       );
   }
 
@@ -31,6 +34,7 @@ class PagamentoApiModel {
       'vencimento': vencimento,
       'formaPagamento': formaPagamento,
       'frequenciaPagamento': frequenciaPagamento,
+      'aluno_id' : idAluno
     };
   }
 }

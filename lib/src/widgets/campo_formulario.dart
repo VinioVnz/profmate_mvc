@@ -42,7 +42,7 @@ class CampoFormulario extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(36),
             border: Border.all(color: Colors.black),
-            color: Colors.white,
+            color: readOnly ? Color.fromARGB(138, 230, 225, 225): Colors.white,
           ),
 
           child: TextFormField(

@@ -41,7 +41,7 @@ class PagamentoService {
     await http.post(
       Uri.parse('$baseUrl/pagamentos'),
       headers: {
-        'Authorization' : 'Baerer $_token',
+        'Authorization' : 'Bearer $_token',
         'Content-Type' : 'application/json'
       },
       body: jsonEncode(pagamento.toJson())

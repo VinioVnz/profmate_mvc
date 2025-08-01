@@ -47,8 +47,7 @@ class _AlunosViewState extends State<AlunosView> {
                 MaterialPageRoute(builder: (context) => CadastroAlunoView()),
               );
 
-              if (resultado) {
-                //recarrega a tela pra apaarecer o novo aluno
+              if (resultado == true) {
                 _loadAlunos();
               }
             },
@@ -95,7 +94,7 @@ class _AlunosViewState extends State<AlunosView> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => VerAlunoView(aluno: a,),
+                            builder: (context) => VerAlunoView(aluno: a),
                           ),
                         );
                       },
