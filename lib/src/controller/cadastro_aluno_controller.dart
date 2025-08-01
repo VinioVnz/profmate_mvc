@@ -13,13 +13,6 @@ class CadastroAlunoController {
   final cpfResponsavelController = TextEditingController();
   final dataNascimentoController = TextEditingController();
 
-  /* Editar a parte de pagamentos e datas mais tarde
-  DateTime? dataNascimento;
-  DateTime? vencimento;
-  String? frequenciaPagamento;
-  String? formaPagamento; 
-  Double valorAula;*/
-
   //dispose e clear:
   void dispose() {
     nomeController.dispose();
