@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CampoFormulario extends StatelessWidget {
   final TextEditingController controller;
@@ -8,6 +9,7 @@ class CampoFormulario extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool readOnly;
   final VoidCallback? onTap;
+  final List<TextInputFormatter>? formatar;
 
   const CampoFormulario({
     super.key,
@@ -18,6 +20,7 @@ class CampoFormulario extends StatelessWidget {
     this.keyboardType,
     this.readOnly = false,
     this.onTap,
+    this.formatar,
   });
 
   @override
@@ -25,16 +28,14 @@ class CampoFormulario extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (titulo != null) ...[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Text(
-              titulo!,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: Text(
+            titulo,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 4),
-        ],
+        ),
+        const SizedBox(height: 4),
 
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -44,8 +45,8 @@ class CampoFormulario extends StatelessWidget {
             border: Border.all(color: Colors.black),
             color: Colors.white,
           ),
-
           child: TextFormField(
+            inputFormatters: formatar,
             controller: controller,
             onTap: onTap,
             readOnly: readOnly,

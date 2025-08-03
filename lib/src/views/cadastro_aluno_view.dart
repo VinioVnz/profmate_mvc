@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/controller/pagamento_controller.dart';
 import 'package:profmate/src/models/aluno_api_model.dart';
@@ -56,6 +57,21 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
       await pagamentoController.criarPagamento(pagamento);
   }
 
+  final formatarCPF = MaskTextInputFormatter(
+    mask: "###.###.###-##",
+    filter: {"#" : RegExp(r'[0-9]')}
+  );
+
+  final formatarTelefone = MaskTextInputFormatter(
+    mask: "(##) #####-####",
+    filter: {"#" : RegExp(r'[0-9]')}
+  );
+
+  final formatarData = MaskTextInputFormatter(
+    mask: "##/##/####",
+    filter: {"#" : RegExp(r'[0-9]')}
+  );
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +98,14 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                   hintText: "Ex: Maria Silva"),
 
                   CampoFormulario(
+                  formatar: [formatarCPF],
                   controller: controller.cpfController,
                   titulo: "CPF:",
                   hintText: "Ex: 000.000.000-00"),
+                 
                
                   CampoFormulario(
+                  formatar: [formatarData],
                   controller: controller.dataNascimentoController,
                   titulo: "Data de nascimento:",
                   hintText: "Ex: 00/00/0000"),
@@ -97,6 +116,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                   hintText: "Ex: Rua das flores, 140"),
 
                   CampoFormulario(
+                  formatar: [formatarTelefone],
                   controller: controller.telefoneController,
                   titulo: "Telefone:",
                   hintText: "Ex: (99) 99999-9999"),
@@ -119,6 +139,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                   hintText: "Ex: Osvaldo Silva"),
 
                   CampoFormulario(
+                  formatar: [formatarCPF],
                   controller: controller.cpfResponsavelController,                  
                   titulo: "CPF do responsável:",
                   hintText: "Ex: 000.000.000-00"),
@@ -135,6 +156,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                   hintText: "Ex: 80,00"),
 
                   CampoFormulario(
+                  formatar: [formatarData],
                   controller: pagamentoController.vencimentoController,                  
                   titulo: "Primeiro vencimento:",
                   hintText: "Ex: 10/10/25"),
