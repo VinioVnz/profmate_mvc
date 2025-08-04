@@ -42,7 +42,8 @@ class AppWidget extends StatelessWidget {
         ),
       ),
       title: 'ProfMate',
-      initialRoute: AuthService.isLoggedIn ? '/home' : '/login',
+      initialRoute: '/login',
+      //AuthService.isLoggedIn  ? '/home' : '/login'
       routes: {
         '/login' : (context) => LoginView(),
         ...generateRoutes()

@@ -32,14 +32,13 @@ class _LoginviewState extends State<LoginView> {
     );
 
     if (sucess) {
-      AuthService.login();
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       setState(() {
         _message = 'Usuário ou senha incorretos';
         _carregando = false;
       });
-    }
+    } 
   }
 
   @override

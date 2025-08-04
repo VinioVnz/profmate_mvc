@@ -1,50 +1,103 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:profmate/src/controller/cadastrar_aluno_controller.dart';
-import 'package:profmate/src/views/cadastrar_aluno_view.dart';
+import 'package:profmate/src/controller/alunos_controller.dart';
+import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
+import 'package:profmate/src/models/aluno_api_model.dart';
+import 'package:profmate/src/models/cadastro_aluno_model.dart';
+import 'package:profmate/src/views/cadastro_aluno_view.dart';
 
 class AlunosView extends StatefulWidget {
-  final CadastrarAlunoController cadastrarAlunoController;
-  const AlunosView({required this.cadastrarAlunoController, super.key});
+  const AlunosView({super.key});
 
   @override
   State<AlunosView> createState() => _AlunosViewState();
 }
 
 class _AlunosViewState extends State<AlunosView> {
+  final _controller = CadastroAlunoController();
+  late Future<List<AlunoApiModel>> _alunos;
+  @override
+  void initState() {
+    super.initState();
+    _loadAlunos();
+  }
+
+  void _loadAlunos() {
+    setState(() {
+      _alunos = _controller.listarAluno(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: SpeedDial(
-        backgroundColor: Color(0xFFBDD9FF),
-        icon: (Icons.add),
+        backgroundColor: const Color(0xFFBDD9FF),
+        icon: Icons.add,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         children: [
           SpeedDialChild(
             label: "Cadastrar aluno",
             backgroundColor: Colors.white,
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              final resultado = await Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => CadastrarAlunoView(
-                    cadastrarAlunoController: widget.cadastrarAlunoController,
-                  ),
-                ),
+                MaterialPageRoute(builder: (context) => CadastroAlunoView()),
               );
+
+              if (resultado) {
+                //recarrega a tela pra apaarecer o novo aluno
+                _loadAlunos();
+              }
             },
           ),
           SpeedDialChild(
             label: "Cadastrar turma",
             backgroundColor: Colors.white,
             onTap: () {
-              //colocar aqui ação de cadastrar nova turma
+              // colocar aqui ação de cadastrar nova turma
             },
           ),
         ],
       ),
-      body: Padding(padding: EdgeInsets.all(16), child: Column()),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: FutureBuilder<List<AlunoApiModel>>(
+          future: _alunos,
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text("Erro: ${snapshot.error}"));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('Nenhum aluno cadastrado!'));
+            }
+
+            final alunos = snapshot.data!;
+            return ListView.builder(
+              itemCount: alunos.length,
+              itemBuilder: (_, i) {
+                final a = alunos[i];
+
+                return Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: ListTile(
+                    tileColor: const Color.fromARGB(153, 241, 240, 240),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    title: Text(
+                      a.nome,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+      ),
     );
   }
 }
