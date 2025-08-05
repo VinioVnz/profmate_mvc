@@ -24,12 +24,6 @@ class _ProgressViewState extends State<ProgressView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text(
-              'módulo - Basico',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-
             /// Lista das Ementas com checkbox
             Expanded(
               child: controller.ementas.isEmpty
