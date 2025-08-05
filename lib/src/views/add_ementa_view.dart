@@ -1,20 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/models/ementa_model.dart';
+import 'package:profmate/src/models/ementa_api_model.dart';
+import 'package:profmate/src/widgets/campo_formulario.dart';
 import 'package:profmate/theme/app_colors.dart';
 import '../controller/ementa_controller.dart';
-import '../widgets/custom_text_field.dart';
 
-class AddEmentaView extends StatelessWidget {
+class AddEmentaView extends StatefulWidget {
   const AddEmentaView({super.key});
 
   @override
+  State<AddEmentaView> createState() => _AddEmentaViewState();
+}
+
+class _AddEmentaViewState extends State<AddEmentaView> {
+  final _chaveDoFormulario = GlobalKey<FormState>();
+  final EmentaController controller = EmentaController();
+
+  void _salvarEmenta()async{
+    final ementa = EmentaApiModel(
+      modulo: controller.moduloController.text, 
+      topico: controller.topicoController.text, 
+      descricao: controller.descricaoController.text, 
+      concluida: false,
+      );
+
+      try{
+        await controller.criarEmenta(ementa);
+        Navigator.pop(context, true);
+      }catch(e){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Erro ao salvar o ementa, Erro: $e"))
+        );
+      }
+  }
+  
+  @override
   Widget build(BuildContext context) {
-    final controller = EmentaController(); 
-
-
-    final modulo = TextEditingController();
-    final topico = TextEditingController();
-    final descricao = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -29,28 +49,22 @@ class AddEmentaView extends StatelessWidget {
           children: [
             const SizedBox(height: 16),
 
-            const Text(
-              'Módulo',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            CampoFormulario(
+              controller: controller.moduloController,
+              titulo: "Módulo",
+              hintText: "Ex: Módulo básico",
             ),
-            CustomTextField(controller: modulo, label: 'Digite o módulo'),
 
-            const SizedBox(height: 16),
-            const Text(
-              'Tópico',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            CampoFormulario(
+              controller: controller.moduloController,
+              titulo: "Tópico",
+              hintText: "Ex: Verbo To be",
             ),
-            CustomTextField(controller: topico, label: 'Digite o tópico'),
 
-            const SizedBox(height: 16),
-            const Text(
-              'Descrição',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            CustomTextField(
-              controller: descricao,
-              label: 'Digite a descrição',
-              maxLines: 10, // ← altura grande
+            CampoFormulario(
+              controller: controller.moduloController,
+              titulo: "Descrição",
+              hintText: "Escreva a descrição do tópico.",
             ),
 
             const SizedBox(height: 24),
@@ -64,12 +78,7 @@ class AddEmentaView extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                final ementa = EmentaModel(
-                  modulo: modulo.text,
-                  topico: topico.text,
-                  descricao: descricao.text,
-                );
-                controller.salvarEmenta(ementa);
+                _salvarEmenta();
                 Navigator.pop(context);
               },
               child: const Text(
