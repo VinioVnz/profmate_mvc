@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:profmate/src/controller/alunos_controller.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/controller/pagamento_controller.dart';
@@ -31,7 +32,43 @@ class _VerAlunoViewState extends State<VerAlunoView> {
   final CadastroAlunoController controller = CadastroAlunoController();
   final PagamentoController pagamentoController = PagamentoController();
 
-  void _salvarAlteracoes() {}
+  void _salvarAlteracoes() async {
+    final alunoAtualizado = AlunoApiModel(
+      id: widget.aluno!.id,
+      nome: controller.nomeController.text,
+      cpf: controller.cpfController.text,
+      email: controller.emailController.text,
+      endereco: controller.enderecoController.text,
+      telefone: controller.telefoneController.text,
+      nomeResponsavel: controller.nomeResponsavelController.text,
+      cpfResponsavel: controller.cpfResponsavelController.text,
+      dataNascimento: controller.dataNascimentoController.text,
+    );
+
+    final pagamentoAtualizado = PagamentoApiModel(
+      valorAula:
+          double.tryParse(pagamentoController.valorAulaController.text) ?? 0.0,
+      vencimento: pagamentoController.vencimentoController.text,
+      formaPagamento: pagamentoController.formaPagamentoController.text,
+      frequenciaPagamento:
+          pagamentoController.frequenciaPagamentoController.text,
+      idAluno: widget.aluno!.id ?? 0,
+    );
+
+    try {
+      await controller.atualizarAluno(alunoAtualizado);
+      await pagamentoController.atualizarPagamento(pagamentoAtualizado);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Aluno alterado com sucesso!")));
+      Navigator.pushReplacementNamed(context, '/alunos');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao salvar o aluno, Erro: $e")),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -68,6 +105,21 @@ class _VerAlunoViewState extends State<VerAlunoView> {
     });
   }
 
+  final formatarCPF = MaskTextInputFormatter(
+    mask: "###.###.###-##",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+
+  final formatarTelefone = MaskTextInputFormatter(
+    mask: "(##) #####-####",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+
+  final formatarData = MaskTextInputFormatter(
+    mask: "##/##/####",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +134,12 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    IconButton(icon: Icon(Icons.edit), onPressed: _editar),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(icon: Icon(Icons.edit), onPressed: _editar),
+                      ],
+                    ),
                     //Dados Pessoais:
                     const Text(
                       "Dados pessoais",
@@ -102,6 +159,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                     ),
 
                     CampoFormulario(
+                      formatar: [formatarCPF],
                       controller: controller.cpfController,
                       titulo: "CPF:",
                       hintText: "Ex: 000.000.000-00",
@@ -109,6 +167,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                     ),
 
                     CampoFormulario(
+                      formatar: [formatarData],
                       controller: controller.dataNascimentoController,
                       titulo: "Data de nascimento:",
                       hintText: "Ex: 00/00/0000",
@@ -123,6 +182,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                     ),
 
                     CampoFormulario(
+                      formatar: [formatarTelefone],
                       controller: controller.telefoneController,
                       titulo: "Telefone:",
                       hintText: "Ex: (99) 99999-9999",
@@ -157,6 +217,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                     ),
 
                     CampoFormulario(
+                      formatar: [formatarCPF],
                       controller: controller.cpfResponsavelController,
                       titulo: "CPF do responsável:",
                       hintText: "Ex: 000.000.000-00",
@@ -183,6 +244,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                     ),
 
                     CampoFormulario(
+                      formatar: [formatarData],
                       controller: pagamentoController.vencimentoController,
                       titulo: "Primeiro vencimento:",
                       hintText: "Ex: 10/10/25",
@@ -212,9 +274,9 @@ class _VerAlunoViewState extends State<VerAlunoView> {
       ),
       floatingActionButton: edit
           ? SizedBox(
-            width: 200,
-            height: 60,
-            child: FloatingActionButton.extended(
+              width: 200,
+              height: 60,
+              child: FloatingActionButton.extended(
                 onPressed: _salvarAlteracoes,
                 label: Text("Salvar Alterações"),
                 backgroundColor: Colors.black,
@@ -223,7 +285,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                   borderRadius: BorderRadius.circular(32),
                 ),
               ),
-          )
+            )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
