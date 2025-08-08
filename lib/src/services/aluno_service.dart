@@ -71,10 +71,15 @@ class AlunoService {
   Future<void> delete(int id) async {
     final _token = await _getToken();
 
-    await http.delete(
+    final response = await http.delete(
       Uri.parse('$baseUrl/alunos/$id'),
-      headers: {'Authorization': 'Bearer $_token'},
+      headers: {'Authorization': 'Baerer $_token'},
     );
+    if(response.statusCode == 201 || response.statusCode == 200){
+      print('TA FUUNCIONANDO CPA');
+    } else{
+      print('DEU RUIM FIOTE');
+    }
   }
 
   Future<void> getOne(int id) async {

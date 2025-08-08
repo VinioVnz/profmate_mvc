@@ -32,6 +32,28 @@ class _VerAlunoViewState extends State<VerAlunoView> {
   final CadastroAlunoController controller = CadastroAlunoController();
   final PagamentoController pagamentoController = PagamentoController();
 
+  void _deletar() async {
+    final aluno = widget.aluno;
+    showDialog(
+      context: context, 
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Deletar'),
+          content: Text('Tem certeza que deseja deletar ${aluno!.nome}?'),
+          actions: [
+            TextButton(onPressed: () async{
+              await controller.deletarAluno(aluno.id!);
+              Navigator.pushReplacementNamed(context, '/alunos');
+            }, child: Text('Sim')),
+
+            TextButton(onPressed: (){
+              Navigator.of(context).pop();
+            }, child: Text('Não'))
+          ],
+        );
+      });
+  }
+
   void _salvarAlteracoes() async {
     final alunoAtualizado = AlunoApiModel(
       id: widget.aluno!.id,
@@ -137,6 +159,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        IconButton(icon:Icon(Icons.delete), onPressed: _deletar,color: Colors.redAccent,),
                         IconButton(icon: Icon(Icons.edit), onPressed: _editar),
                       ],
                     ),
