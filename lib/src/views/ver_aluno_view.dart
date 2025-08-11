@@ -35,23 +35,30 @@ class _VerAlunoViewState extends State<VerAlunoView> {
   void _deletar() async {
     final aluno = widget.aluno;
     showDialog(
-      context: context, 
+      context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Deletar'),
           content: Text('Tem certeza que deseja deletar ${aluno!.nome}?'),
           actions: [
-            TextButton(onPressed: () async{
-              await controller.deletarAluno(aluno.id!);
-              Navigator.pushReplacementNamed(context, '/alunos');
-            }, child: Text('Sim')),
+            TextButton(
+              onPressed: () async {
+                await controller.deletarAluno(aluno.id!);
+                Navigator.pushReplacementNamed(context, '/alunos');
+              },
+              child: Text('Sim'),
+            ),
 
-            TextButton(onPressed: (){
-              Navigator.of(context).pop();
-            }, child: Text('Não'))
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Não'),
+            ),
           ],
         );
-      });
+      },
+    );
   }
 
   void _salvarAlteracoes() async {
@@ -156,19 +163,43 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(icon:Icon(Icons.delete), onPressed: _deletar,color: Colors.redAccent,),
-                        IconButton(icon: Icon(Icons.edit), onPressed: _editar),
-                      ],
-                    ),
                     //Dados Pessoais:
-                    const Text(
-                      "Dados pessoais",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(
+                      height: 56, // altura suficiente pros ícones
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Dados pessoais",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  icon: Icon(Icons.delete),
+                                  onPressed: _deletar,
+                                  color: Colors.redAccent,
+                                ),
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  icon: Icon(Icons.edit),
+                                  onPressed: _editar,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
 
