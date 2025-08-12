@@ -1,0 +1,22 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "profmate-mvc",
+                    "appId": "1:514649759587:android:b82ff9220a749846203d56",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "profmate-mvc",
+                    "configurations": {
+                        "android": "1:514649759587:android:b82ff9220a749846203d56",
+                        "ios": "1:514649759587:ios:e65d3790c7fb3fc8203d56"
+                    }
+                }
+            }
+        }
+    }
+}
