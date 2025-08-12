@@ -8,6 +8,7 @@ import 'package:profmate/src/models/pagamento_api_model.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
 import 'package:profmate/src/widgets/custom_elevated_button.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
 class CadastroAlunoView extends StatefulWidget {
   const CadastroAlunoView({super.key});
@@ -20,6 +21,8 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
   final _chaveDoFormulario = GlobalKey<FormState>();
   final CadastroAlunoController controller = CadastroAlunoController();
   final PagamentoController pagamentoController = PagamentoController();
+  final formatarValor = CurrencyInputFormatter(leadingSymbol: 'R\$ ',
+  useSymbolPadding: true,);
 
   Future<AlunoApiModel?> _salvarAluno() async {
     final aluno = AlunoApiModel(
@@ -78,6 +81,9 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
     filter: {"#" : RegExp(r'[0-9]')}
   );
 
+  
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +163,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
 
                   CampoFormulario(
                     controller: pagamentoController.valorAulaController,
+                    formatar: [formatarValor],
                     titulo: "Valor da aula:",
                     hintText: "Ex: 80,00",
                   ),
