@@ -5,6 +5,7 @@ import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/theme/app_colors.dart';
 import '../controller/progresso_controller.dart';
 import '../widgets/ementa_tile.dart';
+import 'package:profmate/src/widgets/custom_elevated_button.dart';
 
 class ProgressoView extends StatefulWidget {
   const ProgressoView({super.key});
@@ -14,11 +15,11 @@ class ProgressoView extends StatefulWidget {
 }
 
 class _ProgressoViewState extends State<ProgressoView> {
- late Future <List<EmentaApiModel>> _ementas;
+  late Future<List<EmentaApiModel>> _ementas;
   final controller = ProgressoController();
   final ementaController = EmentaController();
 
-@override
+  @override
   void initState() {
     super.initState();
     _loadEmenta();
@@ -32,7 +33,6 @@ class _ProgressoViewState extends State<ProgressoView> {
 
   @override
   Widget build(BuildContext context) {
-
     return BaseLayout(
       title: 'Progresso',
       body: Padding(
@@ -40,18 +40,20 @@ class _ProgressoViewState extends State<ProgressoView> {
         child: FutureBuilder<List<EmentaApiModel>>(
           future: _ementas,
           builder: (context, snapshot) {
-             if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-                return Center(child: Text('Erro ao carregar ementas: ${snapshot.error}'));
+              return Center(
+                child: Text('Erro ao carregar ementas: ${snapshot.error}'),
+              );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('Nenhuma ementa adicionada.'));
+              return const Center(child: Text('Nenhuma ementa adicionada.'));
             }
-            
-              final ementas = snapshot.data!;
-              final progresso = controller.calcularProgresso(ementas);
 
-              return Column(
+            final ementas = snapshot.data!;
+            final progresso = controller.calcularProgresso(ementas);
+
+            return Column(
               children: [
                 Expanded(
                   child: ListView.builder(
@@ -69,8 +71,7 @@ class _ProgressoViewState extends State<ProgressoView> {
                     },
                   ),
                 ),
-
-              const SizedBox(height: 8),
+                const SizedBox(height: 8),
                 LinearProgressIndicator(
                   value: progresso,
                   color: AppColors.azulEscuro,
@@ -78,30 +79,18 @@ class _ProgressoViewState extends State<ProgressoView> {
                 const SizedBox(height: 8),
                 Text('${(progresso * 100).toStringAsFixed(0)}% concluído'),
                 const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
+                CustomElevatedButton(
+                  tituloBotao: 'Adicionar ementa',
                   onPressed: () async {
                     await Navigator.pushNamed(context, '/addEmenta');
                     _loadEmenta(); // recarrega os dados
                     setState(() {});
                   },
-                  icon: const Icon(Icons.add),
-                  label: const Text(
-                    'Adicionar ementa',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
                 ),
               ],
             );
           },
-        )
+        ),
       ),
     );
   }
