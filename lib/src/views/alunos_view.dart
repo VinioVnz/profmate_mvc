@@ -5,6 +5,7 @@ import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/models/aluno_api_model.dart';
 import 'package:profmate/src/models/cadastro_aluno_model.dart';
 import 'package:profmate/src/views/cadastro_aluno_view.dart';
+import 'package:profmate/src/views/ver_aluno_view.dart';
 
 class AlunosView extends StatefulWidget {
   const AlunosView({super.key});
@@ -46,8 +47,7 @@ class _AlunosViewState extends State<AlunosView> {
                 MaterialPageRoute(builder: (context) => CadastroAlunoView()),
               );
 
-              if (resultado) {
-                //recarrega a tela pra apaarecer o novo aluno
+              if (resultado == true) {
                 _loadAlunos();
               }
             },
@@ -81,15 +81,27 @@ class _AlunosViewState extends State<AlunosView> {
                 final a = alunos[i];
 
                 return Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: ListTile(
-                    tileColor: const Color.fromARGB(153, 241, 240, 240),
-                    shape: RoundedRectangleBorder(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xffE6E6E6), width: 1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    title: Text(
-                      a.nome,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+
+                    child: ListTile(
+                      tileColor: Colors.white,
+                      onTap: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VerAlunoView(aluno: a),
+                          ),
+                        );
+                      },
+                      title: Text(
+                        a.nome,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 );

@@ -1,3 +1,5 @@
+import 'package:profmate/src/models/pagamento_api_model.dart';
+
 class AlunoApiModel {
   final int? id;
   final String nome;
@@ -8,7 +10,7 @@ class AlunoApiModel {
   final String dataNascimento;
   final String? nomeResponsavel;
   final String? cpfResponsavel;
-
+  final List<PagamentoApiModel>? pagamentos;
   AlunoApiModel(
     {
     this.id,
@@ -20,6 +22,7 @@ class AlunoApiModel {
     required this.dataNascimento,
     this.nomeResponsavel,
     this.cpfResponsavel,
+    this.pagamentos
   });
 
   factory AlunoApiModel.fromJson(Map<String, dynamic> json){
@@ -32,7 +35,12 @@ class AlunoApiModel {
       telefone: json['telefone'], 
       dataNascimento: json['dataNascimento'],
       nomeResponsavel: json['nomeResponsavel'],
-      cpfResponsavel: json['cpfResponsavel']
+      cpfResponsavel: json['cpfResponsavel'],
+      pagamentos: json['pagamentos'] != null
+          ? (json['pagamentos'] as List)
+              .map((e) => PagamentoApiModel.fromJson(e))
+              .toList()
+          : [],
       );
   }
 
