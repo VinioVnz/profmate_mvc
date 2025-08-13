@@ -1,10 +1,11 @@
 class UserFirebaseModel {
   int? id;
-  final String uid; //no firebase o id é um hash, n sequencial
+  final String uid;
   final String nome;
   final String email;
   final String cpf;
   final DateTime dataNascimento;
+
   UserFirebaseModel({
     this.id,
     required this.uid,
@@ -16,23 +17,25 @@ class UserFirebaseModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'uid': uid,
       'id': id,
+      'uid': uid,
       'nome': nome,
       'email': email,
       'cpf': cpf,
-      'dataNasciento': dataNascimento,
+      'dataNascimento': dataNascimento.toIso8601String(),
     };
   }
 
   factory UserFirebaseModel.fromMap(Map<String, dynamic> map) {
     return UserFirebaseModel(
-      uid: map['uid'],
       id: map['id'],
-      nome: map['nome'],
-      email: map['email'],
-      cpf: map['cpf'],
-      dataNascimento: map['dataNascimento'],
+      uid: map['uid'] ?? '',
+      nome: map['nome'] ?? '',
+      email: map['email'] ?? '',
+      cpf: map['cpf'] ?? '',
+      dataNascimento: map['dataNascimento'] != null
+          ? DateTime.parse(map['dataNascimento'])
+          : DateTime(2000, 1, 1),
     );
   }
 }

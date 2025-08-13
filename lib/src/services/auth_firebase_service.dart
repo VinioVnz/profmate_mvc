@@ -52,7 +52,7 @@ class AuthFirebaseService {
           .get();
       return UserFirebaseModel.fromMap(snapshot.data() as Map<String, dynamic>);
     } catch (e) {
-      print('erro ao efetuar o login');
+      print('erro ao efetuar o login $e');
       return null;
     }
   }
