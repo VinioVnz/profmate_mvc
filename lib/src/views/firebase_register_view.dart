@@ -47,7 +47,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
           nome: usuario.nome,
           cpf: usuario.cpf,
           email: usuario.email,
-          dataNascimento: usuario.dataNascimento,
+          dataNascimento: usuario.dataNascimento, //ta tendo que usar o padrao americano: YYYY-MM-DD
           password: _senhaController.text,
         );
 
