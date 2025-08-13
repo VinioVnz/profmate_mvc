@@ -20,9 +20,9 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
-  final _telefone = TextEditingController();
-  final _dataNascimento = TextEditingController();
-  final _cpf = TextEditingController();
+  final _telefoneController = TextEditingController();
+  final _dtNascimentoController = TextEditingController();
+  final _cpfController = TextEditingController();
 
   final formatarCPF = MaskTextInputFormatter(
     mask: "###.###.###-##",
@@ -46,11 +46,14 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         _erro = null;
       });
 
+      // ajustar a classe user_firebase_controller
       final professor = await _controller.cadastrar(
         _nomeController.text,
         _emailController.text,
         _senhaController.text,
-        _dataNascimento.text,
+        _dtNascimentoController.text,
+        _telefoneController.text,
+        _cpfController.text,
       );
 
       setState(() {
@@ -118,7 +121,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                 keyboardType: TextInputType.visiblePassword,
               ),
               CampoFormulario(
-                controller: _telefone,
+                controller: _telefoneController,
                 hintText: 'Campo obrigatório',
                 titulo: 'Telefone',
                 validator: (value) =>
@@ -126,7 +129,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                 formatar: [formatarTelefone],
               ),
               CampoFormulario(
-                controller: _dataNascimento,
+                controller: _dtNascimentoController,
                 hintText: 'Ex: 12/08/1990',
                 titulo: 'Data de nascimento',
                 validator: (value) =>
@@ -134,7 +137,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                 formatar: [formatarData],
               ),
               CampoFormulario(
-                controller: _cpf,
+                controller: _cpfController,
                 hintText: 'Campo obrigatório',
                 titulo: 'CPF',
                 validator: (value) =>
@@ -142,7 +145,6 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                 formatar: [formatarCPF],
               ),
               SizedBox(height: 16),
-              //botao de loading
               _loading
                   ? const CircularProgressIndicator()
                   : CustomElevatedButton(
