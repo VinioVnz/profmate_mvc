@@ -3,6 +3,7 @@ import 'package:profmate/src/controller/user_firebase_controller.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
 import 'package:profmate/src/widgets/custom_app_bar.dart';
 import 'package:profmate/src/widgets/custom_elevated_button.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class FirebaseRegisterView extends StatefulWidget {
   const FirebaseRegisterView({super.key});
@@ -19,8 +20,24 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
+  final _telefone = TextEditingController();
   final _dataNascimento = TextEditingController();
   final _cpf = TextEditingController();
+
+  final formatarCPF = MaskTextInputFormatter(
+    mask: "###.###.###-##",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+
+  final formatarTelefone = MaskTextInputFormatter(
+    mask: "(##) #####-####",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+
+  final formatarData = MaskTextInputFormatter(
+    mask: "##/##/####",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
 
   void _cadastrar() async {
     if (_formKey.currentState!.validate()) {
@@ -29,7 +46,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         _erro = null;
       });
 
-      final usuario = await _controller.cadastrar(
+      final professor = await _controller.cadastrar(
         _nomeController.text,
         _emailController.text,
         _senhaController.text,
@@ -39,8 +56,8 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
       setState(() {
         _loading = false;
       });
-      print("USUARIO:    $usuario");
-      if (usuario != null) {
+      print("USUARIO:    $professor");
+      if (professor != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Usuário cadastrado com sucesso')),
         );
@@ -83,18 +100,6 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                 controller: _emailController,
                 titulo: 'E-mail',
                 hintText: 'Digite seu e-mail',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Campo obrigatório';
-                  }
-                  // Validação básica de e-mail
-                  if (!RegExp(
-                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                  ).hasMatch(value)) {
-                    return 'Digite um e-mail válido';
-                  }
-                  return null;
-                },
                 keyboardType: TextInputType.emailAddress,
               ),
               CampoFormulario(
@@ -113,14 +118,28 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                 keyboardType: TextInputType.visiblePassword,
               ),
               CampoFormulario(
-                controller: _dataNascimento,
+                controller: _telefone,
                 hintText: 'Campo obrigatório',
+                titulo: 'Telefone',
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'Campo obrigatório' : null,
+                formatar: [formatarTelefone],
+              ),
+              CampoFormulario(
+                controller: _dataNascimento,
+                hintText: 'Ex: 12/08/1990',
                 titulo: 'Data de nascimento',
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'Campo obrigatório' : null,
+                formatar: [formatarData],
               ),
               CampoFormulario(
                 controller: _cpf,
                 hintText: 'Campo obrigatório',
                 titulo: 'CPF',
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'Campo obrigatório' : null,
+                formatar: [formatarCPF],
               ),
               SizedBox(height: 16),
               //botao de loading
