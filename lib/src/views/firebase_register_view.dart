@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/user_firebase_controller.dart';
+import 'package:profmate/src/widgets/custom_app_bar.dart';
 
 class FirebaseRegisterView extends StatefulWidget {
   const FirebaseRegisterView({super.key});
@@ -53,8 +54,8 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cadastro firebase')),
-      body: Padding(
+      appBar: CustomAppBar(title: 'Cadastro'),
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Form(
           key: _formKey,
@@ -63,7 +64,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
             children: [
               if (_erro != null) ...[
                 Text(_erro!, style: const TextStyle(color: Colors.red)),
-                SizedBox(height: 20,)
+                SizedBox(height: 20),
               ],
               TextFormField(
                 controller: _nomeController,
@@ -72,7 +73,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) =>
-                    value == null || value.isEmpty ? 'Informe seu nome' : null,
+                    value == null || value.isEmpty ? 'Campo obrigatório' : null,
               ),
               SizedBox(height: 12),
               TextFormField(
@@ -81,9 +82,8 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                   labelText: 'E-mail',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Informe seu e-mail'
-                    : null,
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'Campo obrigatório' : null,
               ),
               SizedBox(height: 12),
               TextFormField(
@@ -93,8 +93,9 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                   labelText: 'Senha',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) =>
-                    value == null || value.length < 6 ? 'Senha' : null,
+                validator: (value) => value == null || value.length < 6
+                    ? 'Campo obrigatório'
+                    : null,
               ),
               SizedBox(height: 16),
               //botao de loading
