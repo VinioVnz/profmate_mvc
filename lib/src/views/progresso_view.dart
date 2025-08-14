@@ -37,59 +37,70 @@ class _ProgressoViewState extends State<ProgressoView> {
       title: 'Progresso',
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: FutureBuilder<List<EmentaApiModel>>(
-          future: _ementas,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Erro ao carregar ementas: ${snapshot.error}'),
-              );
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('Nenhuma ementa adicionada.'));
-            }
+        child: Column(
+          children: [
+            // Lista e progresso ficam dentro do Expanded
+            Expanded(
+              child: FutureBuilder<List<EmentaApiModel>>(
+                future: _ementas,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Erro ao carregar ementas: ${snapshot.error}'),
+                    );
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('Nenhuma ementa adicionada.'));
+                  }
 
-            final ementas = snapshot.data!;
-            final progresso = controller.calcularProgresso(ementas);
+                  final ementas = snapshot.data!;
+                  final progresso = controller.calcularProgresso(ementas);
 
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: ementas.length,
-                    itemBuilder: (context, index) {
-                      final ementa = ementas[index];
-                      return EmentaTile(
-                        ementa: ementa,
-                        onChanged: (value) {
-                          setState(() {
-                            ementa.concluida = value ?? false;
-                          });
-                        },
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 8),
-                LinearProgressIndicator(
-                  value: progresso,
-                  color: AppColors.azulEscuro,
-                ),
-                const SizedBox(height: 8),
-                Text('${(progresso * 100).toStringAsFixed(0)}% concluído'),
-                const SizedBox(height: 16),
-                CustomElevatedButton(
-                  tituloBotao: 'Adicionar ementa',
-                  onPressed: () async {
-                    await Navigator.pushNamed(context, '/addEmenta');
-                    _loadEmenta(); // recarrega os dados
-                    setState(() {});
-                  },
-                ),
-              ],
-            );
-          },
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: ementas.length,
+                          itemBuilder: (context, index) {
+                            final ementa = ementas[index];
+                            return EmentaTile(
+                              ementa: ementa,
+                              onChanged: (value) {
+                                setState(() {
+                                  ementa.concluida = value ?? false;
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      LinearProgressIndicator(
+                        value: progresso,
+                        color: AppColors.azulEscuro,
+                      ),
+                      const SizedBox(height: 8),
+                      Text('${(progresso * 100).toStringAsFixed(0)}% concluído'),
+                    ],
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Botão sempre visível
+            SafeArea(
+              child: CustomElevatedButton(
+                tituloBotao: 'Adicionar ementa',
+                onPressed: () async {
+                  await Navigator.pushNamed(context, '/addEmenta');
+                  _loadEmenta(); // recarrega dados ao voltar
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
