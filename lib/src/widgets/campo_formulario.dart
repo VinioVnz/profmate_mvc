@@ -10,7 +10,7 @@ class CampoFormulario extends StatelessWidget {
   final bool readOnly;
   final VoidCallback? onTap;
   final List<TextInputFormatter>? formatar;
-
+  final bool? obscureText;
   const CampoFormulario({
     super.key,
     required this.controller,
@@ -21,6 +21,7 @@ class CampoFormulario extends StatelessWidget {
     this.readOnly = false,
     this.onTap,
     this.formatar,
+    this.obscureText
   });
 
   @override
@@ -46,6 +47,7 @@ class CampoFormulario extends StatelessWidget {
             color: readOnly ? Color.fromARGB(138, 230, 225, 225): Colors.white,
           ),
           child: TextFormField(
+            obscureText: obscureText ?? false,
             inputFormatters: formatar,
             controller: controller,
             onTap: onTap,

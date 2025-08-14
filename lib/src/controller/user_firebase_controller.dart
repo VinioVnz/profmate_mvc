@@ -8,7 +8,7 @@ class UserFirebaseController {
     return _authService.registrarUsuario(nome, email, senha, cpf, dataNascimento);
   }
 
-  Future<UserFirebaseModel?> autenticar(String email, String senha){
+  Future<UserFirebaseModel?> autenticar(String email, String senha) {
     return _authService.login(email, senha);
   }
 }
