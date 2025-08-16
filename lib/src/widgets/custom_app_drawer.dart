@@ -35,8 +35,8 @@ class CustomAppDrawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: Text('Sair'),
+            leading: const Icon(Icons.logout,),iconColor: Colors.black,
+            title: Text('Sair', style: TextStyle(fontWeight: FontWeight.bold),),
             onTap: () {
               //AuthService().logout();
               Navigator.pushAndRemoveUntil(

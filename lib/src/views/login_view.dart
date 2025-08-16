@@ -74,7 +74,7 @@ class _LoginviewState extends State<LoginView> {
     }
   }
 
-    void _abrirCadastro() {
+  void _abrirCadastro() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const FirebaseRegisterView()),
@@ -84,6 +84,7 @@ class _LoginviewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffFAF7F7),
       body: Stack(
         children: [
           SafeArea(
@@ -172,6 +173,14 @@ class _LoginviewState extends State<LoginView> {
                             ),
                           ),
                           SizedBox(height: 24),
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
                           TextButton(
                             onPressed: _abrirCadastro,
                             child: Text('Não tem conta? Cadastre-se'),
