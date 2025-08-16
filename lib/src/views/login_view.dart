@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/login_controller.dart';
 import 'package:profmate/src/controller/user_firebase_controller.dart';
 import 'package:profmate/src/services/auth_service.dart';
+import 'package:profmate/src/services/continue_google_service.dart';
 import 'package:profmate/src/views/firebase_register_view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -173,6 +175,8 @@ class _LoginviewState extends State<LoginView> {
                             ),
                           ),
                           SizedBox(height: 24),
+                          Text('Continuar com o Google',style: TextStyle(fontWeight: FontWeight.bold),),
+                          SizedBox(height: 16,),
                           Container(
                             width: 50,
                             height: 50,
@@ -180,11 +184,18 @@ class _LoginviewState extends State<LoginView> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(100),
                             ),
+                            child: IconButton(
+                              onPressed: () async {
+                                final user = await signInWithGoogle();
+
+                                if(user != null){
+                                  print('Usuario logado ${user.user?.displayName}');
+                                }
+                              },
+                              icon: Image.asset('assets/images/google-logo.png'),
+                            ),
                           ),
-                          TextButton(
-                            onPressed: _abrirCadastro,
-                            child: Text('Não tem conta? Cadastre-se'),
-                          ),
+                          SizedBox(height: 16),
                           Container(
                             width: 140,
                             height: 50,
@@ -199,6 +210,10 @@ class _LoginviewState extends State<LoginView> {
                                 style: TextStyle(fontSize: 18),
                               ),
                             ),
+                          ),
+                          TextButton(
+                            onPressed: _abrirCadastro,
+                            child: Text('Não tem conta? Cadastre-se'),
                           ),
                           SizedBox(height: 16),
                           Text(
