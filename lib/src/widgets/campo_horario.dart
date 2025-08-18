@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class CampoHorario extends StatefulWidget {
   final TextEditingController controller;
@@ -10,43 +8,23 @@ class CampoHorario extends StatefulWidget {
   @override
   _CampoHorarioState createState() => _CampoHorarioState();
 }
-//codigo por: Vinícius Bornhofen
+
 class _CampoHorarioState extends State<CampoHorario> {
-  void _selecionarHora(BuildContext context) {
-    DateTime horaAtual = DateTime.now();
-
-    showModalBottomSheet(
+  Future<void> _selecionarHora(BuildContext context) async {
+    // Pega hora atual como inicial
+    final TimeOfDay? horaSelecionada = await showTimePicker(
       context: context,
-      builder: (_) {
-        return SizedBox(
-          height: 250,
-          child: CupertinoTimerPicker(
-            mode: CupertinoTimerPickerMode.hm,
-            initialTimerDuration: Duration(
-              hours: horaAtual.hour,
-              minutes: horaAtual.minute,
-            ),
-            onTimerDurationChanged: (Duration novaHora) {
-              final agora = DateTime.now();
-              final horarioCompleto = DateTime(
-                agora.year,
-                agora.month,
-                agora.day,
-                novaHora.inHours,
-                novaHora.inMinutes % 60,
-              );
-
-              final horaFormatada =
-                  DateFormat('HH:mm').format(horarioCompleto);
-
-              setState(() {
-                widget.controller.text = horaFormatada;
-              });
-            },
-          ),
-        );
-      },
+      initialTime: TimeOfDay.now(),
     );
+
+    if (horaSelecionada != null) {
+      // Formata para HH:mm
+      final String horaFormatada =
+          '${horaSelecionada.hour.toString().padLeft(2, '0')}:${horaSelecionada.minute.toString().padLeft(2, '0')}';
+
+      // Atualiza o TextField
+      widget.controller.text = horaFormatada;
+    }
   }
 
   @override
