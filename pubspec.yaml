@@ -24,9 +24,13 @@ dependencies:
   mask_text_input_formatter: ^2.4.0
   http: ^1.4.0
   shared_preferences: ^2.5.3
+<<<<<<< HEAD
   firebase_core: ^4.0.0
   firebase_auth: ^6.0.1
   cloud_firestore: ^6.0.0
+=======
+  flutter_multi_formatter: ^2.13.8
+>>>>>>> b704990ec75065c3722f7730f9d564f0f4a89966
 
 dev_dependencies:
   flutter_test:
