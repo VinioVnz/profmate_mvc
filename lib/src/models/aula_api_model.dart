@@ -13,7 +13,7 @@ class AulaApiModel {
       id: json['id'],
       data: json['data'],
       horario: json['horario'],
-      idAluno: json['aluno_id'] ?? 0,
+      idAluno: json['aluno']?['id'] ?? 0, //precisa ser assim, pois json['aluno_id'] não é encontrado na api
     );
   }
 

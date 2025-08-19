@@ -22,8 +22,12 @@ class _AgendaViewState extends State<AgendaView> {
   @override
   void initState() {
     super.initState();
-    loadAlunos();
+    loadAlunos().then(
+      (_) => loadAulas(),
+    ); //primeiro carrega os alunos e verifica se tem alunos, e so dps carrega as aulas
   }
+
+  Future<void> _init() async {}
 
   DateTime _diaSelecionado = DateTime.now();
 
@@ -35,28 +39,48 @@ class _AgendaViewState extends State<AgendaView> {
   AlunoApiModel? selectedAluno;
   List<AlunoApiModel> alunos = [];
 
-/*   Future<void> loadAulas() async {
+  Future<void> loadAulas() async {
     try {
       final lista = await _aulaController.listarAulas(context);
 
       setState(() {
         _aulasPorDia.clear();
-      
-        for(var aula in lista){
-          final data = DateTime.parse(aula.data);
+
+        for (var aula in lista) {
+          final aluno = alunos.firstWhere(
+            (a) => a.id == aula.idAluno,
+            orElse: () => AlunoApiModel(
+              id: 0,
+              nome: 'Aluno não encontrado',
+              cpf: '',
+              email: '',
+              endereco: '',
+              telefone: '',
+              dataNascimento: '',
+            ),
+          );
+
+          // só adiciona se tiver um id válido
+          if (aluno.id == 0) continue;
+
           final dataNormalizada = DateTime.parse(aula.data);
-          
           _aulasPorDia[dataNormalizada] ??= [];
           _aulasPorDia[dataNormalizada]!.add({
-            'nome': alunos.firstWhere((a) => a.id == aula.idAluno).nome,
-            'horario': aula.horario
+            'nome': aluno.nome,
+            'horario': aula.horario,
           });
         }
       });
-    } catch{
-
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erro ao carregar Aulas'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      print('ERRO LOAD AULAS: $e');
     }
-  } */
+  }
 
   Future<void> loadAlunos() async {
     final lista = await _alunoController.listarAluno(context);
@@ -118,7 +142,7 @@ class _AgendaViewState extends State<AgendaView> {
                   );
                   return; // não continua
                 }
-
+                final idAluno = selectedAluno?.id ?? 0;
                 _salvarAula();
               },
               child: const Text("Salvar"),
@@ -161,6 +185,7 @@ class _AgendaViewState extends State<AgendaView> {
       );
 
       await _aulaController.criarAula(aula);
+      await loadAulas();
       // Salva a aula na lista de aulas daquele dia
       setState(() {
         _aulasPorDia[data] ??= [];
