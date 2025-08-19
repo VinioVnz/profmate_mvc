@@ -4,6 +4,7 @@ class UserFirebaseModel {
   final String nome;
   final String email;
   final String cpf;
+  final String telefone;
   final DateTime dataNascimento;
 
   UserFirebaseModel({
@@ -11,6 +12,7 @@ class UserFirebaseModel {
     required this.uid,
     required this.nome,
     required this.email,
+    required this.telefone,
     required this.cpf,
     required this.dataNascimento,
   });
@@ -32,6 +34,7 @@ class UserFirebaseModel {
       uid: map['uid'] ?? '',
       nome: map['nome'] ?? '',
       email: map['email'] ?? '',
+      telefone: map['telefone'] ?? '',
       cpf: map['cpf'] ?? '',
       dataNascimento: map['dataNascimento'] != null
           ? DateTime.parse(map['dataNascimento'])

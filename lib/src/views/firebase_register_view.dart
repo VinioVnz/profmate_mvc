@@ -68,6 +68,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         _emailController.text,
         _senhaController.text,
         _cpfController.text,
+        _telefoneController.text,
         DateConverterUtil.toDatabaseFormat(
           dataNascimento,
         ), //salva no banco como padrao YYYY-MM-DD
@@ -82,6 +83,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
           nome: usuario.nome,
           cpf: usuario.cpf,
           email: usuario.email,
+          telefone: usuario.telefone,
           dataNascimento: DateConverterUtil.toDatabaseFormat(
             dataNascimento,
           ), //salva no banco como padrao YYYY-MM-DD

@@ -20,4 +20,7 @@ class DateConverterUtil {
   static String toUserFormat(DateTime date) {
     return DateFormat('dd/MM/yyyy').format(date);
   }
+  static String toStrDataBaseFormat(DateTime date) {
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
 }

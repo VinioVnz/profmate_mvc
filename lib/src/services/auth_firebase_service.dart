@@ -12,6 +12,7 @@ class AuthFirebaseService {
     String email,
     String senha,
     String cpf,
+    String telefone,
     DateTime dataNascimento,
   ) async {
     try {
@@ -25,6 +26,7 @@ class AuthFirebaseService {
         nome: nome,
         email: email,
         cpf: cpf,
+        telefone: telefone,
         dataNascimento: dataNascimento,
       );
 

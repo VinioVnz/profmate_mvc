@@ -65,19 +65,18 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
 
   final formatarCPF = MaskTextInputFormatter(
     mask: "###.###.###-##",
-    filter: {"#" : RegExp(r'[0-9]')}
+    filter: {"#": RegExp(r'[0-9]')},
   );
 
   final formatarTelefone = MaskTextInputFormatter(
     mask: "(##) #####-####",
-    filter: {"#" : RegExp(r'[0-9]')}
+    filter: {"#": RegExp(r'[0-9]')},
   );
 
   final formatarData = MaskTextInputFormatter(
     mask: "##/##/####",
-    filter: {"#" : RegExp(r'[0-9]')}
+    filter: {"#": RegExp(r'[0-9]')},
   );
-
 
   @override
   Widget build(BuildContext context) {
@@ -107,24 +106,32 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                   ),
 
                   CampoFormulario(
-                  formatar: [formatarCPF],
-                  controller: controller.cpfController,
-                  titulo: "CPF:",
-                  hintText: "Ex: 000.000.000-00"),
-                 
-               
-                  CampoFormulario(
-                  formatar: [formatarData],
-                  controller: controller.dataNascimentoController,
-                  titulo: "Data de nascimento:",
-                  hintText: "Ex: 00/00/0000"),
+                    formatar: [formatarCPF],
+                    controller: controller.cpfController,
+                    titulo: "CPF:",
+                    hintText: "Ex: 000.000.000-00",
+                  ),
 
                   CampoFormulario(
-                  formatar: [formatarTelefone],
-                  controller: controller.telefoneController,
-                  titulo: "Telefone:",
-                  hintText: "Ex: (99) 99999-9999"),
-                  
+                    formatar: [formatarData],
+                    controller: controller.dataNascimentoController,
+                    titulo: "Data de nascimento:",
+                    hintText: "Ex: 00/00/0000",
+                  ),
+
+                  CampoFormulario(
+                    controller: controller.enderecoController,
+                    titulo: "Endereço:",
+                    hintText: "Ex: Rua das flores, 140",
+                  ),
+
+                  CampoFormulario(
+                    formatar: [formatarTelefone],
+                    controller: controller.telefoneController,
+                    titulo: "Telefone:",
+                    hintText: "Ex: (99) 99999-9999",
+                  ),
+
                   CampoFormulario(
                     controller: controller.emailController,
                     titulo: "E-mail:",
@@ -134,24 +141,32 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                   SizedBox(height: 8),
 
                   //Dados do Responsável (caso menor de idade):
-                  const Text("Dados do responsável", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-
-                  SizedBox(height: 8),
-                  
-                  CampoFormulario(
-                  controller: controller.nomeResponsavelController,                  
-                  titulo: "Nome do responsável:",
-                  hintText: "Ex: Osvaldo Silva"),
-
-                  CampoFormulario(
-                  formatar: [formatarCPF],
-                  controller: controller.cpfResponsavelController,                  
-                  titulo: "CPF do responsável:",
-                  hintText: "Ex: 000.000.000-00"),
+                  const Text(
+                    "Dados do responsável",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
 
                   SizedBox(height: 8),
 
-                  const Text("Informações de pagamento", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                  CampoFormulario(
+                    controller: controller.nomeResponsavelController,
+                    titulo: "Nome do responsável:",
+                    hintText: "Ex: Osvaldo Silva",
+                  ),
+
+                  CampoFormulario(
+                    formatar: [formatarCPF],
+                    controller: controller.cpfResponsavelController,
+                    titulo: "CPF do responsável:",
+                    hintText: "Ex: 000.000.000-00",
+                  ),
+
+                  SizedBox(height: 8),
+
+                  const Text(
+                    "Informações de pagamento",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
 
                   SizedBox(height: 8),
 
@@ -170,7 +185,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
 
                   CampoFormulario(
                     controller:
-                    pagamentoController.frequenciaPagamentoController,
+                        pagamentoController.frequenciaPagamentoController,
                     titulo: "Frequência de pagamento:",
                     hintText: "Mensal, semanal...",
                   ),
@@ -191,7 +206,6 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                         await _salvarPagamento(alunoCriado.id!);
                         Navigator.pop(context, true);
                       }
-                      
                     },
                   ),
                 ],
