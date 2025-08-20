@@ -6,6 +6,7 @@ import 'package:profmate/src/controller/tarefas_controller.dart';
 import 'package:profmate/src/models/menu_model.dart';
 import 'package:profmate/src/views/agenda_view.dart';
 import 'package:profmate/src/views/alunos_view.dart';
+import 'package:profmate/src/views/atividade_view.dart';
 import 'package:profmate/src/views/cadastro_aluno_view.dart';
 import 'package:profmate/src/views/configuracoes_view.dart';
 import 'package:profmate/src/views/financeiro_view.dart';
@@ -28,14 +29,14 @@ final List<MenuModel> appMenuItems = [
     icon: Icons.person,
     route: '/alunos',
     //page: AlunosView(cadastroAlunoController: CadastroAlunoController(),),
-    page: AlunosView()
+    page: AlunosView(),
   ),
 
-   MenuModel(
+  MenuModel(
     title: 'Tarefas',
     icon: Icons.check_box,
     route: '/tarefas',
-    page: TarefasView(controller: TarefasController(),),
+    page: TarefasView(controller: TarefasController()),
   ),
 
   MenuModel(
@@ -52,7 +53,7 @@ final List<MenuModel> appMenuItems = [
     page: MuralView(controller: MuralController()),
   ),
 
-    MenuModel(
+  MenuModel(
     title: 'Agenda',
     icon: Icons.calendar_month_outlined,
     route: '/agenda',
@@ -60,10 +61,10 @@ final List<MenuModel> appMenuItems = [
   ),
 
   MenuModel(
-    title: 'Configurações',
+    title: 'Atividades',
     icon: Icons.settings,
-    route: '/configuracoes',
-    page: ConfiguracoesView(configuracoesController: ConfiguracoesController()),
+    route: '/atividade_view',
+    page: AtividadeView(),
   ),
 
   MenuModel(
@@ -73,10 +74,17 @@ final List<MenuModel> appMenuItems = [
     page: SuporteView(),
   ),
 
-   MenuModel(
+  MenuModel(
     title: 'Progresso',
     icon: Icons.school,
     route: '/suporte',
     page: ProgressoView(),
+  ),
+
+  MenuModel(
+    title: 'Configurações',
+    icon: Icons.settings,
+    route: '/configuracoes',
+    page: ConfiguracoesView(configuracoesController: ConfiguracoesController()),
   ),
 ];

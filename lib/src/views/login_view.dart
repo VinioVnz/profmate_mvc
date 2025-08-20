@@ -4,7 +4,6 @@ import 'package:profmate/src/controller/user_firebase_controller.dart';
 import 'package:profmate/src/services/auth_service.dart';
 import 'package:profmate/src/services/continue_google_service.dart';
 import 'package:profmate/src/views/firebase_register_view.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -186,11 +185,11 @@ class _LoginviewState extends State<LoginView> {
                             ),
                             child: IconButton(
                               onPressed: () async {
-                                final user = await signInWithGoogle();
+                                /* final user = await signInWithGoogle();
 
                                 if(user != null){
                                   print('Usuario logado ${user.user?.displayName}');
-                                }
+                                } */
                               },
                               icon: Image.asset('assets/images/google-logo.png'),
                             ),
