@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/models/ementa_model.dart';
+import 'package:profmate/src/models/ementa_api_model.dart';
 
 class EmentaTile extends StatelessWidget {
-  final EmentaModel ementa;
+  final EmentaApiModel ementa;
   final ValueChanged<bool?> onChanged;
 
   const EmentaTile({

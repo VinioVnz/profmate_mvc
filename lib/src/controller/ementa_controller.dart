@@ -1,16 +1,24 @@
-import '../models/ementa_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:profmate/src/services/ementa_service.dart';
+import '../models/ementa_api_model.dart';
 
 class EmentaController {
-  static final EmentaController _instance = EmentaController._internal();
-  factory EmentaController() => _instance;
-  EmentaController._internal();
+  final moduloController = TextEditingController();
+  final topicoController = TextEditingController();
+  final descricaoController = TextEditingController(); 
 
-  final List<EmentaModel> _ementas = [];
-
-  List<EmentaModel> get ementas => _ementas;
-
-  void salvarEmenta(EmentaModel ementa) {
-    _ementas.add(ementa);
-    print('Ementa salva: ${ementa.topico}');
+  void dispose() {
+    moduloController.dispose();
+    topicoController.dispose();
+    descricaoController.dispose();
   }
+
+  final EmentaService _service = EmentaService();
+  Future<List<EmentaApiModel>> listarEmenta(BuildContext context) =>
+  _service.getAll(context);
+  Future<void> criarEmenta(EmentaApiModel ementa) => _service.create(ementa);
+  Future<void> atualizarEmenta(EmentaApiModel ementa) => _service.update(ementa);
+  Future<void> deletarEmenta(int id) => _service.delete(id);
+  Future<void> buscarEmenta(int id) => _service.getOne(id);
+
 }
