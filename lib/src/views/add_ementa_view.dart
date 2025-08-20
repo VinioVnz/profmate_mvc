@@ -56,36 +56,33 @@ class _AddEmentaViewState extends State<AddEmentaView> {
             ),
 
             CampoFormulario(
-              controller: controller.moduloController,
+              controller: controller.topicoController,
               titulo: "Tópico",
               hintText: "Ex: Verbo To be",
             ),
 
             CampoFormulario(
-              controller: controller.moduloController,
+              controller: controller.descricaoController,
               titulo: "Descrição",
               hintText: "Escreva a descrição do tópico.",
             ),
 
             const SizedBox(height: 24),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onPressed: _salvarEmenta,
+                child: const Text(
+                  'Concluído',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
               ),
-              onPressed: () {
-                _salvarEmenta();
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Concluído',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-            ),
           ],
         ),
       ),
