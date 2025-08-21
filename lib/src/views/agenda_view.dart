@@ -186,18 +186,9 @@ class _AgendaViewState extends State<AgendaView> {
 
       await _aulaController.criarAula(aula);
       await loadAulas();
-      // Salva a aula na lista de aulas daquele dia
-      setState(() {
-        _aulasPorDia[data] ??= [];
-        _aulasPorDia[data]!.add({
-          'nome': selectedAluno!.nome,
-          'horario': horario,
-        });
 
-        // Atualiza o dia selecionado para o novo, caso deseje
+        // Atualiza o dia selecionado para o novo
         _diaSelecionado = data;
-      });
-
       Navigator.of(context).pop(); // fecha o dialog
 
       ScaffoldMessenger.of(context).showSnackBar(
