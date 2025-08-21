@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:profmate/src/models/pagamento_api_model.dart';
-import 'package:profmate/src/services/pagamento_serice.dart';
+import 'package:profmate/src/services/pagamento_service.dart';
 
 
 class PagamentoController {
