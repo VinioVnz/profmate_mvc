@@ -23,6 +23,7 @@ class UserFirebaseModel {
       'uid': uid,
       'nome': nome,
       'email': email,
+      'telefone': telefone,
       'cpf': cpf,
       'dataNascimento': dataNascimento.toIso8601String(),
     };
