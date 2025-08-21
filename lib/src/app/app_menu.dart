@@ -77,7 +77,7 @@ final List<MenuModel> appMenuItems = [
   MenuModel(
     title: 'Progresso',
     icon: Icons.school,
-    route: '/suporte',
+    route: '/progresso',
     page: ProgressoView(),
   ),
 
