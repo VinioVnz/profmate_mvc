@@ -1,15 +1,15 @@
-class Turma {
+class TurmaModel {
   String? nomeTurma;
   String? localTurma;
 
-  Turma({required nomeTurma, required localTurma});
+  TurmaModel({required nomeTurma, required localTurma});
 
   Map<String, dynamic> toJson() {
     return {'nomeTurma': nomeTurma, 'localTurma': localTurma};
   }
 
-  factory Turma.fromJson(Map<String, dynamic> json) {
-    return Turma(
+  factory TurmaModel.fromJson(Map<String, dynamic> json) {
+    return TurmaModel(
       nomeTurma: json['nomeTurma'] as String,
       localTurma: json['localTurma'] as String,
     );

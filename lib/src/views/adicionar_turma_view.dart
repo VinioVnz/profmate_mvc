@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/alunos_controller.dart';
 import 'package:profmate/src/controller/turma_controller.dart';
-import 'package:profmate/src/models/turma_model.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
+import 'package:profmate/src/widgets/custom_elevated_button.dart';
 
 class AdicionarTurmaView extends StatefulWidget {
   const AdicionarTurmaView({super.key});
@@ -18,7 +18,19 @@ class _AdicionarTurmaViewState extends State<AdicionarTurmaView> {
   TextEditingController nomeTurmaController = TextEditingController();
   TextEditingController localTurmaController = TextEditingController();
 
-  List<TurmaController> _filteredItems = [];
+  List<AlunosController> _filteredItems = [];
+
+  /*  // Função para mostrar os alunos
+  void _onSearchChanged() {
+    if (_buscaAlunosController.text.isNotEmpty) {
+      _buscarAlunos();
+    } else {
+      setState(() {
+        _alunosEncontrados = [];
+        _isSearching = false;
+      });
+    }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +44,7 @@ class _AdicionarTurmaViewState extends State<AdicionarTurmaView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 20),
                 CampoFormulario(
                   controller: nomeTurmaController,
                   hintText: 'Ex: Turma de Inglês - Terça',
@@ -43,7 +56,23 @@ class _AdicionarTurmaViewState extends State<AdicionarTurmaView> {
                   titulo: 'Local da turma',
                 ),
                 SizedBox(height: 20),
-                ListTile(),
+                /*   Expanded(
+                  child: ListView.builder(
+                    itemCount: _filteredItems.length,
+                    itemBuilder: (context, index) {
+                      final item = _filteredItems[index];
+                      return ListTile(
+                        title: Text(item.name),
+                        subtitle: Text(item.description),
+                      );
+                    },
+                  ),
+                ), */
+                CustomElevatedButton(
+                  onPressed: () => {},
+                  tituloBotao: 'Criar',
+                  key: _formKey,
+                ),
               ],
             ),
           ),
