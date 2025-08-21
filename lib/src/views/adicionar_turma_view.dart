@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/alunos_controller.dart';
+import 'package:profmate/src/controller/turma_controller.dart';
+import 'package:profmate/src/models/turma_model.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
 
@@ -11,10 +13,12 @@ class AdicionarTurmaView extends StatefulWidget {
 }
 
 class _AdicionarTurmaViewState extends State<AdicionarTurmaView> {
-  AlunosController controller = AlunosController();
+  final _formKey = GlobalKey();
+  TurmaController controller = TurmaController();
   TextEditingController nomeTurmaController = TextEditingController();
   TextEditingController localTurmaController = TextEditingController();
-  final _formKey = GlobalKey();
+
+  List<TurmaController> _filteredItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +42,8 @@ class _AdicionarTurmaViewState extends State<AdicionarTurmaView> {
                   hintText: 'Ex: online',
                   titulo: 'Local da turma',
                 ),
+                SizedBox(height: 20),
+                ListTile(),
               ],
             ),
           ),
