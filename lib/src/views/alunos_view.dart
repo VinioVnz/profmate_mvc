@@ -8,6 +8,7 @@ import 'package:profmate/src/models/cadastro_aluno_model.dart';
 import 'package:profmate/src/views/cadastro_aluno_view.dart';
 import 'package:profmate/src/views/progresso_view.dart';
 import 'package:profmate/src/views/ver_aluno_view.dart';
+import 'package:profmate/src/widgets/barra_pesquisa.dart';
 import 'package:profmate/src/widgets/custom_elevated_button.dart';
 import 'package:profmate/theme/app_colors.dart';
 
@@ -97,26 +98,13 @@ class _AlunosViewState extends State<AlunosView> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
-                  child: SizedBox(
-                    height: 50,
-                    
-                    child: TextField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        labelText: "Pesquisar aluno",
-                        prefixIcon: const Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      onChanged: (valor) {
-                        setState(() {
-                          _textoPesquisa = valor;
-                        });
-                      },
-                    ),
+                  child: BarraPesquisa(
+                    textoBarra: "Pesquisar aluno",
+                    onChanged: (valor) {
+                      setState(() {
+                        _textoPesquisa = valor;
+                      });
+                    },
                   ),
                 ),
 
