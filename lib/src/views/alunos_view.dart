@@ -23,7 +23,6 @@ class _AlunosViewState extends State<AlunosView> {
   final _controller = CadastroAlunoController();
   late Future<List<AlunoApiModel>> _alunos;
 
-  // NOVO: texto da pesquisa
   String _textoPesquisa = "";
 
   @override
@@ -38,7 +37,7 @@ class _AlunosViewState extends State<AlunosView> {
     });
   }
 
-  ProgressoController progressoController = ProgressoController();
+  
 
   @override
   Widget build(BuildContext context) {

@@ -8,6 +8,7 @@ import 'package:profmate/src/models/pagamento_api_model.dart';
 import 'package:profmate/src/views/alunos_view.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
+import 'package:profmate/src/widgets/custom_dialog.dart';
 import 'package:profmate/src/widgets/custom_elevated_button.dart';
 
 class VerAlunoView extends StatefulWidget {
@@ -37,25 +38,17 @@ class _VerAlunoViewState extends State<VerAlunoView> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Deletar'),
-          content: Text('Tem certeza que deseja deletar ${aluno!.nome}?'),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                await controller.deletarAluno(aluno.id!);
-                Navigator.pushReplacementNamed(context, '/alunos');
-              },
-              child: Text('Sim'),
-            ),
+        return CustomDialog(
+          titulo: "Deletar aluno",
+          mensagem: 'Tem certeza que deseja deletar ${aluno!.nome}?',
+          aoCancelar: () {
+            Navigator.of(context).pop();
+          },
 
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Não'),
-            ),
-          ],
+          aoConfirmar: () async {
+            await controller.deletarAluno(aluno.id!);
+            Navigator.pushReplacementNamed(context, '/alunos');
+          },
         );
       },
     );
@@ -190,14 +183,14 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                                   onPressed: _deletar,
                                   color: Colors.redAccent,
                                 ),
-                                SizedBox(width: 12,),
+                                SizedBox(width: 12),
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   icon: Icon(Icons.edit),
                                   onPressed: _editar,
                                 ),
-                                SizedBox(width: 8,),
+                                SizedBox(width: 8),
                               ],
                             ),
                           ),
