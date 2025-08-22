@@ -6,9 +6,12 @@ import 'package:profmate/src/controller/pagamento_controller.dart';
 import 'package:profmate/src/models/aluno_api_model.dart';
 import 'package:profmate/src/models/pagamento_api_model.dart';
 import 'package:profmate/src/views/alunos_view.dart';
+import 'package:profmate/src/views/progresso_view.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
+import 'package:profmate/src/widgets/custom_dialog.dart';
 import 'package:profmate/src/widgets/custom_elevated_button.dart';
+import 'package:profmate/theme/app_colors.dart';
 
 class VerAlunoView extends StatefulWidget {
   final AlunoApiModel? aluno;
@@ -37,25 +40,17 @@ class _VerAlunoViewState extends State<VerAlunoView> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Deletar'),
-          content: Text('Tem certeza que deseja deletar ${aluno!.nome}?'),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                await controller.deletarAluno(aluno.id!);
-                Navigator.pushReplacementNamed(context, '/alunos');
-              },
-              child: Text('Sim'),
-            ),
+        return CustomDialog(
+          titulo: "Deletar aluno",
+          mensagem: 'Tem certeza que deseja deletar ${aluno!.nome}?',
+          aoCancelar: () {
+            Navigator.of(context).pop();
+          },
 
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Não'),
-            ),
-          ],
+          aoConfirmar: () async {
+            await controller.deletarAluno(aluno.id!);
+            Navigator.pushReplacementNamed(context, '/alunos');
+          },
         );
       },
     );
@@ -190,14 +185,14 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                                   onPressed: _deletar,
                                   color: Colors.redAccent,
                                 ),
-                                SizedBox(width: 12,),
+                                SizedBox(width: 12),
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   icon: Icon(Icons.edit),
                                   onPressed: _editar,
                                 ),
-                                SizedBox(width: 8,),
+                                SizedBox(width: 8),
                               ],
                             ),
                           ),
@@ -320,6 +315,57 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       titulo: "Forma de pagamento:",
                       hintText: "Pix, cartão de crédito...",
                       readOnly: !edit,
+                    ),
+
+                    SizedBox(height: 8),
+
+                    Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black
+                        )
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Progresso do aluno",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          SizedBox(height: 8),
+
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: LinearProgressIndicator(
+                              value: 0.6, // substituir pelo progresso real depois
+                              minHeight: 6,
+                              borderRadius: BorderRadius.circular(8),
+                              backgroundColor: Colors.grey[300],
+                              color: AppColors.azulEscuro,
+                            ),
+                          ),
+
+                          SizedBox(height: 16),
+
+                          CustomElevatedButton(
+                            tituloBotao: "Mais detalhes do progresso",
+                            onPressed: () {
+                               Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProgressoView(),
+                                                ),
+                                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

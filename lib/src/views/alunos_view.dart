@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:profmate/src/controller/alunos_controller.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
+import 'package:profmate/src/controller/progresso_controller.dart';
 import 'package:profmate/src/models/aluno_api_model.dart';
 import 'package:profmate/src/models/cadastro_aluno_model.dart';
 import 'package:profmate/src/views/cadastro_aluno_view.dart';
+import 'package:profmate/src/views/progresso_view.dart';
 import 'package:profmate/src/views/ver_aluno_view.dart';
+import 'package:profmate/src/widgets/barra_pesquisa.dart';
+import 'package:profmate/src/widgets/custom_elevated_button.dart';
+import 'package:profmate/theme/app_colors.dart';
 
 class AlunosView extends StatefulWidget {
   const AlunosView({super.key});
@@ -17,6 +22,9 @@ class AlunosView extends StatefulWidget {
 class _AlunosViewState extends State<AlunosView> {
   final _controller = CadastroAlunoController();
   late Future<List<AlunoApiModel>> _alunos;
+
+  String _textoPesquisa = "";
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +36,8 @@ class _AlunosViewState extends State<AlunosView> {
       _alunos = _controller.listarAluno(context);
     });
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -71,41 +81,139 @@ class _AlunosViewState extends State<AlunosView> {
             } else if (snapshot.hasError) {
               return Center(child: Text("Erro: ${snapshot.error}"));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('Nenhum aluno cadastrado!'));
+              return const Center(child: Text('Nenhum aluno cadastrado!'));
             }
 
             final alunos = snapshot.data!;
-            return ListView.builder(
-              itemCount: alunos.length,
-              itemBuilder: (_, i) {
-                final a = alunos[i];
 
-                return Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xffE6E6E6), width: 1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+            //adicionei filtragem dos alunos (Vanessa) - está filtrando apenas no app, deveria filtrar com getOne?
+            final alunosFiltrados = alunos.where((aluno) {
+              return aluno.nome.toLowerCase().contains(
+                _textoPesquisa.toLowerCase(),
+              );
+            }).toList();
 
-                    child: ListTile(
-                      tileColor: Colors.white,
-                      onTap: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => VerAlunoView(aluno: a),
-                          ),
-                        );
-                      },
-                      title: Text(
-                        a.nome,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: BarraPesquisa(
+                    textoBarra: "Pesquisar aluno",
+                    onChanged: (valor) {
+                      setState(() {
+                        _textoPesquisa = valor;
+                      });
+                    },
                   ),
-                );
-              },
+                ),
+
+                // lista de alunos já filtrada:
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: alunosFiltrados.length,
+                    itemBuilder: (_, i) {
+                      final a = alunosFiltrados[i];
+
+                      return Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 4,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: AppColors.azulEscuro,
+                                  radius: 35,
+                                  child: const Icon(
+                                    Icons.person,
+                                    size: 50,
+                                    color: Colors.white,
+                                  ),
+                                ), //substituir este avatar depois pela foto real do aluno
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        a.nome,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+
+                                      Text(
+                                        "Turma: ", //substituir pela turma cadastrada depois
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        "Progresso do aluno:",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[700],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      LinearProgressIndicator(
+                                        value:
+                                            0.6, // substituir pelo progresso real depois
+                                        minHeight: 6,
+                                        borderRadius: BorderRadius.circular(8),
+                                        backgroundColor: Colors.grey[300],
+                                        color: AppColors.azulEscuro,
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.black,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadiusGeometry.circular(
+                                                      25,
+                                                    ),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      VerAlunoView(aluno: a),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text("Mais detalhes"),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             );
           },
         ),
