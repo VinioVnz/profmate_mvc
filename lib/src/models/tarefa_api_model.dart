@@ -3,6 +3,7 @@ class TarefaApiModel {
   final String titulo;
   final String descricao;
   final DateTime dataEntrega;
+  bool concluida;
   final int idUsuario;
 
   TarefaApiModel({
@@ -11,6 +12,7 @@ class TarefaApiModel {
     required this.descricao,
     required this.dataEntrega,
     required this.idUsuario,
+    required this.concluida
   });
 
   factory TarefaApiModel.fromJson(Map<String, dynamic> json){
@@ -19,7 +21,10 @@ class TarefaApiModel {
       titulo: json['titulo'], 
       descricao: json['descricao'], 
       dataEntrega: DateTime.parse(json['dataEntrega']), 
-      idUsuario: json['aluno']?['id'] ?? 0);
+      idUsuario: json['usuario']?['id'] ?? 0,
+      concluida: json['concluida'] ?? false,
+      );
+      
   }
 
   Map<String,dynamic> toJson(){
@@ -30,7 +35,8 @@ class TarefaApiModel {
       'dataEntrega': "${dataEntrega.year.toString().padLeft(4,'0')}-"
                    "${dataEntrega.month.toString().padLeft(2,'0')}-"
                    "${dataEntrega.day.toString().padLeft(2,'0')}",
-      'usuario_id': idUsuario
+      'usuario_id': idUsuario,
+      'concluida': concluida,
     };
   }
 }

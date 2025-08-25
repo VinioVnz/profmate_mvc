@@ -22,7 +22,8 @@ class TarefaService {
       Uri.parse('$baseUrl/tarefas'),
       headers: {'Authorization': 'Bearer $token'},
     );
-
+    print('Status code: ${response.statusCode}');
+    print('Body: ${response.body}');
     if (response.statusCode == 401) {
       await AuthService().logout();
       if (context.mounted) {
@@ -67,16 +68,17 @@ class TarefaService {
       throw Exception("Tarefa não encontrada.");
     }
   }
-  Future<void> update(TarefaApiModel tarefa) async{
+
+  Future<void> update(TarefaApiModel tarefa) async {
     final _token = await _getToken();
 
-   await http.put(
-  Uri.parse('$baseUrl/tarefa/${tarefa.id}'),
-  headers: {
-    'Authorization': 'Bearer $_token',
-    'Content-Type': 'application/json',
-  },
-  body: jsonEncode(tarefa.toJson()),
-);
+    await http.put(
+      Uri.parse('$baseUrl/tarefa/${tarefa.id}'),
+      headers: {
+        'Authorization': 'Bearer $_token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(tarefa.toJson()),
+    );
   }
 }
