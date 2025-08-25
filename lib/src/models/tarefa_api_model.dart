@@ -18,7 +18,7 @@ class TarefaApiModel {
       id: json['id'],
       titulo: json['titulo'], 
       descricao: json['descricao'], 
-      dataEntrega: json['dataEntrega'], 
+      dataEntrega: DateTime.parse(json['dataEntrega']), 
       idUsuario: json['aluno']?['id'] ?? 0);
   }
 
@@ -27,7 +27,9 @@ class TarefaApiModel {
       'id': id,
       'titulo': titulo,
       'descricao':descricao,
-      'dataEntrega': dataEntrega,
+      'dataEntrega': "${dataEntrega.year.toString().padLeft(4,'0')}-"
+                   "${dataEntrega.month.toString().padLeft(2,'0')}-"
+                   "${dataEntrega.day.toString().padLeft(2,'0')}",
       'usuario_id': idUsuario
     };
   }

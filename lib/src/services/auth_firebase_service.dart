@@ -8,6 +8,7 @@ class AuthFirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future<UserFirebaseModel?> registrarUsuario(
+    int id,
     String nome,
     String email,
     String senha,
@@ -22,6 +23,7 @@ class AuthFirebaseService {
       );
 
       UserFirebaseModel usuario = UserFirebaseModel(
+        id: id,
         uid: cred.user!.uid,
         nome: nome,
         email: email,

@@ -3,6 +3,8 @@ import 'package:profmate/src/controller/tarefa_api_controller.dart';
 import 'package:profmate/src/controller/tarefas_controller.dart';
 import 'package:profmate/src/models/tarefa_api_model.dart';
 import 'package:profmate/src/models/tarefas_model.dart';
+import 'package:profmate/src/utils/date_converter_util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum FiltroTarefa { pendentes, conluidas }
 
@@ -17,21 +19,36 @@ class TarefasView extends StatefulWidget {
 
 class _TarefasViewState extends State<TarefasView> {
   FiltroTarefa filtroSelecionado = FiltroTarefa.pendentes;
-
+   final TextEditingController _adicionarTarefasController = TextEditingController();
   final TarefasApiController _controller = TarefasApiController();
+  int? idUsuario;
+  @override
+  void initState() {
+    super.initState();
+    _carregarIdUsuario();
+  }
 
-  void _salvarTarefa() {
-  /*   final TarefaApiModel tarefa = TarefaApiModel(
-      titulo: titulo, 
-      descricao: descricao, 
-      dataEntrega: dataEntrega, 
-      idUsuario: idUsuario
-      ); */
+  void _carregarIdUsuario() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      idUsuario = prefs.getInt(
+        'user_id',
+      ); // 'user_id' é a chave que salvamos no login
+    });
+  }
+
+  void _salvarTarefa() async{
+      final TarefaApiModel tarefa = TarefaApiModel(
+      titulo: 'tarefa', 
+      descricao: _adicionarTarefasController.text, 
+      dataEntrega: DateConverterUtil.toDatabaseFormat(DateTime.now()), 
+      idUsuario: idUsuario!
+      ); 
+      await _controller.criarTarefa(tarefa);
   }
 
   void _abrirAdicionarTarefa() {
-    final TextEditingController _adicionarTarefasController =
-        TextEditingController();
+   
 
     showModalBottomSheet(
       context: context,
@@ -86,6 +103,7 @@ class _TarefasViewState extends State<TarefasView> {
                 ),
                 TextButton(
                   onPressed: () {
+                    _salvarTarefa();
                     final texto = _adicionarTarefasController.text.trim();
                     if (texto.isNotEmpty) {
                       widget.controller.adicionaTarefa(texto);
