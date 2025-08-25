@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:profmate/src/controller/tarefa_api_controller.dart';
 import 'package:profmate/src/controller/tarefas_controller.dart';
+import 'package:profmate/src/models/tarefa_api_model.dart';
 import 'package:profmate/src/models/tarefas_model.dart';
 
 enum FiltroTarefa { pendentes, conluidas }
@@ -15,6 +17,17 @@ class TarefasView extends StatefulWidget {
 
 class _TarefasViewState extends State<TarefasView> {
   FiltroTarefa filtroSelecionado = FiltroTarefa.pendentes;
+
+  final TarefasApiController _controller = TarefasApiController();
+
+  void _salvarTarefa() {
+  /*   final TarefaApiModel tarefa = TarefaApiModel(
+      titulo: titulo, 
+      descricao: descricao, 
+      dataEntrega: dataEntrega, 
+      idUsuario: idUsuario
+      ); */
+  }
 
   void _abrirAdicionarTarefa() {
     final TextEditingController _adicionarTarefasController =
