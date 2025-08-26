@@ -74,12 +74,10 @@ final List<MenuModel> appMenuItems = [
     page: SuporteView(),
   ),
 
-  
- /*  MenuModel(
+  /*  MenuModel(
     title: 'Configurações',
     icon: Icons.settings,
     route: '/configuracoes',
     page: ConfiguracoesView(configuracoesController: ConfiguracoesController()),
   ), */
-
 ];
