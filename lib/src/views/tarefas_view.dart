@@ -4,6 +4,7 @@ import 'package:profmate/src/controller/tarefas_controller.dart';
 import 'package:profmate/src/models/tarefa_api_model.dart';
 import 'package:profmate/src/models/tarefas_model.dart';
 import 'package:profmate/src/utils/date_converter_util.dart';
+import 'package:profmate/src/widgets/custom_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum FiltroTarefa { pendentes, conluidas }
@@ -236,23 +237,14 @@ class _TarefasViewState extends State<TarefasView> {
                               onPressed: () async {
                                 final confirmar = await showDialog<bool>(
                                   context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: const Text('Excluir tarefa'),
-                                    content: const Text(
-                                      'Deseja realmente excluir essa tarefa?',
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, false),
-                                        child: const Text('Cancelar'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, true),
-                                        child: const Text('Excluir'),
-                                      ),
-                                    ],
+                                  builder: (context) => CustomDialog(
+                                    titulo: 'Excluir tarefa',
+                                    mensagem:
+                                        'Deseja realmente excluir essa tarefa?',
+                                    aoCancelar: () =>
+                                        Navigator.pop(context, false),
+                                    aoConfirmar: () =>
+                                        Navigator.pop(context, true),
                                   ),
                                 );
 
@@ -270,6 +262,7 @@ class _TarefasViewState extends State<TarefasView> {
 
             SizedBox(
               width: double.infinity,
+              height: 45,
               child: ElevatedButton.icon(
                 icon: Icon(Icons.add, color: Colors.white),
                 label: Text(
@@ -279,7 +272,13 @@ class _TarefasViewState extends State<TarefasView> {
                 onPressed: () {
                   _abrirAdicionarTarefa();
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(36),
+                  ),
+                  elevation: 4,
+                  backgroundColor: Colors.black,
+                ),
               ),
             ),
           ],
