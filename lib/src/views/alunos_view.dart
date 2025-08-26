@@ -6,6 +6,8 @@ import 'package:profmate/src/models/aluno_api_model.dart';
 import 'package:profmate/src/views/cadastro_aluno_view.dart';
 import 'package:profmate/src/views/progresso_view.dart';
 import 'package:profmate/src/views/ver_aluno_view.dart';
+import 'package:profmate/src/widgets/barra_pesquisa.dart';
+import 'package:profmate/theme/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AlunosView extends StatefulWidget {
@@ -20,11 +22,19 @@ class _AlunosViewState extends State<AlunosView> {
   List<AlunoApiModel> _alunos = [];
   int? _usuarioId;
   bool _loading = true;
-
+  String _textoPesquisa = "";
   @override
   void initState() {
     super.initState();
     _carregarUsuarioId();
+  }
+
+  Future<List<AlunoApiModel>> _getAlunosFuture() async {
+    //serve pra transformar o _alunos em Future, pra ser aceito no future Builder
+    if (_alunos.isEmpty) {
+      await _loadAlunos();
+    }
+    return _alunos;
   }
 
   Future<void> _carregarUsuarioId() async {
@@ -53,9 +63,9 @@ class _AlunosViewState extends State<AlunosView> {
       });
     } catch (e) {
       setState(() => _loading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Erro ao carregar alunos: $e")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Erro ao carregar alunos: $e")));
     }
   }
 
@@ -70,8 +80,6 @@ class _AlunosViewState extends State<AlunosView> {
     }
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,53 +92,119 @@ class _AlunosViewState extends State<AlunosView> {
           SpeedDialChild(
             label: "Cadastrar aluno",
             backgroundColor: Colors.white,
-            onTap: _abrirCadastro,
+            onTap: () async {
+              final resultado = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CadastroAlunoView()),
+              );
+
+              if (resultado == true) {
+                _loadAlunos();
+              }
+            },
           ),
           SpeedDialChild(
             label: "Cadastrar turma",
             backgroundColor: Colors.white,
             onTap: () {
-              // ação de cadastrar turma
+              // colocar aqui ação de cadastrar nova turma
             },
           ),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: _loading
-            ? const Center(child: CircularProgressIndicator())
-            : _alunos.isEmpty
-                ? const Center(child: Text('Nenhum aluno cadastrado!'))
-                : ListView.builder(
-                    itemCount: _alunos.length,
-                    itemBuilder: (_, i) {
-                      final aluno = _alunos[i];
-                      return Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xffE6E6E6), width: 1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: ListTile(
-                            tileColor: Colors.white,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => VerAlunoView(aluno: aluno),
-                                ),
-                              );
-                            },
-                            title: Text(
-                              aluno.nome,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+        child: Column(
+          children: [
+            // barra de pesquisa sempre visível, não dentro do FutureBuilder
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: BarraPesquisa(
+                textoBarra: "Pesquisar aluno",
+                onChanged: (valor) {
+                  setState(() {
+                    _textoPesquisa = valor;
+                  });
+                },
+              ),
+            ),
+            Expanded(
+              child: _loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _alunos.isEmpty
+                  ? const Center(child: Text('Nenhum aluno cadastrado!'))
+                  : ListView.builder(
+                      itemCount: _alunos
+                          .where(
+                            (aluno) => aluno.nome.toLowerCase().contains(
+                              _textoPesquisa.toLowerCase(),
+                            ),
+                          )
+                          .length,
+                      itemBuilder: (_, i) {
+                        final alunosFiltrados = _alunos
+                            .where(
+                              (aluno) => aluno.nome.toLowerCase().contains(
+                                _textoPesquisa.toLowerCase(),
+                              ),
+                            )
+                            .toList();
+                        final a = alunosFiltrados[i];
+
+                        return Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor: AppColors.azulEscuro,
+                                    radius: 35,
+                                    child: const Icon(
+                                      Icons.person,
+                                      size: 50,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          a.nome,
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          "Turma: ",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
