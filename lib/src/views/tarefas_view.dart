@@ -239,13 +239,14 @@ class _TarefasViewState extends State<TarefasView> {
                                   context: context,
                                   builder: (context) => CustomDialog(
                                     titulo: 'Excluir tarefa',
-                                    mensagem: 'Deseja realmente excluir essa tarefa?',
-                                    aoCancelar: () => Navigator.pop(context, false),
-                                    aoConfirmar: () => Navigator.pop(context, true),
-                                    ),                                    
+                                    mensagem:
+                                        'Deseja realmente excluir essa tarefa?',
+                                    aoCancelar: () =>
+                                        Navigator.pop(context, false),
+                                    aoConfirmar: () =>
+                                        Navigator.pop(context, true),
+                                  ),
                                 );
-                                
-                            
 
                                 if (confirmar == true) {
                                   await _controller.deletarTarefa(tarefa.id!);
@@ -261,6 +262,7 @@ class _TarefasViewState extends State<TarefasView> {
 
             SizedBox(
               width: double.infinity,
+              height: 45,
               child: ElevatedButton.icon(
                 icon: Icon(Icons.add, color: Colors.white),
                 label: Text(
@@ -270,7 +272,13 @@ class _TarefasViewState extends State<TarefasView> {
                 onPressed: () {
                   _abrirAdicionarTarefa();
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(36),
+                  ),
+                  elevation: 4,
+                  backgroundColor: Colors.black,
+                ),
               ),
             ),
           ],
