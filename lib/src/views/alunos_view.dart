@@ -192,6 +192,59 @@ class _AlunosViewState extends State<AlunosView> {
                                             color: Colors.grey[700],
                                           ),
                                         ),
+
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          "Progresso do aluno:",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        LinearProgressIndicator(
+                                          value:
+                                              0.6, // substituir pelo progresso real depois
+                                          minHeight: 6,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          backgroundColor: Colors.grey[300],
+                                          color: AppColors.azulEscuro,
+                                        ),
+
+                                        const SizedBox(height: 6),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.black,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadiusGeometry.circular(
+                                                        25,
+                                                      ),
+                                                ),
+                                              ),
+
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        VerAlunoView(aluno: a),
+                                                  ),
+                                                );
+                                              },
+
+                                              child: const Text(
+                                                "Mais detalhes",
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ],
                                     ),
                                   ),
