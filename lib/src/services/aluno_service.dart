@@ -23,7 +23,7 @@ class AlunoService {
 
   Future<List<AlunoApiModel>> getAll(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
-    final usuarioId = prefs.getInt('user_id'); // pega o id do usuário logado
+    final usuarioId = prefs.getInt('user_id'); 
     final token = await _getToken();
 
     if (usuarioId == null) {

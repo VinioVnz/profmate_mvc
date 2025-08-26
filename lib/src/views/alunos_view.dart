@@ -45,13 +45,8 @@ class _AlunosViewState extends State<AlunosView> {
 
     try {
       final lista = await _controller.listarAluno(context);
-
-      // filtra alunos pelo usuarioId
-      final filtrados =
-          lista.where((a) => a.usuarioId == _usuarioId).toList();
-
       setState(() {
-        _alunos = filtrados;
+        _alunos = lista;
         _loading = false;
       });
     } catch (e) {
