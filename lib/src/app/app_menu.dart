@@ -33,27 +33,6 @@ final List<MenuModel> appMenuItems = [
   ),
 
   MenuModel(
-    title: 'Tarefas',
-    icon: Icons.check_box,
-    route: '/tarefas',
-    page: TarefasView(controller: TarefasController()),
-  ),
-
-  MenuModel(
-    title: 'Financeiro',
-    icon: Icons.attach_money_rounded,
-    route: '/financeiro',
-    page: FinanceiroView(),
-  ),
-
-  MenuModel(
-    title: 'Mural',
-    icon: Icons.message,
-    route: '/mural',
-    page: MuralView(controller: MuralController()),
-  ),
-
-  MenuModel(
     title: 'Agenda',
     icon: Icons.calendar_month_outlined,
     route: '/agenda',
@@ -68,6 +47,27 @@ final List<MenuModel> appMenuItems = [
   ),
 
   MenuModel(
+    title: 'Mural',
+    icon: Icons.message,
+    route: '/mural',
+    page: MuralView(controller: MuralController()),
+  ),
+
+  MenuModel(
+    title: 'Financeiro',
+    icon: Icons.attach_money_rounded,
+    route: '/financeiro',
+    page: FinanceiroView(),
+  ),
+
+  MenuModel(
+    title: 'Tarefas',
+    icon: Icons.check_box,
+    route: '/tarefas',
+    page: TarefasView(controller: TarefasController()),
+  ),
+
+  MenuModel(
     title: 'Suporte',
     icon: Icons.help,
     route: '/suporte',
@@ -75,10 +75,11 @@ final List<MenuModel> appMenuItems = [
   ),
 
   
-  MenuModel(
+ /*  MenuModel(
     title: 'Configurações',
     icon: Icons.settings,
     route: '/configuracoes',
     page: ConfiguracoesView(configuracoesController: ConfiguracoesController()),
-  ),
+  ), */
+
 ];
