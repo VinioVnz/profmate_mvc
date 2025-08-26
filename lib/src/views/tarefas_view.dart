@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:profmate/src/controller/tarefa_api_controller.dart';
 import 'package:profmate/src/controller/tarefas_controller.dart';
+import 'package:profmate/src/models/tarefa_api_model.dart';
 import 'package:profmate/src/models/tarefas_model.dart';
+import 'package:profmate/src/utils/date_converter_util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum FiltroTarefa { pendentes, conluidas }
 
@@ -15,11 +19,56 @@ class TarefasView extends StatefulWidget {
 
 class _TarefasViewState extends State<TarefasView> {
   FiltroTarefa filtroSelecionado = FiltroTarefa.pendentes;
+  final TextEditingController _adicionarTarefasController =
+      TextEditingController();
+  final TarefasApiController _controller = TarefasApiController();
+  int? idUsuario;
+  List<TarefaApiModel> tarefas = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarIdUsuario();
+  }
+
+  Future<void> _carregarTarefas() async {
+    final todasTarefas = await _controller.listarTarefa(context);
+    final filtradas = todasTarefas
+        .where((t) => t.idUsuario == idUsuario)
+        .toList();
+    setState(() {
+      tarefas = filtradas;
+    });
+    print("tarefas sem filtro $todasTarefas");
+    print("ID do usuário: $idUsuario");
+    print("tarefas carregadas: $filtradas");
+  }
+
+  void _carregarIdUsuario() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('user_id');
+    if (id != null) {
+      setState(() {
+        idUsuario = id;
+      });
+      _carregarTarefas();
+    }
+  }
+
+  void _salvarTarefa() async {
+    final TarefaApiModel tarefa = TarefaApiModel(
+      titulo: 'tarefa',
+      descricao: _adicionarTarefasController.text,
+      dataEntrega: DateConverterUtil.toDatabaseFormat(DateTime.now()),
+      idUsuario: idUsuario!,
+      concluida: false,
+    );
+    await _controller.criarTarefa(tarefa);
+    _carregarTarefas();
+    Navigator.pop(context);
+  }
 
   void _abrirAdicionarTarefa() {
-    final TextEditingController _adicionarTarefasController =
-        TextEditingController();
-
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -73,11 +122,12 @@ class _TarefasViewState extends State<TarefasView> {
                 ),
                 TextButton(
                   onPressed: () {
-                    final texto = _adicionarTarefasController.text.trim();
-                    if (texto.isNotEmpty) {
+                    _salvarTarefa();
+                    /*final texto = _adicionarTarefasController.text.trim();
+                     if (texto.isNotEmpty) {
                       widget.controller.adicionaTarefa(texto);
                       Navigator.pop(context);
-                    }
+                    } */
                   },
                   child: const Text(
                     'Adicionar',
@@ -138,112 +188,84 @@ class _TarefasViewState extends State<TarefasView> {
             const SizedBox(height: 16),
 
             Expanded(
-              child: ValueListenableBuilder<List<TarefasModel>>(
-                valueListenable: widget.controller.tarefas,
-                builder: (context, lista, _) {
-                  final tarefasFiltradas = lista.asMap().entries.where((entry) {
-                    final tarefa = entry.value;
-                    return filtroSelecionado == FiltroTarefa.pendentes
-                        ? !tarefa.concluida
-                        : tarefa.concluida;
-                  }).toList();
+              child: tarefas.isEmpty
+                  ? const Center(child: Text('Nenhuma tarefa aqui.'))
+                  : ListView.builder(
+                      itemCount: tarefas.length,
+                      itemBuilder: (context, i) {
+                        final tarefa = tarefas[i];
 
-                  if (tarefasFiltradas.isEmpty) {
-                    return const Center(child: Text('Nenhuma tarefa aqui.'));
-                  }
+                        // aplica filtro antes de exibir
+                        if (filtroSelecionado == FiltroTarefa.pendentes &&
+                            tarefa.concluida) {
+                          return const SizedBox.shrink(); // não mostra se for concluída
+                        }
+                        if (filtroSelecionado == FiltroTarefa.conluidas &&
+                            !tarefa.concluida) {
+                          return const SizedBox.shrink(); // não mostra se não for concluída
+                        }
 
-                  return ListView.builder(
-                    itemCount: tarefasFiltradas.length,
-                    itemBuilder: (context, i) {
-                      final entry = tarefasFiltradas[i];
-                      final tarefa = entry.value;
-                      final indexOriginal = entry.key;
-
-                      return Card(
-                        color: Colors.white,
-                        elevation: 3,
-                        child: ListTile(
-                          leading: Checkbox(
-                            value: tarefa.concluida,
-                            fillColor: WidgetStateProperty.resolveWith<Color?>((
-                              states,
-                            ) {
-                              if (states.contains(WidgetState.selected)) {
-                                return Color.fromARGB(255, 53, 91, 140);
-                              }
-                              return null;
-                            }),
-                            onChanged: (bool? novoValor) {
-                              if (novoValor != null) {
-                                widget.controller.concluirTarefa(tarefa);
-                              }
-                            },
-                          ),
-                          title: Text(
-                            tarefa.texto,
-                            style: tarefa.concluida
-                                ? const TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: Colors.grey,
-                                  )
-                                : null,
-                          ),
-                          trailing: IconButton(
-                            onPressed: () async {
-                              final confirmar = await showDialog<bool>(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  backgroundColor: Colors.white,
-                                  title: const Text('Excluir tarefa'),
-                                  content: const Text(
-                                    'Deseja realmente excluir essa tarefa?',
+                        return Card(
+                          color: Colors.white,
+                          elevation: 3,
+                          child: ListTile(
+                            leading: Checkbox(
+                              value: tarefa.concluida,
+                              onChanged: (bool? novoValor) async {
+                                if (novoValor != null) {
+                                  setState(() {
+                                    tarefa.concluida = novoValor;
+                                  });
+                                  // chama a API para atualizar no banco
+                                  await _controller.atualizarTarefa(tarefa);
+                                }
+                              },
+                            ),
+                            title: Text(
+                              tarefa.titulo,
+                              style: tarefa.concluida
+                                  ? const TextStyle(
+                                      decoration: TextDecoration.lineThrough,
+                                      color: Colors.grey,
+                                    )
+                                  : null,
+                            ),
+                            subtitle: Text(tarefa.descricao),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () async {
+                                final confirmar = await showDialog<bool>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Excluir tarefa'),
+                                    content: const Text(
+                                      'Deseja realmente excluir essa tarefa?',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, false),
+                                        child: const Text('Cancelar'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, true),
+                                        child: const Text('Excluir'),
+                                      ),
+                                    ],
                                   ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(false),
-                                      child: const Text(
-                                        'Cancelar',
-                                        style: TextStyle(
-                                          color: Color.fromARGB(
-                                            255,
-                                            53,
-                                            91,
-                                            140,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(true),
-                                      child: const Text(
-                                        'Excluir',
-                                        style: TextStyle(
-                                          color: Color.fromARGB(
-                                            255,
-                                            53,
-                                            91,
-                                            140,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                              if (confirmar == true) {
-                                widget.controller.excluirTarefa(tarefa);
-                              }
-                            },
-                            icon: Icon(Icons.delete),
+                                );
+
+                                if (confirmar == true) {
+                                  await _controller.deletarTarefa(tarefa.id!);
+                                  _carregarTarefas(); // recarrega lista
+                                }
+                              },
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+                        );
+                      },
+                    ),
             ),
 
             SizedBox(

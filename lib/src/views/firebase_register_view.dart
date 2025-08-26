@@ -63,21 +63,38 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         });
         return;
       }
-      final usuario = await _controller.cadastrar(
-        _nomeController.text,
-        _emailController.text,
-        _senhaController.text,
-        _cpfController.text,
-        _telefoneController.text,
-        DateConverterUtil.toDatabaseFormat(
+      final user = UserApiModel(
+        uid: '',
+        nome: _nomeController.text,
+        cpf: _cpfController.text,
+        email: _emailController.text,
+        telefone: _telefoneController.text,
+        dataNascimento: DateConverterUtil.toDatabaseFormat(
           dataNascimento,
         ), //salva no banco como padrao YYYY-MM-DD
+        password: _senhaController.text,
       );
+
+      final createdUser = await _apiController.criarAluno(user);
+      print('ID DO USUARIO: ${createdUser.id}');
       setState(() {
         _loading = false;
       });
+      if (user != null) {
+        await _controller.cadastrar(
+          createdUser.id!,
+          _nomeController.text,
+          _emailController.text,
+          _senhaController.text,
+          _cpfController.text,
+          _telefoneController.text,
+          DateConverterUtil.toDatabaseFormat(
+            dataNascimento,
+          ), //salva no banco como padrao YYYY-MM-DD
+        );
+      }
 
-      if (usuario != null) {
+      /* if (usuario != null) {
         final user = UserApiModel(
           uid: usuario.uid,
           nome: usuario.nome,
@@ -90,7 +107,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
           password: _senhaController.text,
         );
 
-        await _apiController.criarAluno(user);
+        await _apiController.criarAluno(user); */
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Usuário cadastrado com sucesso')),
         );
@@ -104,7 +121,6 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         ).showSnackBar(SnackBar(content: Text('Erro ao cadastrar usuario')));
       }
     }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +160,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                 keyboardType: TextInputType.emailAddress,
               ),
               CampoFormulario(
-                obscureText:true,
+                obscureText: true,
                 controller: _senhaController,
                 titulo: 'Senha',
                 hintText: 'Digite sua senha (mín. 6 caracteres)',

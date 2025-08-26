@@ -8,6 +8,7 @@ import 'package:profmate/src/widgets/agenda_widget.dart';
 import 'package:profmate/src/widgets/campo_calendario.dart';
 import 'package:profmate/src/widgets/campo_horario.dart';
 import 'package:profmate/src/widgets/custom_dropdown_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //Codigo por: Vinícius Bornhofen e Vitor Henkels
 //Ultima atualização: 07/07/2025
@@ -22,6 +23,7 @@ class _AgendaViewState extends State<AgendaView> {
   @override
   void initState() {
     super.initState();
+    _carregarIdUsuario();
     loadAlunos().then(
       (_) => loadAulas(),
     ); //primeiro carrega os alunos e verifica se tem alunos, e so dps carrega as aulas
@@ -38,7 +40,17 @@ class _AgendaViewState extends State<AgendaView> {
   final CadastroAlunoController _alunoController = CadastroAlunoController();
   AlunoApiModel? selectedAluno;
   List<AlunoApiModel> alunos = [];
-
+  int? usuarioId;
+  
+  void _carregarIdUsuario() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('user_id');
+    if (id != null) {
+      setState(() {
+        usuarioId = id;
+      });
+    }
+  }
   Future<void> loadAulas() async {
     try {
       final lista = await _aulaController.listarAulas(context);
@@ -48,7 +60,7 @@ class _AgendaViewState extends State<AgendaView> {
 
         for (var aula in lista) {
           final aluno = alunos.firstWhere(
-            (a) => a.id == aula.idAluno,
+            (a) => a.id == aula.idAluno && a.usuarioId == usuarioId,
             orElse: () => AlunoApiModel(
               id: 0,
               nome: 'Aluno não encontrado',
@@ -57,6 +69,7 @@ class _AgendaViewState extends State<AgendaView> {
               endereco: '',
               telefone: '',
               dataNascimento: '',
+              usuarioId: 0
             ),
           );
 
