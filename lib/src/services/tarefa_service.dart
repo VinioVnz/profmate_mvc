@@ -73,7 +73,7 @@ class TarefaService {
     final _token = await _getToken();
 
     await http.put(
-      Uri.parse('$baseUrl/tarefa/${tarefa.id}'),
+      Uri.parse('$baseUrl/tarefas/${tarefa.id}'),
       headers: {
         'Authorization': 'Bearer $_token',
         'Content-Type': 'application/json',
