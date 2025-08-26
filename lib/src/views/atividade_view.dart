@@ -3,7 +3,7 @@ import 'package:profmate/src/controller/atividade_controller.dart';
 import 'package:profmate/src/models/atividade_model.dart';
 import 'package:profmate/src/views/atividade_detalhes_view.dart';
 import 'package:profmate/src/widgets/card_atividades.dart';
-import 'package:profmate/src/widgets/custom_app_bar.dart';
+import 'package:profmate/src/widgets/custom_elevated_button.dart';
 
 class AtividadeView extends StatefulWidget {
   const AtividadeView({super.key});
@@ -35,7 +35,17 @@ class _AtividadeViewState extends State<AtividadeView> {
       ),
     );
 
-    if (result == true) _carregarAtividades(); // Recarrega se houve mudança
+    if (result == true) _carregarAtividades();
+  }
+
+  void _navegarParaCriarAtividade() async {
+    final result = await Navigator.pushNamed(
+      context,
+      '/adicionar_atividade_view',
+    );
+
+    print('Voltou da tela de criar, recarregando...');
+    _carregarAtividades();
   }
 
   @override
@@ -49,25 +59,6 @@ class _AtividadeViewState extends State<AtividadeView> {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 16.0),
-            child: Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    final result = await Navigator.pushNamed(
-                      context,
-                      '/adicionar_atividade_view',
-                    );
-                    if (result == true) {
-                      _carregarAtividades();
-                    }
-                  },
-                  child: const Text("Criar nova atividade"),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: ValueListenableBuilder<bool>(
               valueListenable: controller.isLoading,
@@ -105,10 +96,12 @@ class _AtividadeViewState extends State<AtividadeView> {
                     return ValueListenableBuilder<List<AtividadeModel>>(
                       valueListenable: controller.atividades,
                       builder: (context, atividades, _) {
+                        print('Mostrando ${atividades.length} atividades');
+
                         if (atividades.isEmpty) {
                           return const Center(
                             child: Text(
-                              'Não encontramos atividades cadastradas.',
+                              'Não há atividades cadastradas',
                               style: TextStyle(fontSize: 16),
                             ),
                           );
@@ -121,7 +114,7 @@ class _AtividadeViewState extends State<AtividadeView> {
                             return CardAtividades(
                               atividade: atividade,
                               onTap: () => _verDetalhesAtividade(atividade),
-                              onEdit: () => {}, //editarAtividade(index),
+                              onEdit: () => {}, //editar atv
                             );
                           },
                         );
@@ -130,6 +123,13 @@ class _AtividadeViewState extends State<AtividadeView> {
                   },
                 );
               },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: CustomElevatedButton(
+              tituloBotao: 'Criar atividade',
+              onPressed: _navegarParaCriarAtividade,
             ),
           ),
         ],
