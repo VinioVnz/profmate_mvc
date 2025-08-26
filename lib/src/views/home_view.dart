@@ -15,11 +15,15 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   DateTime _diaSelecionado = DateTime.now();
+  
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.all(16),
-      child: SingleChildScrollView(//responsabilidade, tornar a tela arrastavel
+      child: SizedBox(
+        width: size.width,
+        height: size.height,
         child: Column(
           children: [
             //deixar a agenda clicavel, quando clico na agenda ele navega para a tela agenda
