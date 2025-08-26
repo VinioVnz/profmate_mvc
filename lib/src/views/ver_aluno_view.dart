@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:profmate/src/controller/alunos_controller.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/controller/pagamento_controller.dart';
 import 'package:profmate/src/models/aluno_api_model.dart';
 import 'package:profmate/src/models/pagamento_api_model.dart';
-import 'package:profmate/src/views/alunos_view.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
-import 'package:profmate/src/widgets/custom_elevated_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VerAlunoView extends StatefulWidget {
   final AlunoApiModel? aluno;
@@ -31,7 +29,17 @@ class _VerAlunoViewState extends State<VerAlunoView> {
   final _chaveDoFormulario = GlobalKey<FormState>();
   final CadastroAlunoController controller = CadastroAlunoController();
   final PagamentoController pagamentoController = PagamentoController();
+  int? usuarioId;
 
+  void _carregarIdUsuario() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('user_id');
+    if (id != null) {
+      setState(() {
+        usuarioId = id;
+      });
+    }
+  }
   void _deletar() async {
     final aluno = widget.aluno;
     showDialog(
@@ -72,6 +80,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
       nomeResponsavel: controller.nomeResponsavelController.text,
       cpfResponsavel: controller.cpfResponsavelController.text,
       dataNascimento: controller.dataNascimentoController.text,
+      usuarioId: usuarioId!
     );
 
     final pagamentoAtualizado = PagamentoApiModel(
@@ -125,6 +134,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
             pagamento.formaPagamento;
       }
     }
+    _carregarIdUsuario();
   }
 
   bool edit = false;

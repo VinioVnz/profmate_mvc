@@ -22,32 +22,30 @@ class AlunoService {
   }
 
   Future<List<AlunoApiModel>> getAll(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    final usuarioId = prefs.getInt('user_id'); // pega o id do usuário logado
     final token = await _getToken();
-    final uid = await _getUserUid();
 
-    if (uid == null) {
-      // usuário não logado
+    if (usuarioId == null) {
       throw Exception('Usuário não logado');
     }
-    print("Token enviado: $uid");
+
     final response = await http.get(
       Uri.parse('$baseUrl/alunos'),
-      headers: {'Authorization': 'Bearer $uid'},
+      headers: {'Authorization': 'Bearer $token'},
     );
-    print("Status code: ${response.statusCode}");
-    print("Body: ${response.body}");
 
-    if (response.statusCode == 401) {
-      await AuthService().logout();
-      if (context.mounted) {
-        Navigator.pushReplacementNamed(context, '/login');
-      }
-      throw Exception('Usuário não autorizado');
-    } else if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       final List data = jsonDecode(response.body);
-      return data.map((e) => AlunoApiModel.fromJson(e)).toList();
+      final alunos = data.map((e) => AlunoApiModel.fromJson(e)).toList();
+
+      // FILTRA ALUNOS PELO ID DO USUÁRIO
+      final meusAlunos = alunos.where((a) => a.usuarioId == usuarioId).toList();
+      return meusAlunos;
+    } else if (response.statusCode == 401) {
+      throw Exception('Usuário não autorizado');
     } else {
-      throw Exception('Erro ao buscar alunos');
+      throw Exception('Erro ao buscar alunos. Código: ${response.statusCode}');
     }
   }
 
