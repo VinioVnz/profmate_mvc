@@ -103,6 +103,12 @@ class _MuralViewState extends State<MuralView> {
                                   onPressed: () => alertConfirmarDelete(recado),
                                   icon: Icon(Icons.delete, color: Colors.white),
                                 ),
+
+                                IconButton(
+                                  visualDensity: VisualDensity.compact,
+                                  onPressed: () {},
+                                  icon: Icon(Icons.edit, color: Colors.white),
+                                ),
                               ],
                             ),
                             SizedBox(height: 8),
