@@ -247,7 +247,7 @@ class _TarefasViewState extends State<TarefasView> {
                                         Navigator.pop(context, true),
                                   ),
                                 );
-
+                            
                                 if (confirmar == true) {
                                   await _controller.deletarTarefa(tarefa.id!);
                                   _carregarTarefas(); // recarrega lista
