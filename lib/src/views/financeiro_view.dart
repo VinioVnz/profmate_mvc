@@ -17,31 +17,31 @@ class FinanceiroView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Botão "Relatório"
-            Row(
-              children: [
-                GestureDetector(
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const RelatorioView()),
-    );
-  },
-     child: Container(
-      decoration: BoxDecoration(
-      color: Colors.black,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: const Text(
-        "Relatório",
-      style: TextStyle(color: Colors.white),
-      ),
-     ),
-   ),
+            //Row(
+              //children: [
+                //GestureDetector(
+  //onTap: () {
+    //Navigator.push(
+      //context,
+      //MaterialPageRoute(builder: (context) => const RelatorioView()),
+    //);
+  //},
+     //child: Container(
+      //decoration: BoxDecoration(
+      //color: Colors.black,
+      //borderRadius: BorderRadius.circular(20),
+    //),
+    //padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      //child: const Text(
+        //"Relatório",
+      //style: TextStyle(color: Colors.white),
+      //),
+     //),
+   //),
 
-              ],
-            ),
-            const SizedBox(height: 12),
+              //],
+            //),
+            //const SizedBox(height: 12),
 
             // Cards de status
             Row(
