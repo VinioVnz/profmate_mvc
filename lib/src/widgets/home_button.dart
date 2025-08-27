@@ -13,6 +13,7 @@ class HomeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -20,8 +21,8 @@ class HomeButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(width: 1.0, color: Color(0xffE6E6E6)),
         ),
-        width: 120,
-        height: 112,
+        width: size.width * 0.25,
+        height: size.width * 0.23,
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
@@ -36,7 +37,7 @@ class HomeButton extends StatelessWidget {
               if (icon != null)
                 Positioned(
                   child: Center(child: 
-                    Icon(icon, size: 48,color: Colors.black,))
+                    Icon(icon, size: size.width * 0.09,color: Colors.black,))
                 ),
 
                 Positioned(
