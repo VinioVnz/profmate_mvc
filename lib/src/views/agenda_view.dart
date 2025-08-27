@@ -150,7 +150,7 @@ class _AgendaViewState extends State<AgendaView> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Selecione um aluno antes de salvar."),
-                      backgroundColor: Colors.orange,
+                      backgroundColor: Colors.red,
                     ),
                   );
                   return; // não continua
@@ -174,7 +174,7 @@ class _AgendaViewState extends State<AgendaView> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Preencha data e horário antes de salvar."),
-          backgroundColor: Colors.orange,
+          backgroundColor: Colors.red,
         ),
       );
       return;

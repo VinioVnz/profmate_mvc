@@ -177,7 +177,7 @@ class _LoginviewState extends State<LoginView> {
                             ),
                           ),
                           SizedBox(height: 24),
-                          Text('Continuar com o Google',style: TextStyle(fontWeight: FontWeight.bold),),
+                         /*  Text('Continuar com o Google',style: TextStyle(fontWeight: FontWeight.bold),),
                           SizedBox(height: 16,),
                           Container(
                             width: 50,
@@ -197,7 +197,7 @@ class _LoginviewState extends State<LoginView> {
                               icon: Image.asset('assets/images/google-logo.png'),
                             ),
                           ),
-                          SizedBox(height: 16),
+                          SizedBox(height: 16), */
                           Container(
                             width: 140,
                             height: 50,
