@@ -17,7 +17,7 @@ class FinanceiroView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Botão "Relatório"
-            Row(
+            /* Row(
               children: [
                 GestureDetector(
   onTap: () {
@@ -40,7 +40,7 @@ class FinanceiroView extends StatelessWidget {
    ),
 
               ],
-            ),
+            ), */
             const SizedBox(height: 12),
 
             // Cards de status
