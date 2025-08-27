@@ -14,7 +14,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  DateTime _diaSelecionado = DateTime.now();
+  //DateTime _diaSelecionado = DateTime.now();
   
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _HomeViewState extends State<HomeView> {
       children: [
         // Agenda ocupa parte maior da tela
         Expanded(
-          flex: 3, // 👈 controla o quanto da tela ela pega
+          flex: 3, // controla o quanto da tela ela pega
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -61,7 +61,7 @@ class _HomeViewState extends State<HomeView> {
 
         // Botões ocupam menos espaço proporcional
         Expanded(
-          flex: 2, // 👈 menor que a agenda
+          flex: 2, // menor que a agenda
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -78,7 +78,7 @@ class _HomeViewState extends State<HomeView> {
                   HomeButton(
                     label: 'Atividades',
                     onPressed: () {
-                      //Navigator.pushReplacementNamed(context, '/atividades');
+                      Navigator.pushReplacementNamed(context, '/atividade_view');
                     },
                     icon: Icons.edit,
                   ),

@@ -7,6 +7,7 @@ import 'package:profmate/src/utils/date_converter_util.dart';
 import 'package:profmate/src/widgets/agenda_widget.dart';
 import 'package:profmate/src/widgets/campo_calendario.dart';
 import 'package:profmate/src/widgets/campo_horario.dart';
+import 'package:profmate/src/widgets/custom_dialog.dart';
 import 'package:profmate/src/widgets/custom_dropdown_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,7 +42,7 @@ class _AgendaViewState extends State<AgendaView> {
   AlunoApiModel? selectedAluno;
   List<AlunoApiModel> alunos = [];
   int? usuarioId;
-  
+
   void _carregarIdUsuario() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final id = prefs.getInt('user_id');
@@ -51,6 +52,7 @@ class _AgendaViewState extends State<AgendaView> {
       });
     }
   }
+
   Future<void> loadAulas() async {
     try {
       final lista = await _aulaController.listarAulas(context);
@@ -69,7 +71,7 @@ class _AgendaViewState extends State<AgendaView> {
               endereco: '',
               telefone: '',
               dataNascimento: '',
-              usuarioId: 0
+              usuarioId: 0,
             ),
           );
 
@@ -140,25 +142,37 @@ class _AgendaViewState extends State<AgendaView> {
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Cancelar"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (selectedAluno == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Selecione um aluno antes de salvar."),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                  return; // não continua
-                }
-                final idAluno = selectedAluno?.id ?? 0;
-                _salvarAula();
-              },
-              child: const Text("Salvar"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: BotaoCancelar(
+                    aoCancelar: () => Navigator.of(context).pop(),
+                    tituloBotao: 'Cancelar',
+                  ),
+                ),
+                SizedBox(width: 10,),
+                Expanded(
+                  child: BotaoConfirmar(
+                    aoConfirmar: () async {
+                      if (selectedAluno == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "Selecione um aluno antes de salvar.",
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return; // não continua
+                      }
+                      final idAluno = selectedAluno?.id ?? 0;
+                      _salvarAula();
+                    },
+                    tituloBotao: "Salvar",
+                  ),
+                ),
+              ],
             ),
           ],
         );
@@ -200,8 +214,8 @@ class _AgendaViewState extends State<AgendaView> {
       await _aulaController.criarAula(aula);
       await loadAulas();
 
-        // Atualiza o dia selecionado para o novo
-        _diaSelecionado = data;
+      // Atualiza o dia selecionado para o novo
+      _diaSelecionado = data;
       Navigator.of(context).pop(); // fecha o dialog
 
       ScaffoldMessenger.of(context).showSnackBar(
