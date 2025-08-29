@@ -18,7 +18,7 @@ import 'package:profmate/src/views/tarefas_view.dart';
 
 final List<MenuModel> appMenuItems = [
   MenuModel(
-    title: 'Menu',
+    title: 'Home',
     icon: Icons.home,
     route: '/home',
     page: const HomeView(),

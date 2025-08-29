@@ -7,6 +7,7 @@ import 'package:profmate/src/widgets/campo_formulario.dart';
 import 'package:profmate/src/widgets/custom_app_bar.dart';
 import 'package:profmate/src/widgets/custom_elevated_button.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseRegisterView extends StatefulWidget {
   const FirebaseRegisterView({super.key});
@@ -75,23 +76,32 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         password: _senhaController.text,
       );
 
-      final createdUser = await _apiController.criarAluno(user);
+      final createdUser = await _apiController.criarUsuario(user);
       print('ID DO USUARIO: ${createdUser.id}');
       setState(() {
         _loading = false;
       });
-      if (user != null) {
-        await _controller.cadastrar(
-          createdUser.id!,
-          _nomeController.text,
-          _emailController.text,
-          _senhaController.text,
-          _cpfController.text,
-          _telefoneController.text,
-          DateConverterUtil.toDatabaseFormat(
-            dataNascimento,
-          ), //salva no banco como padrao YYYY-MM-DD
-        );
+
+      final usuario = await _controller.cadastrar(
+        createdUser.id!,
+        _nomeController.text,
+        _emailController.text,
+        _senhaController.text,
+        _cpfController.text,
+        _telefoneController.text,
+        DateConverterUtil.toDatabaseFormat(
+          dataNascimento,
+        ), //salva no banco como padrao YYYY-MM-DD
+      );
+
+      if (usuario != null) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('user_id', usuario.id!);
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Bem vindo ${usuario.nome}')));
+        Navigator.pushReplacementNamed(context, '/home');
       }
 
       /* if (usuario != null) {
@@ -108,19 +118,15 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         );
 
         await _apiController.criarAluno(user); */
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Usuário cadastrado com sucesso')),
-        );
-        Navigator.pop(context);
-      } else {
-        setState(() {
-          _erro = "Erro ao cadastrar Usuario";
-        });
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Erro ao cadastrar usuario')));
-      }
+    } else {
+      setState(() {
+        _erro = "Erro ao cadastrar Usuario";
+      });
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Erro ao cadastrar usuario')));
     }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,11 +5,11 @@ import 'package:profmate/src/services/user_api_service.dart';
 class UserApiController {
   final UserApiService _service = UserApiService();
 
-  Future<List<UserApiModel>> listarAluno(BuildContext context) =>
+  Future<List<UserApiModel>> listarUsuario(BuildContext context) =>
       _service.getAll(context);
-  Future<UserApiModel> criarAluno(UserApiModel usuario) =>
+  Future<UserApiModel> criarUsuario(UserApiModel usuario) =>
       _service.create(usuario);
-  Future<void> atualizarAluno(UserApiModel usuario) => _service.update(usuario);
-  Future<void> deletarAluno(int id) => _service.delete(id);
-  Future<void> buscarAluno(int id) => _service.getOne(id);
+  Future<void> atualizarUsuario(UserApiModel usuario) => _service.update(usuario);
+  Future<void> deletarUsuario(int id) => _service.delete(id);
+  Future<void> buscarUsuario(int id) => _service.getOne(id);
 }

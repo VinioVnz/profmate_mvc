@@ -51,6 +51,7 @@ class _AlunosViewState extends State<AlunosView> {
   }
 
   Future<void> _loadAlunos() async {
+    print("Id do user $_usuarioId");
     if (_usuarioId == null) return;
 
     setState(() => _loading = true);
