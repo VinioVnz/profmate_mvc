@@ -6,7 +6,7 @@ class UserApiModel {
   final String email;
   final String telefone;
   final String password;
-  final DateTime dataNascimento;
+
   UserApiModel({
     this.id,
     required this.telefone,
@@ -14,7 +14,7 @@ class UserApiModel {
     required this.nome,
     required this.cpf,
     required this.email,
-    required this.dataNascimento,
+
     required this.password,
   });
 
@@ -26,9 +26,6 @@ class UserApiModel {
       cpf: json['cpf'] ?? '',
       email: json['email'] ?? '',
       telefone: json['telefone'] ?? '',
-      dataNascimento: json['dataNascimento'] != null
-          ? DateTime.parse(json['dataNascimento'])
-          : DateTime(2000, 1, 1), //so valor padrao pra o vscode parar de encher o saco
       password: json['password'] ?? '',
     );
   }
@@ -42,7 +39,6 @@ class UserApiModel {
       'email': email,
       'telefone': telefone,
       'password': password,
-      'dataNascimento': dataNascimento.toIso8601String(),//passar pra string pq por algm motivo n aceitava com o datetime
     };
   }
 }

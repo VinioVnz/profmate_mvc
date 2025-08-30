@@ -5,7 +5,6 @@ class UserFirebaseModel {
   final String email;
   final String cpf;
   final String telefone;
-  final DateTime dataNascimento;
 
   UserFirebaseModel({
     this.id,
@@ -14,7 +13,7 @@ class UserFirebaseModel {
     required this.email,
     required this.telefone,
     required this.cpf,
-    required this.dataNascimento,
+
   });
 
   Map<String, dynamic> toMap() {
@@ -25,7 +24,6 @@ class UserFirebaseModel {
       'email': email,
       'telefone': telefone,
       'cpf': cpf,
-      'dataNascimento': dataNascimento.toIso8601String(),
     };
   }
 
@@ -37,9 +35,6 @@ class UserFirebaseModel {
       email: map['email'] ?? '',
       telefone: map['telefone'] ?? '',
       cpf: map['cpf'] ?? '',
-      dataNascimento: map['dataNascimento'] != null
-          ? DateTime.parse(map['dataNascimento'])
-          : DateTime(2000, 1, 1),
     );
   }
 }

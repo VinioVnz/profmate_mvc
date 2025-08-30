@@ -29,7 +29,6 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
   final _telefoneController = TextEditingController();
-  final _dataNascimentoController = TextEditingController();
   final _cpfController = TextEditingController();
 
   final formatarCPF = MaskTextInputFormatter(
@@ -42,10 +41,6 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
     filter: {"#": RegExp(r'[0-9]')},
   );
 
-  final formatarData = MaskTextInputFormatter(
-    mask: "##/##/####",
-    filter: {"#": RegExp(r'[0-9]')},
-  );
 
   void _cadastrar() async {
     if (_formKey.currentState!.validate()) {
@@ -53,26 +48,13 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         _loading = true;
         _erro = null;
       });
-      final dataNascimento = DateConverterUtil.fromUserInput(
-        _dataNascimentoController.text,
-      );
 
-      if (dataNascimento == null) {
-        setState(() {
-          _loading = false;
-          _erro = "Data de Nascimento Inválida";
-        });
-        return;
-      }
       final user = UserApiModel(
         uid: '',
         nome: _nomeController.text,
         cpf: _cpfController.text,
         email: _emailController.text,
         telefone: _telefoneController.text,
-        dataNascimento: DateConverterUtil.toDatabaseFormat(
-          dataNascimento,
-        ), //salva no banco como padrao YYYY-MM-DD
         password: _senhaController.text,
       );
 
@@ -88,10 +70,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         _emailController.text,
         _senhaController.text,
         _cpfController.text,
-        _telefoneController.text,
-        DateConverterUtil.toDatabaseFormat(
-          dataNascimento,
-        ), //salva no banco como padrao YYYY-MM-DD
+        _telefoneController.text
       );
 
       if (usuario != null) {
@@ -190,14 +169,6 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                 formatar: [formatarTelefone],
               ),
               CampoFormulario(
-                controller: _dataNascimentoController,
-                hintText: 'Ex: 12/08/1990',
-                titulo: 'Data de nascimento',
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Campo obrigatório' : null,
-                formatar: [formatarData],
-              ),
-              CampoFormulario(
                 controller: _cpfController,
                 hintText: 'Campo obrigatório',
                 titulo: 'CPF',
@@ -210,7 +181,15 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                   ? const CircularProgressIndicator()
                   : CustomElevatedButton(
                       tituloBotao: 'Criar conta',
-                      onPressed: _cadastrar,
+                      onPressed: () {
+                        setState(() {
+                          _loading = true;
+                        });
+                        _cadastrar();
+                        setState(() {
+                          _loading = false;
+                        });
+                      } 
                     ),
             ],
           ),

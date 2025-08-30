@@ -34,7 +34,7 @@ class _AgendaViewState extends State<AgendaView> {
   DateTime _diaSelecionado = DateTime.now();
 
   Map<DateTime, List<Map<String, String>>> _aulasPorDia = {};
-  final dataController = TextEditingController();
+  TextEditingController dataController = TextEditingController();
   final horarioController = TextEditingController();
   final AulaApiController _aulaController = AulaApiController();
   final CadastroAlunoController _alunoController = CadastroAlunoController();
@@ -103,6 +103,7 @@ class _AgendaViewState extends State<AgendaView> {
   }
 
   void abrirDialog() {
+    dataController.text = DateConverterUtil.toUserFormat(_diaSelecionado);
     showDialog(
       context: context,
       builder: (context) {

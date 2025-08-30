@@ -15,7 +15,6 @@ class AuthFirebaseService {
     String senha,
     String cpf,
     String telefone,
-    DateTime dataNascimento,
   ) async {
     try {
       UserCredential cred = await _auth.createUserWithEmailAndPassword(
@@ -30,7 +29,6 @@ class AuthFirebaseService {
         email: email,
         cpf: cpf,
         telefone: telefone,
-        dataNascimento: dataNascimento,
       );
 
       await _firestore
