@@ -32,13 +32,11 @@ class _CampoHorarioState extends State<CampoHorario> {
     return TextField(
       controller: widget.controller,
       readOnly: true,
+      onTap: () => _selecionarHora(context),
       decoration: InputDecoration(
         labelText: 'Horário',
         border: OutlineInputBorder(),
-        suffixIcon: IconButton(
-          icon: Icon(Icons.access_time),
-          onPressed: () => _selecionarHora(context),
-        ),
+        suffixIcon: Icon(Icons.access_time),
       ),
     );
   }

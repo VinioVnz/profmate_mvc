@@ -34,13 +34,11 @@ class _CampoCalendarioState extends State<CampoCalendario> {
     return TextField(
       controller: widget.controller,
       readOnly: true,
+      onTap: () => _selecionarData(context),
       decoration: InputDecoration(
         labelText: 'Data da Aula',
         border: OutlineInputBorder(),
-        suffixIcon: IconButton(
-          icon: Icon(Icons.calendar_today),
-          onPressed: () => _selecionarData(context),
-        ),
+        suffixIcon: Icon(Icons.calendar_today),
       ),
     );
   }
