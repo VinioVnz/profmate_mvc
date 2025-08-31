@@ -63,8 +63,8 @@ class AlunoApiModel {
       'dataNascimento': dataNascimento,
       'nomeResponsavel': nomeResponsavel,
       'cpfResponsavel': cpfResponsavel,
-      'usuarioId': usuarioId,
-      'usuario': usuario?.toJson(),
+      'usuario': usuarioId,
+
     };
   }
 }

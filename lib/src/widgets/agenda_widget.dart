@@ -16,6 +16,7 @@ class AgendaWidget extends StatelessWidget {
   final Map<DateTime, List<Map<String, String>>>? aulasPorDia;
   final void Function(DateTime dia)? onDiaSelecionado;
   final bool mostrarAulas;
+  final bool mostrarText;
 
   const AgendaWidget({
     super.key,
@@ -23,6 +24,7 @@ class AgendaWidget extends StatelessWidget {
     this.aulasPorDia,
     this.onDiaSelecionado,
     this.mostrarAulas = true,
+    this.mostrarText = false
   });
 
   @override
@@ -86,7 +88,7 @@ class AgendaWidget extends StatelessWidget {
               },
             ),
           ),
-          if (mostrarAulas && aulasPorDia != null) ...[
+          if (mostrarAulas && aulasPorDia != null && mostrarText) ...[
             const SizedBox(height: 16),
             Container(
               width: 200,

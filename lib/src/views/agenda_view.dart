@@ -129,7 +129,6 @@ class _AgendaViewState extends State<AgendaView> {
                     ? Text('Sem alunos cadastrados! Cadastre um primeiro!')
                     : CustomDropdownApi<AlunoApiModel>(
                         value: selectedAluno,
-                        titulo: 'Aluno',
                         hintText: 'Escolha um Aluno',
                         items: alunos,
                         onChanged: (novo) {
@@ -252,6 +251,7 @@ class _AgendaViewState extends State<AgendaView> {
               AgendaWidget(
                 diaSelecionado: _diaSelecionado,
                 aulasPorDia: _aulasPorDia,
+                mostrarText:true,
                 onDiaSelecionado: (dia) {
                   setState(() {
                     _diaSelecionado = dia;

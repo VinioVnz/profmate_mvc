@@ -8,6 +8,7 @@ import 'package:profmate/src/views/progresso_view.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
 import 'package:profmate/src/widgets/custom_dialog.dart';
+import 'package:profmate/src/widgets/custom_dropdown_api.dart';
 import 'package:profmate/src/widgets/custom_elevated_button.dart';
 import 'package:profmate/theme/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,6 +35,29 @@ class _VerAlunoViewState extends State<VerAlunoView> {
   final CadastroAlunoController controller = CadastroAlunoController();
   final PagamentoController pagamentoController = PagamentoController();
   int? usuarioId;
+  String? metodoSelecionado;
+  List<String> metodosPagamento = [
+    "Pix",
+    "Cartão de Crédito",
+    "Cartão de Débito",
+    "Dinheiro",
+    "Boleto",
+  ];
+
+  String? frequenciaSelecionado;
+  List<String> frequenciasPagamento = [
+    "Diariamente",
+    "Semanal",
+    "Mensal",
+    "Trimestral",
+    "Anual",
+  ];
+  String? campoObrigatorio(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+    return null;
+  }
 
   void _carregarIdUsuario() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -44,6 +68,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
       });
     }
   }
+
   void _deletar() async {
     final aluno = widget.aluno;
     showDialog(
@@ -76,16 +101,16 @@ class _VerAlunoViewState extends State<VerAlunoView> {
       nomeResponsavel: controller.nomeResponsavelController.text,
       cpfResponsavel: controller.cpfResponsavelController.text,
       dataNascimento: controller.dataNascimentoController.text,
-      usuarioId: usuarioId!
+      usuarioId: usuarioId,
     );
-
+    print('usuario id: $usuarioId');
     final pagamentoAtualizado = PagamentoApiModel(
       valorAula:
           double.tryParse(pagamentoController.valorAulaController.text) ?? 0.0,
       vencimento: pagamentoController.vencimentoController.text,
-      formaPagamento: pagamentoController.formaPagamentoController.text,
+      formaPagamento: metodoSelecionado!,
       frequenciaPagamento:
-          pagamentoController.frequenciaPagamentoController.text,
+          frequenciaSelecionado!,
       idAluno: widget.aluno!.id ?? 0,
     );
 
@@ -107,6 +132,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
   void initState() {
     super.initState();
     if (widget.aluno != null) {
+      
       controller.nomeController.text = widget.aluno!.nome;
       controller.cpfController.text = widget.aluno!.cpf;
       controller.dataNascimentoController.text = widget.aluno!.dataNascimento;
@@ -120,13 +146,14 @@ class _VerAlunoViewState extends State<VerAlunoView> {
 
       if (widget.aluno!.pagamentos != null &&
           widget.aluno!.pagamentos!.isNotEmpty) {
+
         final pagamento = widget.aluno!.pagamentos!.first;
         pagamentoController.valorAulaController.text = pagamento.valorAula
             .toString();
         pagamentoController.vencimentoController.text = pagamento.vencimento;
-        pagamentoController.frequenciaPagamentoController.text =
+        frequenciaSelecionado =
             pagamento.frequenciaPagamento;
-        pagamentoController.formaPagamentoController.text =
+        metodoSelecionado =
             pagamento.formaPagamento;
       }
     }
@@ -218,6 +245,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       titulo: "Nome completo:",
                       hintText: "Ex: Maria Silva",
                       readOnly: !edit,
+                      validator: campoObrigatorio,
                     ),
 
                     CampoFormulario(
@@ -226,6 +254,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       titulo: "CPF:",
                       hintText: "Ex: 000.000.000-00",
                       readOnly: !edit,
+                      validator: campoObrigatorio,
                     ),
 
                     CampoFormulario(
@@ -234,6 +263,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       titulo: "Data de nascimento:",
                       hintText: "Ex: 00/00/0000",
                       readOnly: !edit,
+                      validator: campoObrigatorio,
                     ),
 
                     CampoFormulario(
@@ -241,6 +271,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       titulo: "Endereço:",
                       hintText: "Ex: Rua das flores, 140",
                       readOnly: !edit,
+                      validator: campoObrigatorio,
                     ),
 
                     CampoFormulario(
@@ -249,6 +280,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       titulo: "Telefone:",
                       hintText: "Ex: (99) 99999-9999",
                       readOnly: !edit,
+                      validator: campoObrigatorio,
                     ),
 
                     CampoFormulario(
@@ -256,6 +288,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       titulo: "E-mail:",
                       hintText: "Ex: meuEmail@email.com",
                       readOnly: !edit,
+                      validator: campoObrigatorio,
                     ),
 
                     SizedBox(height: 8),
@@ -303,6 +336,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       titulo: "Valor da aula:",
                       hintText: "Ex: 80,00",
                       readOnly: !edit,
+                      validator: campoObrigatorio,
                     ),
 
                     CampoFormulario(
@@ -311,22 +345,38 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       titulo: "Primeiro vencimento:",
                       hintText: "Ex: 10/10/25",
                       readOnly: !edit,
+                      validator: campoObrigatorio,
                     ),
 
-                    CampoFormulario(
-                      controller:
-                          pagamentoController.frequenciaPagamentoController,
-                      titulo: "Frequência de pagamento:",
-                      hintText: "Mensal, semanal...",
-                      readOnly: !edit,
-                    ),
+                       CustomDropdownApi(
+                    value: frequenciaSelecionado,
+                    titulo: 'Freqência de pagamento:',
+                    hintText: "Selecione a frequência de pagamento",
+                    items: frequenciasPagamento,
+                    itemLabel: (item) => item,
+                    onChanged: (value) {
+                      setState(() {
+                        frequenciaSelecionado = value;
+                      });
+                    },
+                    validator: campoObrigatorio,
+                    readOnly: !edit,
+                  ),
 
-                    CampoFormulario(
-                      controller: pagamentoController.formaPagamentoController,
-                      titulo: "Forma de pagamento:",
-                      hintText: "Pix, cartão de crédito...",
-                      readOnly: !edit,
-                    ),
+                  CustomDropdownApi(
+                    value: metodoSelecionado,
+                    titulo: 'Método de Pagamento:',
+                    hintText: "Selecione o método de pagamento",
+                    items: metodosPagamento,
+                    itemLabel: (item) => item,
+                    onChanged: (value) {
+                      setState(() {
+                        metodoSelecionado = value;
+                      });
+                    },
+                    validator: campoObrigatorio,
+                    readOnly: !edit,
+                  ),
 
                     SizedBox(height: 8),
 
@@ -334,9 +384,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.black
-                        )
+                        border: Border.all(color: Colors.black),
                       ),
                       child: Column(
                         children: [
@@ -353,7 +401,8 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                           Container(
                             padding: EdgeInsets.all(10),
                             child: LinearProgressIndicator(
-                              value: 0.6, // substituir pelo progresso real depois
+                              value:
+                                  0.6, // substituir pelo progresso real depois
                               minHeight: 6,
                               borderRadius: BorderRadius.circular(8),
                               backgroundColor: Colors.grey[300],
@@ -366,13 +415,12 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                           CustomElevatedButton(
                             tituloBotao: "Mais detalhes do progresso",
                             onPressed: () {
-                               Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProgressoView(),
-                                                ),
-                                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProgressoView(),
+                                ),
+                              );
                             },
                           ),
                         ],

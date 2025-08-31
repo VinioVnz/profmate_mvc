@@ -8,7 +8,6 @@ class PagamentoController {
   final frequenciaPagamentoController = TextEditingController();
   final formaPagamentoController = TextEditingController();
   final valorAulaController = TextEditingController();
-
   void dispose(){
     vencimentoController.dispose();
     frequenciaPagamentoController.dispose();
