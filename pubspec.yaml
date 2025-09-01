@@ -28,6 +28,7 @@ dependencies:
   firebase_auth: ^6.0.1
   cloud_firestore: ^6.0.0
   flutter_multi_formatter: ^2.13.8
+  provider: ^6.0.1  # Se desejar gerenciar o estado (opcional)
 
 dev_dependencies:
   flutter_test:

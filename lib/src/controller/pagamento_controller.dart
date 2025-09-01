@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:profmate/src/models/pagamento_api_model.dart';
-import 'package:profmate/src/services/pagamento_serice.dart';
+import 'package:profmate/src/models/pagamento_model.dart';
+import 'package:profmate/src/services/pagamento_service.dart';
 
 
 class PagamentoController {
@@ -25,10 +25,10 @@ class PagamentoController {
 
       //CRUD:
   final PagamentoService _service = PagamentoService();
-  Future<List<PagamentoApiModel>> listarPagamento(BuildContext context) =>
+  Future<List<PagamentoModel>> listarPagamento(BuildContext context) =>
       _service.getAll(context);
-  Future<void> criarPagamento(PagamentoApiModel pagamento) => _service.create(pagamento);
-  Future<void> atualizarPagamento(PagamentoApiModel pagamento) => _service.update(pagamento);
+  Future<void> criarPagamento(PagamentoModel pagamento) => _service.create(pagamento);
+  Future<void> atualizarPagamento(PagamentoModel pagamento) => _service.update(pagamento);
   Future<void> deletarPagamento(int id) => _service.delete(id);
   Future<void> buscarPagamento(int id) => _service.getOne(id);
 

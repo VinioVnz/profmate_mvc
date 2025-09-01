@@ -1,4 +1,6 @@
-import 'package:profmate/src/models/pagamento_api_model.dart';
+import 'package:profmate/src/models/pagamento_model.dart';
+import 'package:profmate/src/services/Pagamento_service.dart';
+import 'package:profmate/src/services/pagamento_service.dart';
 
 class AlunoApiModel {
   final int? id;
@@ -10,7 +12,7 @@ class AlunoApiModel {
   final String dataNascimento;
   final String? nomeResponsavel;
   final String? cpfResponsavel;
-  final List<PagamentoApiModel>? pagamentos;
+  final List<FinanceiroController>? pagamentos;
   AlunoApiModel(
     {
     this.id,
@@ -38,7 +40,7 @@ class AlunoApiModel {
       cpfResponsavel: json['cpfResponsavel'],
       pagamentos: json['pagamentos'] != null
           ? (json['pagamentos'] as List)
-              .map((e) => PagamentoApiModel.fromJson(e))
+              .map((e) => PagamentoService.fromJson(e))
               .toList()
           : [],
       );

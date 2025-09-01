@@ -4,7 +4,7 @@ import 'package:profmate/src/controller/alunos_controller.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/controller/pagamento_controller.dart';
 import 'package:profmate/src/models/aluno_api_model.dart';
-import 'package:profmate/src/models/pagamento_api_model.dart';
+import 'package:profmate/src/models/pagamento_model.dart';
 import 'package:profmate/src/views/alunos_view.dart';
 import 'package:profmate/src/views/progresso_view.dart';
 import 'package:profmate/src/widgets/base_layout.dart';

@@ -5,7 +5,8 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/controller/pagamento_controller.dart';
 import 'package:profmate/src/models/aluno_api_model.dart';
-import 'package:profmate/src/models/pagamento_api_model.dart';
+import 'package:profmate/src/models/pagamento_model.dart';
+import 'package:profmate/src/services/pagamento_service.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
 import 'package:profmate/src/widgets/custom_elevated_button.dart';
@@ -47,7 +48,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
   }
 
   Future<void> _salvarPagamento(int alunoId) async {
-    final pagamento = PagamentoApiModel(
+    final pagamento = PagamentoModel(
       valorAula:
           double.tryParse(pagamentoController.valorAulaController.text) ?? 0.0,
       vencimento: pagamentoController.vencimentoController.text,
