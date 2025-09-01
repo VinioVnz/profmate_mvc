@@ -1,45 +1,88 @@
+
 import 'dart:convert';
+import 'package:flutter/widgets.dart';
+import 'package:profmate/src/models/pagamento_api_model.dart';
+import 'package:profmate/src/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:profmate/src/models/pagamento_model.dart'; // Importa o modelo de pagamento
 
 class PagamentoService {
-  // URL base da sua API
-  final String apiUrl = "https://10.0.2.2:3000"; // Coloque a URL da sua API
+  //trocar para a url do servidor depois
+  final String baseUrl = 'http://10.0.2.2:3000';
 
-  // Função para pegar os alunos pendentes
-  Future<List<PagamentoModel>> getAlunosPendentes() async {
-    final response = await http.get(Uri.parse('$apiUrl/alunos/pendentes'));
+  Future<String?> _getToken()async{
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt_token');
+  }
 
-    if (response.statusCode == 200) {
-      // A resposta da API é um JSON que será mapeado para uma lista de Pagamentos
-      List<dynamic> data = json.decode(response.body);
-      return data.map((e) => PagamentoModel.fromMap(e)).toList();
-    } else {
-      throw Exception('Erro ao carregar alunos pendentes');
+  Future<List<PagamentoApiModel>> getAll(BuildContext context)async{
+    final token = await _getToken();
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/pagamentos'),
+      headers: {'Authorization': 'Bearer $token'}
+    );
+
+    if(response.statusCode == 401){
+      await AuthService().logout();
+      if(context.mounted){
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+      throw Exception('Usuário não autorizado');
+    }else if(response.statusCode == 200){
+      final List data = jsonDecode(response.body);
+      return data.map((e) => PagamentoApiModel.fromJson(e)).toList();
+    }else{
+      throw Exception('Erro ao buscar pagamento.');
     }
   }
 
-  // Função para pegar o total recebido
-  Future<double> getTotalRecebido() async {
-    final response = await http.get(Uri.parse('$apiUrl/total/recebido'));
-
-    if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return data['total_recebido'] ?? 0.0;
-    } else {
-      throw Exception('Erro ao carregar total recebido');
-    }
+  Future<void> create(PagamentoApiModel pagamento) async{
+    final _token = await _getToken();
+    await http.post(
+      Uri.parse('$baseUrl/pagamentos'),
+      headers: {
+        'Authorization' : 'Bearer $_token',
+        'Content-Type' : 'application/json'
+      },
+      body: jsonEncode(pagamento.toJson())
+    );
   }
 
-  // Função para pegar o total de pendentes
-  Future<int> getTotalPendentes() async {
-    final response = await http.get(Uri.parse('$apiUrl/total/pendentes'));
+  Future<void> update(PagamentoApiModel pagamento) async{
+    final _token = await _getToken();
 
-    if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return data['total_pendentes'] ?? 0;
-    } else {
-      throw Exception('Erro ao carregar total de pendentes');
-    }
+   await http.put(
+  Uri.parse('$baseUrl/pagamentos/${pagamento.id}'),
+  headers: {
+    'Authorization': 'Bearer $_token',
+    'Content-Type': 'application/json',
+  },
+  body: jsonEncode(pagamento.toJson()),
+);
   }
+
+  Future<void> delete(int id) async{
+    final _token = await _getToken();
+
+    await http.delete(
+      Uri.parse('$baseUrl/pagamentos/$id'),
+      headers: {
+        'Authorization':'Bearer $_token',
+      }
+    );
+  }
+
+  Future<void> getOne(int id) async{
+    final _token = await _getToken();
+    final response = await http.get(
+      Uri.parse('$baseUrl/pagamentos/$id'),
+      headers: {
+        'Authorization': 'Bearer $_token'
+      }
+      );
+      if(response.statusCode == 404){
+        throw Exception("Pagamento não encontrado.");
+      }
+}
 }

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
@@ -5,11 +6,13 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/controller/pagamento_controller.dart';
 import 'package:profmate/src/models/aluno_api_model.dart';
-import 'package:profmate/src/models/pagamento_model.dart';
-import 'package:profmate/src/services/pagamento_service.dart';
+import 'package:profmate/src/models/pagamento_api_model.dart';
 import 'package:profmate/src/widgets/base_layout.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
+import 'package:profmate/src/widgets/custom_dropdown.dart';
+import 'package:profmate/src/widgets/custom_dropdown_api.dart';
 import 'package:profmate/src/widgets/custom_elevated_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CadastroAlunoView extends StatefulWidget {
   const CadastroAlunoView({super.key});
@@ -22,8 +25,25 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
   final _chaveDoFormulario = GlobalKey<FormState>();
   final CadastroAlunoController controller = CadastroAlunoController();
   final PagamentoController pagamentoController = PagamentoController();
+  int? usuarioId;
   /* final formatarValor = CurrencyInputFormatter(leadingSymbol: 'R\$ ',
   useSymbolPadding: true,); */
+  @override
+  void initState() {
+    super.initState();
+    _carregarIdUsuario();
+  }
+
+  void _carregarIdUsuario() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('user_id');
+    if (id != null) {
+      setState(() {
+        usuarioId = id;
+      });
+    }
+  }
+
   Future<AlunoApiModel?> _salvarAluno() async {
     final aluno = AlunoApiModel(
       nome: controller.nomeController.text,
@@ -34,6 +54,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
       nomeResponsavel: controller.nomeResponsavelController.text,
       cpfResponsavel: controller.cpfResponsavelController.text,
       dataNascimento: controller.dataNascimentoController.text,
+      usuarioId: usuarioId!,
     );
 
     try {
@@ -48,13 +69,12 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
   }
 
   Future<void> _salvarPagamento(int alunoId) async {
-    final pagamento = PagamentoModel(
+    final pagamento = PagamentoApiModel(
       valorAula:
           double.tryParse(pagamentoController.valorAulaController.text) ?? 0.0,
       vencimento: pagamentoController.vencimentoController.text,
-      formaPagamento: pagamentoController.formaPagamentoController.text,
-      frequenciaPagamento:
-          pagamentoController.frequenciaPagamentoController.text,
+      formaPagamento: metodoSelecionado!,
+      frequenciaPagamento: frequenciaSelecionado!,
       idAluno: alunoId,
     );
     try {
@@ -80,6 +100,29 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
     mask: "##/##/####",
     filter: {"#": RegExp(r'[0-9]')},
   );
+  String? metodoSelecionado;
+  List<String> metodosPagamento = [
+    "Pix",
+    "Cartão de Crédito",
+    "Cartão de Débito",
+    "Dinheiro",
+    "Boleto",
+  ];
+
+  String? frequenciaSelecionado;
+  List<String> frequenciasPagamento = [
+    "Diariamente",
+    "Semanal",
+    "Mensal",
+    "Trimestral",
+    "Anual",
+  ];
+  String? campoObrigatorio(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +149,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                     controller: controller.nomeController,
                     titulo: "Nome completo:",
                     hintText: "Ex: Maria Silva",
+                    validator: campoObrigatorio,
                   ),
 
                   CampoFormulario(
@@ -113,6 +157,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                     controller: controller.cpfController,
                     titulo: "CPF:",
                     hintText: "Ex: 000.000.000-00",
+                    validator: campoObrigatorio,
                   ),
 
                   CampoFormulario(
@@ -120,12 +165,14 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                     controller: controller.dataNascimentoController,
                     titulo: "Data de nascimento:",
                     hintText: "Ex: 00/00/0000",
+                    validator: campoObrigatorio,
                   ),
 
                   CampoFormulario(
                     controller: controller.enderecoController,
                     titulo: "Endereço:",
                     hintText: "Ex: Rua das flores, 140",
+                    validator: campoObrigatorio,
                   ),
 
                   CampoFormulario(
@@ -133,12 +180,14 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                     controller: controller.telefoneController,
                     titulo: "Telefone:",
                     hintText: "Ex: (99) 99999-9999",
+                    validator: campoObrigatorio,
                   ),
 
                   CampoFormulario(
                     controller: controller.emailController,
                     titulo: "E-mail:",
                     hintText: "Ex: meuEmail@email.com",
+                    validator: campoObrigatorio,
                   ),
 
                   SizedBox(height: 8),
@@ -177,6 +226,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                     controller: pagamentoController.valorAulaController,
                     titulo: "Valor da aula:",
                     hintText: "Ex: 80,00",
+                    validator: campoObrigatorio,
                     //formatar: [formatarValor],
                   ),
 
@@ -185,19 +235,35 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                     controller: pagamentoController.vencimentoController,
                     titulo: "Primeiro vencimento:",
                     hintText: "Ex: 10/10/25",
+                    validator: campoObrigatorio,
                   ),
 
-                  CampoFormulario(
-                    controller:
-                        pagamentoController.frequenciaPagamentoController,
-                    titulo: "Frequência de pagamento:",
-                    hintText: "Mensal, semanal...",
+                  CustomDropdownApi(
+                    value: frequenciaSelecionado,
+                    titulo: 'Freqência de pagamento:',
+                    hintText: "Selecione a frequência de pagamento",
+                    items: frequenciasPagamento,
+                    itemLabel: (item) => item,
+                    onChanged: (value) {
+                      setState(() {
+                        frequenciaSelecionado = value;
+                      });
+                    },
+                    validator: campoObrigatorio,
                   ),
 
-                  CampoFormulario(
-                    controller: pagamentoController.formaPagamentoController,
-                    titulo: "Forma de pagamento:",
-                    hintText: "Pix, cartão de crédito...",
+                  CustomDropdownApi(
+                    value: metodoSelecionado,
+                    titulo: 'Método de Pagamento:',
+                    hintText: "Selecione o método de pagamento",
+                    items: metodosPagamento,
+                    itemLabel: (item) => item,
+                    onChanged: (value) {
+                      setState(() {
+                        metodoSelecionado = value;
+                      });
+                    },
+                    validator: campoObrigatorio,
                   ),
 
                   SizedBox(height: 8),
@@ -205,10 +271,12 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                   CustomElevatedButton(
                     tituloBotao: "Salvar",
                     onPressed: () async {
-                      final alunoCriado = await _salvarAluno();
-                      if (alunoCriado != null && alunoCriado.id != null) {
-                        await _salvarPagamento(alunoCriado.id!);
-                        Navigator.pop(context, true);
+                      if (_chaveDoFormulario.currentState!.validate()) {
+                        final alunoCriado = await _salvarAluno();
+                        if (alunoCriado != null && alunoCriado.id != null) {
+                          await _salvarPagamento(alunoCriado.id!);
+                          Navigator.pop(context, true);
+                        }
                       }
                     },
                   ),

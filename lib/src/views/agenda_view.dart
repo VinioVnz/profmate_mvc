@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/aula_api_controller.dart';
 import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
@@ -7,7 +8,9 @@ import 'package:profmate/src/utils/date_converter_util.dart';
 import 'package:profmate/src/widgets/agenda_widget.dart';
 import 'package:profmate/src/widgets/campo_calendario.dart';
 import 'package:profmate/src/widgets/campo_horario.dart';
+import 'package:profmate/src/widgets/custom_dialog.dart';
 import 'package:profmate/src/widgets/custom_dropdown_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //Codigo por: Vinícius Bornhofen e Vitor Henkels
 //Ultima atualização: 07/07/2025
@@ -22,6 +25,7 @@ class _AgendaViewState extends State<AgendaView> {
   @override
   void initState() {
     super.initState();
+    _carregarIdUsuario();
     loadAlunos().then(
       (_) => loadAulas(),
     ); //primeiro carrega os alunos e verifica se tem alunos, e so dps carrega as aulas
@@ -32,12 +36,23 @@ class _AgendaViewState extends State<AgendaView> {
   DateTime _diaSelecionado = DateTime.now();
 
   Map<DateTime, List<Map<String, String>>> _aulasPorDia = {};
-  final dataController = TextEditingController();
+  TextEditingController dataController = TextEditingController();
   final horarioController = TextEditingController();
   final AulaApiController _aulaController = AulaApiController();
   final CadastroAlunoController _alunoController = CadastroAlunoController();
   AlunoApiModel? selectedAluno;
   List<AlunoApiModel> alunos = [];
+  int? usuarioId;
+
+  void _carregarIdUsuario() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('user_id');
+    if (id != null) {
+      setState(() {
+        usuarioId = id;
+      });
+    }
+  }
 
   Future<void> loadAulas() async {
     try {
@@ -48,7 +63,7 @@ class _AgendaViewState extends State<AgendaView> {
 
         for (var aula in lista) {
           final aluno = alunos.firstWhere(
-            (a) => a.id == aula.idAluno,
+            (a) => a.id == aula.idAluno && a.usuarioId == usuarioId,
             orElse: () => AlunoApiModel(
               id: 0,
               nome: 'Aluno não encontrado',
@@ -57,6 +72,7 @@ class _AgendaViewState extends State<AgendaView> {
               endereco: '',
               telefone: '',
               dataNascimento: '',
+              usuarioId: 0,
             ),
           );
 
@@ -90,6 +106,7 @@ class _AgendaViewState extends State<AgendaView> {
   }
 
   void abrirDialog() {
+    dataController.text = DateConverterUtil.toUserFormat(_diaSelecionado);
     showDialog(
       context: context,
       builder: (context) {
@@ -113,7 +130,6 @@ class _AgendaViewState extends State<AgendaView> {
                     ? Text('Sem alunos cadastrados! Cadastre um primeiro!')
                     : CustomDropdownApi<AlunoApiModel>(
                         value: selectedAluno,
-                        titulo: 'Aluno',
                         hintText: 'Escolha um Aluno',
                         items: alunos,
                         onChanged: (novo) {
@@ -127,25 +143,37 @@ class _AgendaViewState extends State<AgendaView> {
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Cancelar"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (selectedAluno == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Selecione um aluno antes de salvar."),
-                      backgroundColor: Colors.orange,
-                    ),
-                  );
-                  return; // não continua
-                }
-                final idAluno = selectedAluno?.id ?? 0;
-                _salvarAula();
-              },
-              child: const Text("Salvar"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: BotaoCancelar(
+                    aoCancelar: () => Navigator.of(context).pop(),
+                    tituloBotao: 'Cancelar',
+                  ),
+                ),
+                SizedBox(width: 10,),
+                Expanded(
+                  child: BotaoConfirmar(
+                    aoConfirmar: () async {
+                      if (selectedAluno == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "Selecione um aluno antes de salvar.",
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return; // não continua
+                      }
+                      final idAluno = selectedAluno?.id ?? 0;
+                      _salvarAula();
+                    },
+                    tituloBotao: "Salvar",
+                  ),
+                ),
+              ],
             ),
           ],
         );
@@ -161,7 +189,7 @@ class _AgendaViewState extends State<AgendaView> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Preencha data e horário antes de salvar."),
-          backgroundColor: Colors.orange,
+          backgroundColor: Colors.red,
         ),
       );
       return;
@@ -187,8 +215,8 @@ class _AgendaViewState extends State<AgendaView> {
       await _aulaController.criarAula(aula);
       await loadAulas();
 
-        // Atualiza o dia selecionado para o novo
-        _diaSelecionado = data;
+      // Atualiza o dia selecionado para o novo
+      _diaSelecionado = data;
       Navigator.of(context).pop(); // fecha o dialog
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -224,6 +252,7 @@ class _AgendaViewState extends State<AgendaView> {
               AgendaWidget(
                 diaSelecionado: _diaSelecionado,
                 aulasPorDia: _aulasPorDia,
+                mostrarText:true,
                 onDiaSelecionado: (dia) {
                   setState(() {
                     _diaSelecionado = dia;
