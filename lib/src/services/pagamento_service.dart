@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:profmate/src/models/pagamento_api_model.dart';
@@ -84,5 +83,5 @@ class PagamentoService {
       if(response.statusCode == 404){
         throw Exception("Pagamento não encontrado.");
       }
-}
+  }
 }

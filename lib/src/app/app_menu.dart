@@ -9,7 +9,7 @@ import 'package:profmate/src/views/alunos_view.dart';
 import 'package:profmate/src/views/atividade_view.dart';
 import 'package:profmate/src/views/cadastro_aluno_view.dart';
 import 'package:profmate/src/views/configuracoes_view.dart';
-import 'package:profmate/src/views/financeiro_view.dart';
+import 'package:profmate/src/views/financeiro_view.txt';
 import 'package:profmate/src/views/mural_view.dart';
 import 'package:profmate/src/views/home_view.dart';
 import 'package:profmate/src/views/progresso_view.dart';

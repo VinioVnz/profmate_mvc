@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/controller/financeiro_controlle.dart';
+import 'package:profmate/src/controller/financeiro_controller.dart';
 import 'package:profmate/src/views/relatorio_view.dart';
 import '../widgets/aluno_tile.dart';
 
