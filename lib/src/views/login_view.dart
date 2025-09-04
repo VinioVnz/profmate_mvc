@@ -184,8 +184,8 @@ class _LoginviewState extends State<LoginView> {
                                   });
                                 },
                                 icon: oculto
-                                    ? Icon(Icons.visibility_off)
-                                    : Icon(Icons.visibility),
+                                    ? Icon(Icons.visibility)
+                                    : Icon(Icons.visibility_off),
                               ),
                             ),
                           ),

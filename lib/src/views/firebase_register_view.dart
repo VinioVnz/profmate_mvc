@@ -182,8 +182,8 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                     });
                   },
                   icon: oculto
-                      ? Icon(Icons.visibility_off)
-                      : Icon(Icons.visibility),
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off),
                 ),
                 obscureText: oculto,
                 controller: _senhaController,
