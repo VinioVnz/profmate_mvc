@@ -40,8 +40,7 @@ class AuthFirebaseService {
       await prefs.setString('firebase_uid', cred.user!.uid);
       return usuario;
     } on FirebaseAuthException catch (e) {
-      print("Erro no cadastro: ${e.code}");
-      return null;
+      throw e;
     }
   }
 

@@ -11,7 +11,8 @@ class CampoFormulario extends StatelessWidget {
   final VoidCallback? onTap;
   final List<TextInputFormatter>? formatar;
   final bool? obscureText;
-  const CampoFormulario({
+  Widget? suffixIcon;
+  CampoFormulario({
     super.key,
     required this.controller,
     required this.hintText,
@@ -21,7 +22,8 @@ class CampoFormulario extends StatelessWidget {
     this.readOnly = false,
     this.onTap,
     this.formatar,
-    this.obscureText
+    this.obscureText,
+    this.suffixIcon,
   });
 
   @override
@@ -44,7 +46,7 @@ class CampoFormulario extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(36),
             border: Border.all(color: Colors.black),
-            color: readOnly ? Color.fromARGB(138, 230, 225, 225): Colors.white,
+            color: readOnly ? Color.fromARGB(138, 230, 225, 225) : Colors.white,
           ),
           child: TextFormField(
             obscureText: obscureText ?? false,
@@ -56,7 +58,9 @@ class CampoFormulario extends StatelessWidget {
               hintText: hintText,
               hintStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
               border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+              suffixIcon: suffixIcon,
+
             ),
             validator: validator,
             keyboardType: keyboardType,

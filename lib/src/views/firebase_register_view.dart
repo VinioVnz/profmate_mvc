@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:profmate/src/controller/user_api_controller.dart';
 import 'package:profmate/src/controller/user_firebase_controller.dart';
@@ -17,6 +18,7 @@ class FirebaseRegisterView extends StatefulWidget {
 }
 
 class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
+  bool oculto = true;
   bool _loading = false;
   String? _erro;
   final _formKey = GlobalKey<FormState>();
@@ -41,14 +43,23 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
     filter: {"#": RegExp(r'[0-9]')},
   );
 
-
   void _cadastrar() async {
-    if (_formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate()) {
       setState(() {
-        _loading = true;
-        _erro = null;
+        _erro = "Por favor, preencha todos os campos corretamente.";
       });
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(_erro!), backgroundColor: Colors.red,));
+      return;
+    }
 
+    setState(() {
+      _loading = true;
+      _erro = null;
+    });
+
+    try {
       final user = UserApiModel(
         uid: '',
         nome: _nomeController.text,
@@ -60,9 +71,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
 
       final createdUser = await _apiController.criarUsuario(user);
       print('ID DO USUARIO: ${createdUser.id}');
-      setState(() {
-        _loading = false;
-      });
+
 
       final usuario = await _controller.cadastrar(
         createdUser.id!,
@@ -70,40 +79,58 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         _emailController.text,
         _senhaController.text,
         _cpfController.text,
-        _telefoneController.text
+        _telefoneController.text,
       );
 
-      if (usuario != null) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setInt('user_id', usuario.id!);
 
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Bem vindo ${usuario.nome}')));
-        Navigator.pushReplacementNamed(context, '/home');
-      }
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('user_id', usuario!.id!);
 
-      /* if (usuario != null) {
-        final user = UserApiModel(
-          uid: usuario.uid,
-          nome: usuario.nome,
-          cpf: usuario.cpf,
-          email: usuario.email,
-          telefone: usuario.telefone,
-          dataNascimento: DateConverterUtil.toDatabaseFormat(
-            dataNascimento,
-          ), //salva no banco como padrao YYYY-MM-DD
-          password: _senhaController.text,
-        );
-
-        await _apiController.criarAluno(user); */
-    } else {
-      setState(() {
-        _erro = "Erro ao cadastrar Usuario";
-      });
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Erro ao cadastrar usuario')));
+      ).showSnackBar(SnackBar(content: Text('Bem-vindo ${usuario.nome}')));
+
+      Navigator.pushReplacementNamed(context, '/home');
+    } on FirebaseAuthException catch (e) {
+ 
+      final mensagem = _mensagemErroFirebase(e.code);
+
+      setState(() {
+        _erro = mensagem; 
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(mensagem), backgroundColor: Colors.red),
+      );
+    } catch (e) {
+      final mensagem = "Ocorreu um erro inesperado. Tente novamente.";
+      setState(() {
+        _erro = mensagem;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(mensagem), backgroundColor: Colors.red),
+      );
+    } finally {
+      setState(() {
+        _loading = false;
+      });
+    }
+  }
+
+  // Função utilitária para traduzir erros do Firebase
+  String _mensagemErroFirebase(String code) {
+    switch (code) {
+      case 'invalid-email':
+        return 'O e-mail informado é inválido.';
+      case 'email-already-in-use':
+        return 'Este e-mail já está cadastrado.';
+      case 'weak-password':
+        return 'A senha é muito fraca. Use ao menos 6 caracteres.';
+      case 'operation-not-allowed':
+        return 'Operação não permitida. Contate o suporte.';
+      default:
+        return 'Ocorreu um erro. Tente novamente.';
     }
   }
 
@@ -142,10 +169,23 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                 controller: _emailController,
                 titulo: 'E-mail',
                 hintText: 'Digite seu e-mail',
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'Campo obrigatório' : null,
                 keyboardType: TextInputType.emailAddress,
               ),
               CampoFormulario(
-                obscureText: true,
+                suffixIcon: IconButton(
+                  color: Colors.black,
+                  onPressed: () {
+                    setState(() {
+                      oculto = !oculto;
+                    });
+                  },
+                  icon: oculto
+                      ? Icon(Icons.visibility_off)
+                      : Icon(Icons.visibility),
+                ),
+                obscureText: oculto,
                 controller: _senhaController,
                 titulo: 'Senha',
                 hintText: 'Digite sua senha (mín. 6 caracteres)',
@@ -158,6 +198,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                   }
                   return null;
                 },
+
                 keyboardType: TextInputType.visiblePassword,
               ),
               CampoFormulario(
@@ -189,7 +230,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                         setState(() {
                           _loading = false;
                         });
-                      } 
+                      },
                     ),
             ],
           ),

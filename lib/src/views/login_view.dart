@@ -27,6 +27,8 @@ class _LoginviewState extends State<LoginView> {
     super.initState();
   }
 
+  bool oculto = true;
+
   /* void _handleLogin() async {
     FocusScope.of(context).unfocus();
     setState(() {
@@ -65,7 +67,7 @@ class _LoginviewState extends State<LoginView> {
       print('USUARIO: $usuario');
       if (usuario != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('user_id', usuario.id!);
+        await prefs.setInt('user_id', usuario.id!);
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text('Bem vindo ${usuario.nome}')));
@@ -154,7 +156,7 @@ class _LoginviewState extends State<LoginView> {
                           ),
                           SizedBox(height: 8),
                           TextFormField(
-                            obscureText: true,
+                            obscureText: oculto,
                             controller: _passwordController,
                             decoration: InputDecoration(
                               filled: true,
@@ -174,10 +176,21 @@ class _LoginviewState extends State<LoginView> {
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide.none,
                               ),
+                              suffixIcon: IconButton(
+                                color: Colors.black,
+                                onPressed: () {
+                                  setState(() {
+                                    oculto = !oculto;
+                                  });
+                                },
+                                icon: oculto
+                                    ? Icon(Icons.visibility_off)
+                                    : Icon(Icons.visibility),
+                              ),
                             ),
                           ),
                           SizedBox(height: 24),
-                         /*  Text('Continuar com o Google',style: TextStyle(fontWeight: FontWeight.bold),),
+                          /*  Text('Continuar com o Google',style: TextStyle(fontWeight: FontWeight.bold),),
                           SizedBox(height: 16,),
                           Container(
                             width: 50,
