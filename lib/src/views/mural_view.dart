@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:profmate/src/controller/mural_controller.dart';
 import 'package:profmate/src/models/mural_model.dart';
+import 'package:profmate/src/widgets/custom_dialog.dart';
 
 class MuralView extends StatefulWidget {
   const MuralView({super.key, required this.controller});
@@ -21,39 +22,21 @@ class _MuralViewState extends State<MuralView> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text("Apagar recado"),
-          content: Text("Deseja realmente apagar este recado?"),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                "Cancelar",
-                style: TextStyle(
-                  color: const Color.fromARGB(255, 53, 91, 140),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
+        return CustomDialog(
+          titulo: "Apagar recado",
+          mensagem: "Deseja realmente apagar esse recado?",
+          aoCancelar: () => Navigator.pop(context),
+          aoConfirmar: () {
                 controller.deletarRecado(recado);
                 Navigator.pop(context);
                 FocusScope.of(context).unfocus();
-              },
-              child: Text(
-                "OK",
-                style: TextStyle(
-                  color: const Color.fromARGB(255, 53, 91, 140),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
+              },     
+          
         );
       },
     );
   }
+
 
   void adicionaRecado() {
     final texto = recadoController.text.trim();
@@ -118,7 +101,13 @@ class _MuralViewState extends State<MuralView> {
                                 IconButton(
                                   visualDensity: VisualDensity.compact,
                                   onPressed: () => alertConfirmarDelete(recado),
-                                  icon: Icon(Icons.close, color: Colors.white),
+                                  icon: Icon(Icons.delete, color: Colors.white),
+                                ),
+
+                                IconButton(
+                                  visualDensity: VisualDensity.compact,
+                                  onPressed: () {},
+                                  icon: Icon(Icons.edit, color: Colors.white),
                                 ),
                               ],
                             ),
