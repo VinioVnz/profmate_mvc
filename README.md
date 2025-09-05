@@ -25,17 +25,17 @@ O ProfMate é um aplicativo desenvolvido em Flutter com Firebase para autentica�
 - HTTP para comunicação com a API
 
 ## Autores
-Vinicius Bornhofen
+Vinicius Bornhofen |
 LinkedIn: linkedin.com/in/vinícius-bornhofen-896974333
 
-Vitor Eduardo Henkels
+Vitor Eduardo Henkels |
 LinkedIn: linkedin.com/in/vitor-eduardo-henkels-5b5ab02b2
 
-Alani Rigotti de Oliveira
+Alani Rigotti de Oliveira |
 LinkedIn: linkedin.com/in/alanirigotti
 
-Vanessa Nau Rosa
+Vanessa Nau Rosa |
 LinkedIn: linkedin.com/in/vanessa-nau-rosa-a34524331
 
-Lucas Joel Pfleger
+Lucas Joel Pfleger |
 LinkedIn: linkedin.com/in/lucas-joel-pfleger-278146342
