@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class FinanceiroService {
-  final String baseUrl = dotenv.env['API_URL'] ?? '127.0.0.1:8000'; //só define a URL base da api em localhost 
+  final String baseUrl = dotenv.env['API_URL'] ?? 'http://127.0.0.1:8000'; //só define a URL base da api em localhost 
 
   Future<List<FinanceiroModel>> getAll(BuildContext context) async {
     final response = await http.get(Uri.parse(baseUrl));

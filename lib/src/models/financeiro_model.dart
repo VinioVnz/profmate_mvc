@@ -1,5 +1,5 @@
 class FinanceiroModel {
-  final String? id;
+  final String id;
   final DateTime vencimento;
   final String nomeAluno;
   final double custoAula;
@@ -18,7 +18,7 @@ class FinanceiroModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'vencimento': vencimento,
+      'vencimento': vencimento.toIso8601String(),
       'nomeAluno': nomeAluno,
       'custoAula': custoAula,
       'fotoUrl': fotoUrl,
@@ -29,10 +29,10 @@ class FinanceiroModel {
   factory FinanceiroModel.fromJson(Map<String, dynamic> json) {
     return FinanceiroModel(
       id: json['id'] as String,
-      vencimento: json['vencimento'] as DateTime,
+      vencimento: DateTime.parse(json['vencimento'] as String),
       nomeAluno: json['nomeAluno'] as String,
-      custoAula: json['custoAula'] as double,
-      fotoUrl: json['fotoUrl'] as String,
+      custoAula: (json['custoAula'] as num).toDouble(),
+      fotoUrl: json['fotoUrl'] as String?,
       estaPago: json['estaPago'] as bool,
     );
   }
