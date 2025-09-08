@@ -248,13 +248,13 @@ class _AgendaViewState extends State<AgendaView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: _loading
+                  ? Center(child: CircularProgressIndicator())
+                  : SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _loading
-                  ? Center(child: CircularProgressIndicator())
-                  : AgendaWidget(
+              AgendaWidget(
                       diaSelecionado: _diaSelecionado,
                       aulasPorDia: _aulasPorDia,
                       mostrarText: true,
