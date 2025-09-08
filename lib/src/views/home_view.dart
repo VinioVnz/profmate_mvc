@@ -27,6 +27,7 @@ class _HomeViewState extends State<HomeView> {
   AlunoApiModel? selectedAluno;
   List<AlunoApiModel> alunos = [];
   int? usuarioId;
+  bool _loading = true;
 
   @override
   void initState() {
@@ -77,8 +78,12 @@ class _HomeViewState extends State<HomeView> {
             'horario': aula.horario,
           });
         }
+        _loading = false;
       });
     } catch (e) {
+      setState(() {
+        _loading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Erro ao carregar Aulas'),
@@ -115,25 +120,32 @@ class _HomeViewState extends State<HomeView> {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: Colors.grey, width: 0.4),
                 ),
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: AgendaWidget(aulasPorDia: _aulasPorDia),
-                    ),
-                    Positioned.fill(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(16),
-                          onTap: () {
-                            Navigator.pushReplacementNamed(context, '/agenda');
-                          },
-                        ),
+                child: _loading
+                    ? const Center(
+                      child: CircularProgressIndicator(),
+                      )
+                    : Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: AgendaWidget(aulasPorDia: _aulasPorDia),
+                          ),
+                          Positioned.fill(
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(16),
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    '/agenda',
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
               ),
             ),
 
