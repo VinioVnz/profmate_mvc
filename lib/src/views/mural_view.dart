@@ -27,16 +27,14 @@ class _MuralViewState extends State<MuralView> {
           mensagem: "Deseja realmente apagar esse recado?",
           aoCancelar: () => Navigator.pop(context),
           aoConfirmar: () {
-                controller.deletarRecado(recado);
-                Navigator.pop(context);
-                FocusScope.of(context).unfocus();
-              },     
-          
+            controller.deletarRecado(recado);
+            Navigator.pop(context);
+            FocusScope.of(context).unfocus();
+          },
         );
       },
     );
   }
-
 
   void adicionaRecado() {
     final texto = recadoController.text.trim();
@@ -98,16 +96,27 @@ class _MuralViewState extends State<MuralView> {
                                     ),
                                   ),
                                 ),
-                                IconButton(
-                                  visualDensity: VisualDensity.compact,
-                                  onPressed: () => alertConfirmarDelete(recado),
-                                  icon: Icon(Icons.delete, color: Colors.white),
-                                ),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      visualDensity: VisualDensity.compact,
+                                      onPressed: () =>
+                                          alertConfirmarDelete(recado),
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                      ),
+                                    ),
 
-                                IconButton(
-                                  visualDensity: VisualDensity.compact,
-                                  onPressed: () {},
-                                  icon: Icon(Icons.edit, color: Colors.white),
+                                    IconButton(
+                                      visualDensity: VisualDensity.compact,
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

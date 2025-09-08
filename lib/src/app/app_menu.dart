@@ -41,7 +41,7 @@ final List<MenuModel> appMenuItems = [
 
   MenuModel(
     title: 'Atividades',
-    icon: Icons.settings,
+    icon: Icons.task,
     route: '/atividade_view',
     page: AtividadeView(),
   ),

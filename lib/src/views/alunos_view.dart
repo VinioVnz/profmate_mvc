@@ -88,7 +88,7 @@ class _AlunosViewState extends State<AlunosView> {
       floatingActionButton: SpeedDial(
         backgroundColor: const Color(0xFFBDD9FF),
         icon: Icons.add,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
         children: [
           SpeedDialChild(
             label: "Cadastrar aluno",
@@ -104,13 +104,13 @@ class _AlunosViewState extends State<AlunosView> {
               }
             },
           ),
-          SpeedDialChild(
+          /* SpeedDialChild(
             label: "Cadastrar turma",
             backgroundColor: Colors.white,
             onTap: () {
               // colocar aqui ação de cadastrar nova turma
             },
-          ),
+          ), */
         ],
       ),
       body: Padding(
@@ -185,6 +185,7 @@ class _AlunosViewState extends State<AlunosView> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
+                                        /* 
                                         const SizedBox(height: 6),
                                         Text(
                                           "Turma: ",
@@ -193,7 +194,7 @@ class _AlunosViewState extends State<AlunosView> {
                                             color: Colors.grey[700],
                                           ),
                                         ),
-
+ */
                                         const SizedBox(height: 6),
                                         Text(
                                           "Progresso do aluno:",
