@@ -51,10 +51,22 @@ class _FinanceiroViewState extends State<FinanceiroView> {
 
   @override
   Widget build(BuildContext context) {
-    double totalRecebido = pagamentos.fold(
-        0.0, (sum, p) => sum + p.valorAula); // total de todos os pagamentos
-    int totalPendentes = pagamentos.length; // exemplo simples
+    // filtra alunos que possuem pelo menos 1 pagamento
+    final alunosComPagamento = alunos.where((aluno) {
+      return pagamentos.any((p) => p.idAluno == aluno.id);
+    }).toList();
 
+    // total apenas dos alunos filtrados
+    final pagamentosFiltrados = pagamentos
+        .where((p) => alunosComPagamento.any((a) => a.id == p.idAluno))
+        .toList();
+
+    double totalRecebido = pagamentosFiltrados.fold(
+      0.0,
+      (sum, p) => sum + p.valorAula,
+    );
+
+    int totalPendentes = pagamentosFiltrados.length;
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -73,7 +85,9 @@ class _FinanceiroViewState extends State<FinanceiroView> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 8),
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: const Text(
                     "Relatório",
                     style: TextStyle(color: Colors.white),
@@ -120,31 +134,28 @@ class _FinanceiroViewState extends State<FinanceiroView> {
             child: isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : alunos.isEmpty
-                    ? const Center(child: Text('Nenhum aluno encontrado'))
-                    : ListView.builder(
-                        itemCount: alunos.length,
-                        itemBuilder: (context, index) {
-                          final aluno = alunos[index];
-                          // busca pagamento correspondente
-                          
-                          final pagamento = pagamentos.firstWhere(
-                            
-                              (p) => p.idAluno == aluno.id,
-                              orElse: () => PagamentoApiModel(
-                                  id: null,
-                                  valorAula: 0,
-                                  vencimento: '',
-                                  formaPagamento: '',
-                                  frequenciaPagamento: '',
-                                  idAluno: aluno.id ?? 0));
-                                  
-                                  
-                          return AlunoTile(
-                            aluno: aluno,
-                            pagamento: pagamento,
-                          );
-                        },
-                      ),
+                ? const Center(child: Text('Nenhum aluno encontrado'))
+                : ListView.builder(
+                    itemCount: alunos.length,
+                    itemBuilder: (context, index) {
+                      final aluno = alunos[index];
+                      // busca pagamento correspondente
+
+                      final pagamento = pagamentos.firstWhere(
+                        (p) => p.idAluno == aluno.id,
+                        orElse: () => PagamentoApiModel(
+                          id: null,
+                          valorAula: 0,
+                          vencimento: '',
+                          formaPagamento: '',
+                          frequenciaPagamento: '',
+                          idAluno: aluno.id ?? 0,
+                        ),
+                      );
+
+                      return AlunoTile(aluno: aluno, pagamento: pagamento);
+                    },
+                  ),
           ),
         ],
       ),
