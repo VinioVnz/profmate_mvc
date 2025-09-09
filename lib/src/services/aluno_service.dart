@@ -10,8 +10,8 @@ import 'package:http/http.dart' as http;
 class AlunoService {
   //trocar para a url do servidor depois
 
-  //final String baseUrl = 'http://10.0.2.2:3000';
-   final String baseUrl = 'https://api-profmate.onrender.com';
+  final String baseUrl = 'http://10.0.2.2:3000';
+  // final String baseUrl = 'https://api-profmate.onrender.com';
   // Pega UID do usuário logado
   Future<String?> _getUserUid() async {
     return await AuthFirebaseService().getUid();

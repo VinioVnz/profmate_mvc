@@ -6,7 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class FinanceiroService {
   //final String baseUrl = dotenv.env['API_URL'] ?? 'http://127.0.0.1:8000'; //só define a URL base da api em localhost 
-  final String baseUrl = 'https://api-profmate.onrender.com';
+  //final String baseUrl = 'https://api-profmate.onrender.com';
+  final String baseUrl = 'http://10.0.2.2:3000';
   Future<List<FinanceiroModel>> getAll(BuildContext context) async {
     final response = await http.get(Uri.parse(baseUrl));
     if (response.statusCode == 200) {
