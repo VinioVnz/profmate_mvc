@@ -40,7 +40,7 @@ class _SuporteViewState extends State<SuporteView> {
           ),
           CardFaq(
             pergunta: "Consigo registrar pagamentos recebidos?",
-            resposta: "Sim. Na tela C, encontre o pagamento gerado para o aluno em questão e registre o pagamento tocando na caixinha de confirmação.",
+            resposta: "Sim. Na tela 'Financeiro', encontre o pagamento gerado para o aluno em questão e registre o pagamento tocando na caixinha de confirmação.",
           ),
           CardFaq(
             pergunta: "Como acompanho as pendências de pagamento?",

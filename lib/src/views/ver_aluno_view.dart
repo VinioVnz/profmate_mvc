@@ -413,7 +413,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                           SizedBox(height: 16),
 
                           CustomElevatedButton(
-                            tituloBotao: "Mais detalhes do progresso",
+                            tituloBotao: "Mais detalhes",
                             onPressed: () {
                               Navigator.push(
                                 context,
