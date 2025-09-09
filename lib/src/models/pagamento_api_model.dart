@@ -23,7 +23,7 @@ class PagamentoApiModel {
       vencimento: json['vencimento'], 
       formaPagamento: json['formaPagamento'], 
       frequenciaPagamento: json['frequenciaPagamento'], 
-      idAluno: json['aluno_id'] ?? 0
+      idAluno: json['aluno']?['id'] ?? 0
       );
   }
 

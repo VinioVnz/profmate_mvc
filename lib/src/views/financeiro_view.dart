@@ -126,7 +126,9 @@ class _FinanceiroViewState extends State<FinanceiroView> {
                         itemBuilder: (context, index) {
                           final aluno = alunos[index];
                           // busca pagamento correspondente
+                          
                           final pagamento = pagamentos.firstWhere(
+                            
                               (p) => p.idAluno == aluno.id,
                               orElse: () => PagamentoApiModel(
                                   id: null,
@@ -136,7 +138,7 @@ class _FinanceiroViewState extends State<FinanceiroView> {
                                   frequenciaPagamento: '',
                                   idAluno: aluno.id ?? 0));
                                   
-
+                                  
                           return AlunoTile(
                             aluno: aluno,
                             pagamento: pagamento,
