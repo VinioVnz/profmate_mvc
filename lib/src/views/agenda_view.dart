@@ -42,7 +42,7 @@ class _AgendaViewState extends State<AgendaView> {
   AlunoApiModel? selectedAluno;
   List<AlunoApiModel> alunos = [];
   int? usuarioId;
-
+  bool _loading = true;
   void _carregarIdUsuario() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final id = prefs.getInt('user_id');
@@ -85,8 +85,12 @@ class _AgendaViewState extends State<AgendaView> {
             'horario': aula.horario,
           });
         }
+        _loading = false;
       });
     } catch (e) {
+      setState(() {
+        _loading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Erro ao carregar Aulas'),
@@ -151,7 +155,7 @@ class _AgendaViewState extends State<AgendaView> {
                     tituloBotao: 'Cancelar',
                   ),
                 ),
-                SizedBox(width: 10,),
+                SizedBox(width: 10),
                 Expanded(
                   child: BotaoConfirmar(
                     aoConfirmar: () async {
@@ -244,20 +248,22 @@ class _AgendaViewState extends State<AgendaView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: _loading
+                  ? Center(child: CircularProgressIndicator())
+                  : SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               AgendaWidget(
-                diaSelecionado: _diaSelecionado,
-                aulasPorDia: _aulasPorDia,
-                mostrarText:true,
-                onDiaSelecionado: (dia) {
-                  setState(() {
-                    _diaSelecionado = dia;
-                  });
-                },
-              ),
+                      diaSelecionado: _diaSelecionado,
+                      aulasPorDia: _aulasPorDia,
+                      mostrarText: true,
+                      onDiaSelecionado: (dia) {
+                        setState(() {
+                          _diaSelecionado = dia;
+                        });
+                      },
+                    ),
             ],
           ),
         ),

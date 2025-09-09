@@ -5,8 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class FinanceiroService {
+<<<<<<< HEAD
   final String baseUrl = dotenv.env['API_URL'] ?? 'http://10.0.2.2:3000'; //só define a URL base da api em localhost 
 
+=======
+  //final String baseUrl = dotenv.env['API_URL'] ?? 'http://127.0.0.1:8000'; //só define a URL base da api em localhost 
+  //final String baseUrl = 'https://api-profmate.onrender.com';
+  final String baseUrl = 'http://10.0.2.2:3000';
+>>>>>>> c2c8c6e4a91202694f94c54279d85554e9dba3b1
   Future<List<FinanceiroModel>> getAll(BuildContext context) async {
     final response = await http.get(Uri.parse(baseUrl));
     if (response.statusCode == 200) {

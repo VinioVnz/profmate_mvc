@@ -38,7 +38,7 @@ class CustomAppDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout,),iconColor: Colors.black,
             title: Text('Sair', style: TextStyle(fontWeight: FontWeight.bold),),
             onTap: () {
-              //AuthService().logout();
+              AuthService().logout();
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (_) => const LoginView()),

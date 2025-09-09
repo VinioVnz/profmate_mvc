@@ -7,7 +7,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 class AppWidget extends StatelessWidget {
-  const AppWidget({super.key});
+    final String initialRoute;
+  const AppWidget({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class AppWidget extends StatelessWidget {
         ),
       ),
       title: 'ProfMate',
-      initialRoute: '/login',
+      initialRoute: initialRoute,
       //AuthService.isLoggedIn  ? '/home' : '/login'
       routes: {
         '/login' : (context) => LoginView(),

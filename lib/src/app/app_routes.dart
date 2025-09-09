@@ -7,7 +7,7 @@ import 'package:profmate/src/widgets/base_layout.dart';
 
 Map<String, WidgetBuilder> generateRoutes() {
   final Map<String, WidgetBuilder> routes = {
-    '/': (_) => const ProgressoView(),
+    '/progresso': (_) => const ProgressoView(),
     '/addEmenta': (_) => const AddEmentaView(),
     '/adicionar_atividade_view': (_) => const AdicionarAtividadeView(),
   };
