@@ -28,6 +28,7 @@ dependencies:
   firebase_auth: ^6.0.1
   cloud_firestore: ^6.0.0
   flutter_multi_formatter: ^2.13.8
+  flutter_dotenv: 5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -38,3 +39,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - .env
