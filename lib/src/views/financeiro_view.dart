@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/controller/financeiro_controller.dart';
-import 'package:profmate/src/models/financeiro_model.dart';
+import 'package:profmate/src/controller/pagamento_controller.dart';
+import 'package:profmate/src/models/pagamento_api_model.dart';
 import 'package:profmate/src/widgets/aluno_tile.dart';
 import 'package:profmate/src/views/relatorio_view.dart'; // importe sua tela de relatório se existir
 
@@ -12,7 +12,7 @@ class FinanceiroView extends StatefulWidget {
 }
 
 class _FinanceiroViewState extends State<FinanceiroView> {
-  final controller = FinanceiroController();
+  final controller = PagamentoController();
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _FinanceiroViewState extends State<FinanceiroView> {
           const SizedBox(height: 12),
 
           // CARDS: Total Recebidos / Pendentes
-          ValueListenableBuilder<List<FinanceiroModel>>(
+          ValueListenableBuilder<List<PagamentoApiModel>>(
             valueListenable: controller.pagamentos,
             builder: (context, pagamentos, _) {
               return Row(
@@ -97,7 +97,7 @@ class _FinanceiroViewState extends State<FinanceiroView> {
 
           // Lista de alunos
           Expanded(
-            child: ValueListenableBuilder<List<FinanceiroModel>>(
+            child: ValueListenableBuilder<List<PagamentoApiModel>>(
               valueListenable: controller.pagamentos,
               builder: (context, pagamentos, _) {
                 if (controller.isLoading.value) {
