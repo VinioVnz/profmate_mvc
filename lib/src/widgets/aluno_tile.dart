@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
-import '../models/financeiro_model.dart';
+import 'package:profmate/src/models/aluno_api_model.dart';
+import 'package:profmate/src/models/pagamento_api_model.dart';
+import 'package:profmate/theme/app_colors.dart';
 
 class AlunoTile extends StatelessWidget {
-  final FinanceiroModel aluno;
-  const AlunoTile({super.key, required this.aluno});
+  final AlunoApiModel aluno;
+  final PagamentoApiModel pagamento;
+
+  const AlunoTile({
+    super.key, 
+    required this.aluno,
+    required this.pagamento,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: aluno.fotoUrl != null
-          ? CircleAvatar(backgroundImage: NetworkImage(aluno.fotoUrl!))
-          : const CircleAvatar(backgroundColor: Colors.grey),
-      title: Text(aluno.nomeAluno),
-      subtitle: Text(
-        "Vencimento: ${aluno.vencimento.day}/${aluno.vencimento.month}/${aluno.vencimento.year} - ${aluno.estaPago ? "Pago" : "Pendente"}",
+      leading: CircleAvatar(
+        backgroundColor: AppColors.azulEscuro,
+        radius: 35,
+        child: const Icon(
+          Icons.person,
+          size: 50,
+          color: Colors.white,
+        ),
       ),
-      trailing: Text("R\$${aluno.custoAula.toStringAsFixed(2)}"),
+      title: Text(aluno.nome),
+      subtitle: Text("Vencimento: ${pagamento.vencimento}"),
+      trailing: Text("R\$${pagamento.valorAula.toStringAsFixed(2)}"),
     );
   }
 }

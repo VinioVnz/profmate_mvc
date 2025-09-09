@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
 import 'package:profmate/src/controller/pagamento_controller.dart';
+import 'package:profmate/src/models/aluno_api_model.dart';
 import 'package:profmate/src/models/pagamento_api_model.dart';
 import 'package:profmate/src/widgets/aluno_tile.dart';
-import 'package:profmate/src/views/relatorio_view.dart'; // importe sua tela de relatório se existir
+import 'package:profmate/src/views/relatorio_view.dart';
 
 class FinanceiroView extends StatefulWidget {
   const FinanceiroView({super.key});
@@ -12,23 +14,47 @@ class FinanceiroView extends StatefulWidget {
 }
 
 class _FinanceiroViewState extends State<FinanceiroView> {
-  final controller = PagamentoController();
+  final alunoController = CadastroAlunoController();
+  final pagamentoController = PagamentoController();
+
+  List<AlunoApiModel> alunos = [];
+  List<PagamentoApiModel> pagamentos = [];
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    // carrega pagamentos ao abrir a tela
-    controller.listarPagamento(context);
+    _carregarDados();
+  }
+
+  Future<void> _carregarDados() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final alunosList = await alunoController.listarAluno(context);
+    final pagamentosList = await pagamentoController.listarPagamento(context);
+
+    setState(() {
+      alunos = alunosList;
+      pagamentos = pagamentosList;
+      isLoading = false;
+    });
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    alunoController.dispose();
+    pagamentoController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    double totalRecebido = pagamentos.fold(
+        0.0, (sum, p) => sum + p.valorAula); // total de todos os pagamentos
+    int totalPendentes = pagamentos.length; // exemplo simples
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -39,15 +65,15 @@ class _FinanceiroViewState extends State<FinanceiroView> {
             children: [
               GestureDetector(
                 onTap: () {
-                  //Navigator.push(context, MaterialPageRoute(builder: (_) => const RelatorioView()));
+                  // Navigator.push(context, MaterialPageRoute(builder: (_) => const RelatorioView()));
                 },
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 8),
                   child: const Text(
                     "Relatório",
                     style: TextStyle(color: Colors.white),
@@ -59,28 +85,22 @@ class _FinanceiroViewState extends State<FinanceiroView> {
           const SizedBox(height: 12),
 
           // CARDS: Total Recebidos / Pendentes
-          ValueListenableBuilder<List<PagamentoApiModel>>(
-            valueListenable: controller.pagamentos,
-            builder: (context, pagamentos, _) {
-              return Row(
-                children: [
-                  const Padding(padding: EdgeInsets.all(8)),
-                  _statusCard(
-                    "Total recebidos",
-                    "R\$ ${controller.getTotalRecebido().toStringAsFixed(2)}",
-                    const Color.fromARGB(255, 53, 91, 140),
-                  ),
-                  const SizedBox(width: 16),
-                  _statusCard(
-                    "Pendentes",
-                    "${controller.getTotalPendentes()} alunos",
-                    const Color.fromARGB(255, 167, 17, 6),
-                  ),
-                ],
-              );
-            },
+          Row(
+            children: [
+              const Padding(padding: EdgeInsets.all(8)),
+              _statusCard(
+                "Total recebidos",
+                "R\$ ${totalRecebido.toStringAsFixed(2)}",
+                const Color.fromARGB(255, 53, 91, 140),
+              ),
+              const SizedBox(width: 16),
+              _statusCard(
+                "Pendentes",
+                "$totalPendentes alunos",
+                const Color.fromARGB(255, 167, 17, 6),
+              ),
+            ],
           ),
-
           const SizedBox(height: 16),
 
           // Campo de busca
@@ -97,25 +117,32 @@ class _FinanceiroViewState extends State<FinanceiroView> {
 
           // Lista de alunos
           Expanded(
-            child: ValueListenableBuilder<List<PagamentoApiModel>>(
-              valueListenable: controller.pagamentos,
-              builder: (context, pagamentos, _) {
-                if (controller.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : alunos.isEmpty
+                    ? const Center(child: Text('Nenhum aluno encontrado'))
+                    : ListView.builder(
+                        itemCount: alunos.length,
+                        itemBuilder: (context, index) {
+                          final aluno = alunos[index];
+                          // busca pagamento correspondente
+                          final pagamento = pagamentos.firstWhere(
+                              (p) => p.idAluno == aluno.id,
+                              orElse: () => PagamentoApiModel(
+                                  id: null,
+                                  valorAula: 0,
+                                  vencimento: '',
+                                  formaPagamento: '',
+                                  frequenciaPagamento: '',
+                                  idAluno: aluno.id ?? 0));
+                                  
 
-                if (pagamentos.isEmpty) {
-                  return const Center(child: Text('Nenhum aluno encontrado'));
-                }
-
-                return ListView.builder(
-                  itemCount: pagamentos.length,
-                  itemBuilder: (context, index) {
-                    return AlunoTile(aluno: pagamentos[index]);
-                  },
-                );
-              },
-            ),
+                          return AlunoTile(
+                            aluno: aluno,
+                            pagamento: pagamento,
+                          );
+                        },
+                      ),
           ),
         ],
       ),
