@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profmate/src/models/ementa_api_model.dart';
 import 'package:profmate/src/widgets/campo_formulario.dart';
 import 'package:profmate/theme/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../controller/ementa_controller.dart';
 
 class AddEmentaView extends StatefulWidget {
@@ -16,11 +17,14 @@ class _AddEmentaViewState extends State<AddEmentaView> {
   final EmentaController controller = EmentaController();
 
   void _salvarEmenta()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final idAluno = prefs.getInt('aluno_id');
     final ementa = EmentaApiModel(
       modulo: controller.moduloController.text, 
       topico: controller.topicoController.text, 
       descricao: controller.descricaoController.text, 
       concluida: false,
+      idAluno: idAluno!
       );
 
       try{

@@ -3,6 +3,7 @@ class EmentaApiModel {
   final String modulo;
   final String topico;
   final String descricao;
+  final int idAluno;
   bool concluida;
 
   EmentaApiModel({
@@ -11,6 +12,7 @@ class EmentaApiModel {
     required this.topico,
     required this.descricao,
     this.concluida = false,
+    required this.idAluno
   });
 
 factory EmentaApiModel.fromJson(Map<String, dynamic> json){
@@ -20,6 +22,7 @@ factory EmentaApiModel.fromJson(Map<String, dynamic> json){
       topico: json['topico'], 
       descricao: json['descricao'], 
       concluida: json['concluida'] ?? false,
+      idAluno: json['aluno']?['id']
       );
   }
 
@@ -30,6 +33,7 @@ factory EmentaApiModel.fromJson(Map<String, dynamic> json){
       'topico': topico,
       'descricao': descricao,
       'concluida': concluida,
+      'aluno_id': idAluno
     };
   }
 }

@@ -14,13 +14,13 @@ import 'package:profmate/theme/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VerAlunoView extends StatefulWidget {
-  final AlunoApiModel? aluno;
+  final AlunoApiModel aluno;
   final PagamentoApiModel? pagamento;
   final CadastroAlunoController? controller;
   final PagamentoController? pagamentoController;
   const VerAlunoView({
     super.key,
-    this.aluno,
+    required this.aluno,
     this.controller,
     this.pagamento,
     this.pagamentoController,
@@ -414,7 +414,9 @@ class _VerAlunoViewState extends State<VerAlunoView> {
 
                           CustomElevatedButton(
                             tituloBotao: "Mais detalhes do progresso",
-                            onPressed: () {
+                            onPressed: () async{
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              await prefs.setInt('aluno_id', widget.aluno.id!);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
