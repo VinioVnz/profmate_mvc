@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/widgets/base_layout.dart';
 import '../controller/atividade_controller.dart';
 import '../models/atividade_model.dart';
 import '../views/adicionar_atividade_view.dart';
-import '../widgets/custom_app_bar.dart';
-import '../widgets/custom_elevated_button.dart'; // ADICIONE ESTE IMPORT
+import '../widgets/custom_elevated_button.dart';
 
 class AtividadesView extends StatefulWidget {
   const AtividadesView({super.key});
@@ -78,6 +76,7 @@ class _AtividadesViewState extends State<AtividadesView> {
           ),
         ],
       ),
+      alani,
     );
   }
 }
