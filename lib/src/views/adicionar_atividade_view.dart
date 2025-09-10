@@ -1,10 +1,9 @@
-// adicionar_atividade_view.dart
 import 'package:flutter/material.dart';
-import 'package:profmate/src/controller/atividade_controller.dart';
-import 'package:profmate/src/widgets/campo_formulario.dart';
-import 'package:profmate/src/widgets/custom_app_bar.dart';
-import 'package:profmate/src/widgets/custom_elevated_button.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import '../controller/atividade_controller.dart';
+import '../widgets/campo_formulario.dart';
+import '../widgets/custom_app_bar.dart';
+import '../widgets/custom_elevated_button.dart';
 
 class AdicionarAtividadeView extends StatefulWidget {
   const AdicionarAtividadeView({super.key});
@@ -31,7 +30,7 @@ class _AdicionarAtividadeViewState extends State<AdicionarAtividadeView> {
         _erro = null;
       });
 
-      final novaAtividade = await _controller.criarAtividade(
+      await _controller.criarAtividade(
         _controller.tituloController.text,
         _controller.descricaoController.text,
         _controller.turmaOuAlunosController.text,
@@ -46,19 +45,10 @@ class _AdicionarAtividadeViewState extends State<AdicionarAtividadeView> {
         _loading = false;
       });
 
-      if (novaAtividade != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Atividade criada com sucesso')),
-        );
-        Navigator.pop(context);
-      } else {
-        setState(() {
-          _erro = "Erro ao criar atividade";
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Erro ao criar atividade')),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Atividade criada com sucesso')),
+      );
+      Navigator.pop(context);
     }
   }
 
@@ -77,25 +67,20 @@ class _AdicionarAtividadeViewState extends State<AdicionarAtividadeView> {
         child: Form(
           key: _formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (_erro != null) ...[
+              if (_erro != null)
                 Text(_erro!, style: const TextStyle(color: Colors.red)),
-                const SizedBox(height: 20),
-              ],
               CampoFormulario(
                 controller: _controller.tituloController,
                 titulo: 'Título',
                 hintText: 'Ex: Trabalho de Matemática',
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Campo obrigatório' : null,
-                keyboardType: TextInputType.text,
               ),
               CampoFormulario(
                 controller: _controller.descricaoController,
                 titulo: 'Descrição',
                 hintText: 'Descreva a atividade',
-                keyboardType: TextInputType.multiline,
               ),
               CampoFormulario(
                 controller: _controller.turmaOuAlunosController,
@@ -103,7 +88,6 @@ class _AdicionarAtividadeViewState extends State<AdicionarAtividadeView> {
                 hintText: 'Ex: Turma A ou João, Maria',
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Campo obrigatório' : null,
-                keyboardType: TextInputType.text,
               ),
               CampoFormulario(
                 controller: _controller.dtEntregaController,
@@ -112,7 +96,6 @@ class _AdicionarAtividadeViewState extends State<AdicionarAtividadeView> {
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Campo obrigatório' : null,
                 formatar: [formatarData],
-                keyboardType: TextInputType.datetime,
               ),
               CampoFormulario(
                 controller: _controller.valeNotaController,
@@ -120,13 +103,11 @@ class _AdicionarAtividadeViewState extends State<AdicionarAtividadeView> {
                 hintText: 'Digite: sim ou não',
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Campo obrigatório' : null,
-                keyboardType: TextInputType.text,
               ),
               CampoFormulario(
                 controller: _controller.arquivoController,
                 titulo: 'Arquivo (opcional)',
                 hintText: 'Caminho do arquivo ou URL',
-                keyboardType: TextInputType.text,
               ),
               const SizedBox(height: 16),
               _loading
