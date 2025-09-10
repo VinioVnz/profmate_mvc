@@ -76,7 +76,6 @@ class _AtividadesViewState extends State<AtividadesView> {
           ),
         ],
       ),
-      alani,
     );
   }
 }
