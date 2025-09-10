@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/controller/cadastro_aluno_controller.dart';
-import 'package:profmate/src/controller/configuracoes_controller.dart';
 import 'package:profmate/src/controller/mural_controller.dart';
 import 'package:profmate/src/controller/tarefas_controller.dart';
 import 'package:profmate/src/models/menu_model.dart';
 import 'package:profmate/src/views/agenda_view.dart';
 import 'package:profmate/src/views/alunos_view.dart';
 import 'package:profmate/src/views/atividade_view.dart';
-import 'package:profmate/src/views/cadastro_aluno_view.dart';
-import 'package:profmate/src/views/configuracoes_view.dart';
 import 'package:profmate/src/views/financeiro_view.dart';
 import 'package:profmate/src/views/mural_view.dart';
 import 'package:profmate/src/views/home_view.dart';
-import 'package:profmate/src/views/progresso_view.dart';
 import 'package:profmate/src/views/suporte_view.dart';
 import 'package:profmate/src/views/tarefas_view.dart';
 
@@ -41,9 +36,9 @@ final List<MenuModel> appMenuItems = [
 
   MenuModel(
     title: 'Atividades',
-    icon: Icons.task,
-    route: '/atividade_view',
-    page: AtividadeView(),
+    icon: Icons.book,
+    route: '/atividades',
+    page: AtividadesView(),
   ),
 
   MenuModel(
