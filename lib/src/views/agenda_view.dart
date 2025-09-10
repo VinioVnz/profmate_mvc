@@ -157,24 +157,26 @@ class _AgendaViewState extends State<AgendaView> {
                 ),
                 SizedBox(width: 10),
                 Expanded(
-                  child: BotaoConfirmar(
-                    aoConfirmar: () async {
-                      if (selectedAluno == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              "Selecione um aluno antes de salvar.",
-                            ),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                        return; // não continua
-                      }
-                      final idAluno = selectedAluno?.id ?? 0;
-                      _salvarAula();
-                    },
-                    tituloBotao: "Salvar",
-                  ),
+                  child: _loading
+                      ? CircularProgressIndicator()
+                      : BotaoConfirmar(
+                          aoConfirmar: () async {
+                            if (selectedAluno == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    "Selecione um aluno antes de salvar.",
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return; // não continua
+                            }
+                            final idAluno = selectedAluno?.id ?? 0;
+                            _salvarAula();
+                          },
+                          tituloBotao: "Salvar",
+                        ),
                 ),
               ],
             ),
@@ -249,12 +251,12 @@ class _AgendaViewState extends State<AgendaView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _loading
-                  ? Center(child: CircularProgressIndicator())
-                  : SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              AgendaWidget(
+          ? Center(child: CircularProgressIndicator())
+          : SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    AgendaWidget(
                       diaSelecionado: _diaSelecionado,
                       aulasPorDia: _aulasPorDia,
                       mostrarText: true,
@@ -264,10 +266,10 @@ class _AgendaViewState extends State<AgendaView> {
                         });
                       },
                     ),
-            ],
-          ),
-        ),
-      ),
+                  ],
+                ),
+              ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: abrirDialog,
 

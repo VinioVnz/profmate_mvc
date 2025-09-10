@@ -343,7 +343,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                       formatar: [formatarData],
                       controller: pagamentoController.vencimentoController,
                       titulo: "Primeiro vencimento:",
-                      hintText: "Ex: 10/10/25",
+                      hintText: "Ex: 10/10/2025",
                       readOnly: !edit,
                       validator: campoObrigatorio,
                     ),

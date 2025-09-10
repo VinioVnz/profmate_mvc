@@ -25,6 +25,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
   final CadastroAlunoController controller = CadastroAlunoController();
   final PagamentoController pagamentoController = PagamentoController();
   int? usuarioId;
+  bool _loading = false;
   /* final formatarValor = CurrencyInputFormatter(leadingSymbol: 'R\$ ',
   useSymbolPadding: true,); */
   @override
@@ -233,7 +234,7 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
                     formatar: [formatarData],
                     controller: pagamentoController.vencimentoController,
                     titulo: "Primeiro vencimento:",
-                    hintText: "Ex: 10/10/25",
+                    hintText: "Ex: 10/10/2025",
                     validator: campoObrigatorio,
                   ),
 
@@ -267,18 +268,27 @@ class _CadastroAlunoViewState extends State<CadastroAlunoView> {
 
                   SizedBox(height: 8),
 
-                  CustomElevatedButton(
-                    tituloBotao: "Salvar",
-                    onPressed: () async {
-                      if (_chaveDoFormulario.currentState!.validate()) {
-                        final alunoCriado = await _salvarAluno();
-                        if (alunoCriado != null && alunoCriado.id != null) {
-                          await _salvarPagamento(alunoCriado.id!);
-                          Navigator.pop(context, true);
-                        }
-                      }
-                    },
-                  ),
+                  _loading
+                      ? CircularProgressIndicator()
+                      : CustomElevatedButton(
+                          tituloBotao: "Salvar",
+                          onPressed: () async {
+                            if (_chaveDoFormulario.currentState!.validate()) {
+                              setState(() {
+                                _loading = true;
+                              });
+                              final alunoCriado = await _salvarAluno();
+                              if (alunoCriado != null &&
+                                  alunoCriado.id != null) {
+                                await _salvarPagamento(alunoCriado.id!);
+                                setState(() {
+                                  _loading = false;
+                                });
+                                Navigator.pop(context, true);
+                              }
+                            }
+                          },
+                        ),
                 ],
               ),
             ),

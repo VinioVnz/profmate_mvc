@@ -25,6 +25,7 @@ class _TarefasViewState extends State<TarefasView> {
   final TarefasApiController _controller = TarefasApiController();
   int? idUsuario;
   List<TarefaApiModel> tarefas = [];
+  bool _loading = false;
 
   @override
   void initState() {
@@ -57,6 +58,9 @@ class _TarefasViewState extends State<TarefasView> {
   }
 
   void _salvarTarefa() async {
+    setState(() {
+      _loading = true;
+    });
     final TarefaApiModel tarefa = TarefaApiModel(
       titulo: 'tarefa',
       descricao: _adicionarTarefasController.text,
@@ -67,6 +71,9 @@ class _TarefasViewState extends State<TarefasView> {
     await _controller.criarTarefa(tarefa);
     _carregarTarefas();
     Navigator.pop(context);
+    setState(() {
+      _loading = false;
+    });
   }
 
   void _abrirAdicionarTarefa() {
@@ -121,20 +128,24 @@ class _TarefasViewState extends State<TarefasView> {
                     style: TextStyle(color: Color.fromARGB(255, 53, 91, 140)),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    _salvarTarefa();
-                    /*final texto = _adicionarTarefasController.text.trim();
+                _loading
+                    ? CircularProgressIndicator()
+                    : TextButton(
+                        onPressed: () {
+                          _salvarTarefa();
+                          /*final texto = _adicionarTarefasController.text.trim();
                      if (texto.isNotEmpty) {
                       widget.controller.adicionaTarefa(texto);
                       Navigator.pop(context);
                     } */
-                  },
-                  child: const Text(
-                    'Adicionar',
-                    style: TextStyle(color: Color.fromARGB(255, 53, 91, 140)),
-                  ),
-                ),
+                        },
+                        child: const Text(
+                          'Adicionar',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 53, 91, 140),
+                          ),
+                        ),
+                      ),
               ],
             ),
           ],
@@ -247,7 +258,7 @@ class _TarefasViewState extends State<TarefasView> {
                                         Navigator.pop(context, true),
                                   ),
                                 );
-                            
+
                                 if (confirmar == true) {
                                   await _controller.deletarTarefa(tarefa.id!);
                                   _carregarTarefas(); // recarrega lista

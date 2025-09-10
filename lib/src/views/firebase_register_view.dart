@@ -48,12 +48,11 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
       setState(() {
         _erro = "Por favor, preencha todos os campos corretamente.";
       });
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(_erro!), backgroundColor: Colors.red,));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_erro!), backgroundColor: Colors.red),
+      );
       return;
     }
-
     setState(() {
       _loading = true;
       _erro = null;
@@ -72,7 +71,6 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
       final createdUser = await _apiController.criarUsuario(user);
       print('ID DO USUARIO: ${createdUser.id}');
 
-
       final usuario = await _controller.cadastrar(
         createdUser.id!,
         _nomeController.text,
@@ -81,7 +79,6 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
         _cpfController.text,
         _telefoneController.text,
       );
-
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt('user_id', usuario!.id!);
@@ -92,11 +89,10 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
 
       Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
- 
       final mensagem = _mensagemErroFirebase(e.code);
 
       setState(() {
-        _erro = mensagem; 
+        _erro = mensagem;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -223,13 +219,7 @@ class _FirebaseRegisterViewState extends State<FirebaseRegisterView> {
                   : CustomElevatedButton(
                       tituloBotao: 'Criar conta',
                       onPressed: () {
-                        setState(() {
-                          _loading = true;
-                        });
                         _cadastrar();
-                        setState(() {
-                          _loading = false;
-                        });
                       },
                     ),
             ],
