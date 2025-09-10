@@ -1,10 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:profmate/src/models/atividade_api_model.dart';
-import 'package:profmate/src/models/atividade_model.dart';
-//import 'package:profmate/src/services/adicionar_atividade_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../models/atividade_model.dart';
 
 class AtividadeController {
-  // Controllers dos campos de formulário
   final tituloController = TextEditingController();
   final descricaoController = TextEditingController();
   final turmaOuAlunosController = TextEditingController();
@@ -12,49 +11,11 @@ class AtividadeController {
   final valeNotaController = TextEditingController();
   final arquivoController = TextEditingController();
 
-  // ValueNotifiers para gerenciar estado
-  final ValueNotifier<List<AtividadeModel>> atividades =
-      ValueNotifier<List<AtividadeModel>>([]);
+  static final ValueNotifier<List<AtividadeModel>> atividades = ValueNotifier(
+    [],
+  );
 
-  final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
-  final ValueNotifier<String?> errorMessage = ValueNotifier<String?>(null);
-
-  // Método para listar atividades
-  Future<void> listarAtividades(BuildContext context) async {
-    isLoading.value = true;
-    errorMessage.value = null;
-
-    try {
-      // Simula uma chamada de API
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Aqui você faria a chamada real para a API
-      // final response = await AdicionarAtividadeService().buscarAtividades();
-
-      // Simulação de dados vindos da API
-      final List<AtividadeModel> atividadesCarregadas = atividades.value;
-
-      atividades.value = atividadesCarregadas;
-    } catch (e) {
-      errorMessage.value = 'Erro ao carregar atividades: ${e.toString()}';
-      atividades.value = [];
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  Future<void> adicionarAtividade() async {
-    await criarAtividade(
-      tituloController.text,
-      descricaoController.text,
-      turmaOuAlunosController.text,
-      dtEntregaController.text,
-      valeNotaController.text,
-      arquivoController.text.isEmpty ? null : arquivoController.text,
-    );
-  }
-
-  Future<AtividadeModel?> criarAtividade(
+  Future<void> criarAtividade(
     String titulo,
     String descricao,
     String turmaOuAlunos,
@@ -62,44 +23,50 @@ class AtividadeController {
     String valeNota,
     String? arquivo,
   ) async {
-    if (titulo.trim().isEmpty) {
-      errorMessage.value = 'Título é obrigatório';
-      return null;
+    final prefs = await SharedPreferences.getInstance();
+
+    final novaAtividade = AtividadeModel(
+      titulo: titulo,
+      descricao: descricao,
+      turmaOuAlunos: turmaOuAlunos,
+      dtEntrega: dtEntrega,
+      valeNota: valeNota.trim().toLowerCase() == "sim",
+      arquivo: arquivo,
+    );
+
+    // Recupera lista existente
+    final String? encodedData = prefs.getString('listaAtividades');
+    List<AtividadeModel> lista = [];
+    if (encodedData != null) {
+      final List<dynamic> decodedData = jsonDecode(encodedData);
+      lista = decodedData.map((e) => AtividadeModel.fromJson(e)).toList();
     }
 
-    try {
-      isLoading.value = true;
-      errorMessage.value = null;
+    // Adiciona nova
+    lista.add(novaAtividade);
 
-      final novaAtividade = AtividadeModel(
-        titulo: titulo.trim(),
-        descricao: descricao.trim(),
-        turmaOuAlunos: turmaOuAlunos.trim(),
-        dtEntrega: dtEntrega.trim(),
-        valeNota: valeNota.trim() == 'sim',
-        arquivo: arquivo?.trim() == 'sim',
-      );
+    // Atualiza ValueNotifier
+    atividades.value = List.from(lista);
 
-      atividades.value = List<AtividadeModel>.from(atividades.value)
-        ..add(novaAtividade);
-
-      clear();
-      return novaAtividade;
-    } catch (e) {
-      errorMessage.value = 'Erro ao criar atividade: ${e.toString()}';
-      return null;
-    } finally {
-      isLoading.value = false;
-    }
+    // Salva no SharedPreferences
+    final String encoded = jsonEncode(lista.map((e) => e.toJson()).toList());
+    await prefs.setString('listaAtividades', encoded);
   }
 
-  void clear() {
-    tituloController.clear();
-    descricaoController.clear();
-    turmaOuAlunosController.clear();
-    dtEntregaController.clear();
-    valeNotaController.clear();
-    arquivoController.clear();
+  Future<void> listarAtividades() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? encodedData = prefs.getString('listaAtividades');
+
+    if (encodedData != null) {
+      final List<dynamic> decodedData = jsonDecode(encodedData);
+      atividades.value = decodedData
+          .map((e) => AtividadeModel.fromJson(e))
+          .toList();
+      print("Qtd atividades carregadas: ${atividades.value.length}");
+    } else {
+      atividades.value = [];
+      print("Qtd atividades carregadas: ${atividades.value.length}");
+    }
   }
 
   void dispose() {
@@ -109,8 +76,5 @@ class AtividadeController {
     dtEntregaController.dispose();
     valeNotaController.dispose();
     arquivoController.dispose();
-    atividades.dispose();
-    isLoading.dispose();
-    errorMessage.dispose();
   }
 }

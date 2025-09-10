@@ -1,47 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:profmate/src/controller/atividade_controller.dart';
-import 'package:profmate/src/models/atividade_model.dart';
-import 'package:profmate/src/views/atividade_detalhes_view.dart';
-import 'package:profmate/src/widgets/card_atividades.dart';
-import 'package:profmate/src/widgets/custom_app_bar.dart';
+import 'package:profmate/src/widgets/base_layout.dart';
+import '../controller/atividade_controller.dart';
+import '../models/atividade_model.dart';
+import '../views/adicionar_atividade_view.dart';
+import '../widgets/custom_app_bar.dart';
+import '../widgets/custom_elevated_button.dart'; // ADICIONE ESTE IMPORT
 
-class AtividadeView extends StatefulWidget {
-  const AtividadeView({super.key});
+class AtividadesView extends StatefulWidget {
+  const AtividadesView({super.key});
 
   @override
-  State<AtividadeView> createState() => _AtividadeViewState();
+  State<AtividadesView> createState() => _AtividadesViewState();
 }
 
-class _AtividadeViewState extends State<AtividadeView> {
-  late AtividadeController controller;
+class _AtividadesViewState extends State<AtividadesView> {
+  final AtividadeController _controller = AtividadeController();
 
   @override
   void initState() {
     super.initState();
-    controller = AtividadeController();
-    _carregarAtividades();
+    _controller.listarAtividades();
   }
 
-  void _carregarAtividades() async {
-    await controller.listarAtividades(context);
-    setState(() {});
-  }
-
-  void _verDetalhesAtividade(AtividadeModel atividade) async {
+  Future<void> _abrirAdicionarAtividade() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => AtividadeDetalhesView(atividade: atividade),
-      ),
+      MaterialPageRoute(builder: (context) => const AdicionarAtividadeView()),
     );
-
-    if (result == true) _carregarAtividades(); // Recarrega se houve mudança
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
+    if (result != null) {
+      await _controller.listarAtividades();
+    }
   }
 
   @override
@@ -49,87 +37,43 @@ class _AtividadeViewState extends State<AtividadeView> {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 16.0),
-            child: Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    final result = await Navigator.pushNamed(
-                      context,
-                      '/adicionar_atividade_view',
-                    );
-                    if (result == true) {
-                      _carregarAtividades();
-                    }
-                  },
-                  child: const Text("Criar nova atividade"),
-                ),
-              ],
-            ),
-          ),
           Expanded(
-            child: ValueListenableBuilder<bool>(
-              valueListenable: controller.isLoading,
-              builder: (context, isLoading, _) {
-                if (isLoading) {
-                  return const Center(child: CircularProgressIndicator());
+            child: ValueListenableBuilder<List<AtividadeModel>>(
+              valueListenable: AtividadeController.atividades,
+              builder: (context, lista, _) {
+                if (lista.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      "Nenhuma atividade cadastrada.",
+                      style: TextStyle(height: 16),
+                    ),
+                  );
                 }
-
-                return ValueListenableBuilder<String?>(
-                  valueListenable: controller.errorMessage,
-                  builder: (context, errorMessage, _) {
-                    if (errorMessage != null) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              errorMessage,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.red,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: _carregarAtividades,
-                              child: const Text('Tentar novamente'),
-                            ),
-                          ],
+                return ListView.builder(
+                  itemCount: lista.length,
+                  itemBuilder: (context, index) {
+                    final atividade = lista[index];
+                    return Card(
+                      margin: const EdgeInsets.all(8),
+                      child: ListTile(
+                        title: Text(atividade.titulo),
+                        subtitle: Text(
+                          "${atividade.descricao}\nEntrega: ${atividade.dtEntrega}\nVale nota: ${atividade.valeNota ? 'Sim' : 'Não'}",
                         ),
-                      );
-                    }
-
-                    return ValueListenableBuilder<List<AtividadeModel>>(
-                      valueListenable: controller.atividades,
-                      builder: (context, atividades, _) {
-                        if (atividades.isEmpty) {
-                          return const Center(
-                            child: Text(
-                              'Não encontramos atividades cadastradas.',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          );
-                        }
-
-                        return ListView.builder(
-                          itemCount: atividades.length,
-                          itemBuilder: (context, index) {
-                            final atividade = atividades[index];
-                            return CardAtividades(
-                              atividade: atividade,
-                              onTap: () => _verDetalhesAtividade(atividade),
-                              onEdit: () => {}, //editarAtividade(index),
-                            );
-                          },
-                        );
-                      },
+                        isThreeLine: true,
+                      ),
                     );
                   },
                 );
               },
+            ),
+          ),
+          SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: CustomElevatedButton(
+              tituloBotao: 'Criar nova atividade',
+              onPressed: _abrirAdicionarAtividade,
             ),
           ),
         ],
