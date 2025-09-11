@@ -413,7 +413,7 @@ class _VerAlunoViewState extends State<VerAlunoView> {
                           SizedBox(height: 16),
 
                           CustomElevatedButton(
-                            tituloBotao: "Mais detalhes do progresso",
+                            tituloBotao: "Mais detalhes",
                             onPressed: () async{
                               SharedPreferences prefs = await SharedPreferences.getInstance();
                               await prefs.setInt('aluno_id', widget.aluno.id!);
