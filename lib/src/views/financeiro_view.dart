@@ -73,7 +73,7 @@ class _FinanceiroViewState extends State<FinanceiroView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Botão "Relatório"
-          Row(
+          /* Row(
             children: [
               GestureDetector(
                 onTap: () {
@@ -96,7 +96,7 @@ class _FinanceiroViewState extends State<FinanceiroView> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 12), */
 
           // CARDS: Total Recebidos / Pendentes
           Row(

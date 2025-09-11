@@ -5,8 +5,8 @@ import 'dart:convert';
 
 class AuthService {
   final _auth = FirebaseAuth.instance;
-  //final String baseUrl = 'https://api-profmate.onrender.com';
-   final String baseUrl = 'http://10.0.2.2:3000'; 
+  final String baseUrl = 'https://api-profmate.onrender.com';
+   //final String baseUrl = 'http://10.0.2.2:3000'; 
 
   /// Faz login com Firebase e pega JWT do backend
   Future<User?> login(String email, String senha) async {

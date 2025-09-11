@@ -43,7 +43,7 @@ final List<MenuModel> appMenuItems = [
     title: 'Atividades',
     icon: Icons.task,
     route: '/atividade_view',
-    page: AtividadeView(),
+    page: AtividadesView(),
   ),
 
   MenuModel(

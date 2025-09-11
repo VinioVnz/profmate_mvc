@@ -4,7 +4,7 @@ class AtividadeModel {
   final String turmaOuAlunos;
   final String dtEntrega;
   final bool valeNota;
-  final bool? arquivo;
+  final String? arquivo;
 
   AtividadeModel({
     required this.titulo,
@@ -28,12 +28,12 @@ class AtividadeModel {
 
   factory AtividadeModel.fromJson(Map<String, dynamic> json) {
     return AtividadeModel(
-      titulo: json['title'] as String,
-      descricao: json['description'] as String,
-      turmaOuAlunos: json['description'] as String,
-      dtEntrega: json['description'] as String,
-      valeNota: json['description'] as bool,
-      arquivo: json['description'] as bool,
+      titulo: json['titulo'] ?? '',
+      descricao: json['descricao'] ?? '',
+      turmaOuAlunos: json['turmaOuAlunos'] ?? '',
+      dtEntrega: json['dtEntrega'] ?? '',
+      valeNota: json['valeNota'] ?? false,
+      arquivo: json['arquivo'],
     );
   }
 }

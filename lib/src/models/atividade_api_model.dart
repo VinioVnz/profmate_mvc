@@ -51,7 +51,7 @@ class AtividadeApiModel {
       turmaOuAlunos: turmaOuAlunos,
       dtEntrega: dtEntrega,
       valeNota: valeNota as bool,
-      arquivo: arquivo != null && arquivo!.isNotEmpty,
+      arquivo: arquivo,
     );
   }
 }
