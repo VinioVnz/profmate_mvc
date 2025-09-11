@@ -108,14 +108,14 @@ class _MuralViewState extends State<MuralView> {
                                       ),
                                     ),
 
-                                    IconButton(
+                                    /* IconButton(
                                       visualDensity: VisualDensity.compact,
                                       onPressed: () {},
                                       icon: Icon(
                                         Icons.edit,
                                         color: Colors.white,
                                       ),
-                                    ),
+                                    ), */
                                   ],
                                 ),
                               ],

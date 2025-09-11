@@ -9,9 +9,9 @@ import 'package:http/http.dart' as http;
 class AtividadeService {
   //trocar para a url do servidor depois
  //versao local:
-   //final String baseUrl = 'http://10.0.2.2:3000'; 
+   final String baseUrl = 'http://10.0.2.2:3000'; 
 
-final String baseUrl = 'https://api-profmate.onrender.com';
+//final String baseUrl = 'https://api-profmate.onrender.com';
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();

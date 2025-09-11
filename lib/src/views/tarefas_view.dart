@@ -71,6 +71,7 @@ class _TarefasViewState extends State<TarefasView> {
     await _controller.criarTarefa(tarefa);
     _carregarTarefas();
     Navigator.pop(context);
+    _adicionarTarefasController.text = '';
     setState(() {
       _loading = false;
     });

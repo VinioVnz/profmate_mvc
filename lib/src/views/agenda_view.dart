@@ -43,6 +43,7 @@ class _AgendaViewState extends State<AgendaView> {
   List<AlunoApiModel> alunos = [];
   int? usuarioId;
   bool _loading = true;
+  bool _salvando = false;
   void _carregarIdUsuario() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final id = prefs.getInt('user_id');
@@ -157,10 +158,13 @@ class _AgendaViewState extends State<AgendaView> {
                 ),
                 SizedBox(width: 10),
                 Expanded(
-                  child: _loading
+                  child: _salvando
                       ? CircularProgressIndicator()
                       : BotaoConfirmar(
                           aoConfirmar: () async {
+                            setState(() {
+                              _salvando = true;
+                            });
                             if (selectedAluno == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -174,6 +178,9 @@ class _AgendaViewState extends State<AgendaView> {
                             }
                             final idAluno = selectedAluno?.id ?? 0;
                             _salvarAula();
+                            setState(() {
+                              _salvando = false;
+                            });
                           },
                           tituloBotao: "Salvar",
                         ),

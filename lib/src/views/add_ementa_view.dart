@@ -15,31 +15,36 @@ class AddEmentaView extends StatefulWidget {
 class _AddEmentaViewState extends State<AddEmentaView> {
   final _chaveDoFormulario = GlobalKey<FormState>();
   final EmentaController controller = EmentaController();
-
-  void _salvarEmenta()async{
+  bool _loading = false;
+  void _salvarEmenta() async {
+    setState(() {
+      _loading = true;
+    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final idAluno = prefs.getInt('aluno_id');
     final ementa = EmentaApiModel(
-      modulo: controller.moduloController.text, 
-      topico: controller.topicoController.text, 
-      descricao: controller.descricaoController.text, 
+      modulo: controller.moduloController.text,
+      topico: controller.topicoController.text,
+      descricao: controller.descricaoController.text,
       concluida: false,
-      idAluno: idAluno!
-      );
+      idAluno: idAluno!,
+    );
 
-      try{
-        await controller.criarEmenta(ementa);
-        Navigator.pop(context, true);
-      }catch(e){
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Erro ao salvar o ementa, Erro: $e"))
-        );
-      }
+    try {
+      await controller.criarEmenta(ementa);
+      Navigator.pop(context, true);
+      setState(() {
+        _loading = false;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao salvar o ementa, Erro: $e")),
+      );
+    }
   }
-  
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Adicionar Ementa'),
@@ -72,21 +77,29 @@ class _AddEmentaViewState extends State<AddEmentaView> {
             ),
 
             const SizedBox(height: 24),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+            _loading
+                ? Center(child: CircularProgressIndicator())
+                : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: _salvarEmenta,
+                    child: const Text(
+                      'Concluído',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ),
-                onPressed: _salvarEmenta,
-                child: const Text(
-                  'Concluído',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-              ),
           ],
         ),
       ),
